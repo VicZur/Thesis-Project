@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Business Sign Up";
+}
+@model HeardHospitality.Models.BusinessSignUpViewModel
+
+
+<div class="text-center">
+    <h1 class="display-4">Sign Up</h1>
+    <p>Sign Up Page</p>
+
+
+    <form asp-action="BusinessSignUpSubmit" method="post">
+        <input placeholder="Email" asp-for="Email" />
+        <br />
+        <input placeholder="Username" asp-for="Username" />
+        <br />
+        <input placeholder="Password" asp-for="UserPassword" />
+        <br />
+        <input placeholder="Business Name" asp-for="BusinessName" />
+        <br />
+        <input placeholder="Phone Number" asp-for="PhoneNum" />
+        <br />
+        <input placeholder="Address Line 1" asp-for="AddressLine1" />
+        <br />
+        <input placeholder="Address Line 2" asp-for="AddressLine2" />
+        <br />
+        <input placeholder="City" asp-for="City" />
+        <br />
+        <input placeholder="County" asp-for="County" />
+        <br />
+        <input placeholder="EirCode" asp-for="EirCode" />
+        <br />
+        <input placeholder="Country" asp-for="Country" />
+        <br />
+        <button type="submit">Submit</button>
+    </form>
+
+</div>
