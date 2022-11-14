@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace HeardHospitality.Models
 {
     public class BusinessSignUpViewModel
@@ -11,7 +12,7 @@ namespace HeardHospitality.Models
 
         public string Username { get; set; }
 
-        public string UserPassword { get; set; }
+        public string PasswordHash { get; set; }
 
         public string BusinessName { get; set; }
 
