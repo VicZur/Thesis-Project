@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace HeardHospitality.Models
 {
-    public class Employee
+    public class Employee 
     {
+
         public int EmployeeID { get; set; }
 
         public string FirstName { get; set; }
@@ -29,7 +31,7 @@ namespace HeardHospitality.Models
 
         public bool IsVisible { get; set; }
 
-        public int LoginDetailID { get; set; }
+        //public int LoginDetailID { get; set; }
         public LoginDetail LoginDetails { get; set; }
 
 

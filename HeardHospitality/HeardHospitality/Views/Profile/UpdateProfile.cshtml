@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Update Profile";
+}
+
+@model HeardHospitality.Models.Employee
+@Html.Hidden("EmployeeID")
+@Html.Hidden("LoginDetailID")
+
+<div class="text-center">
+    <h1 class="display-4">Update Profile</h1>
+
+          <a class="navbar-brand" asp-area="" asp-controller="Profile" asp-action="UpdateWorkHistory">Update Work History</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+    <h2>Personal Info</h2>
+
+
+
+    <form asp-action="Edit" method="post">
+
+        <input placeholder="First Name" asp-for="FirstName" />
+        <br />
+        <input placeholder="Last Name" asp-for="LastName" />
+        <br />
+        <input placeholder="City" asp-for="City" />
+        <br />
+        <input placeholder="County" asp-for="County" />
+        <br />
+        <input placeholder="Gender" asp-for="Gender" />
+        <br />
+        <input placeholder="Phone Number" asp-for="Phone" />
+        <br />
+        <input placeholder="About Me" asp-for="EmpBio" />
+        <br />
+        <input placeholder="Desired Job" asp-for="DesiredJob" />
+        <br />
+        @*<div class="form-floating">*@
+            <input type="checkbox" asp-for="IsSearching" />
+            <label asp-for="IsSearching">Are you looking for a new job?</label>
+        <br />
+        @*</div>*@
+        @*<div class="form-floating">*@
+            <input type="checkbox" asp-for="IsVisible" />
+            <label asp-for="IsVisible">Would you like businesses to be able to view your profile details</label>
+        @*</div>*@
+        <br />
+        <button type="submit">Save</button>
+    </form>
+
+</div>

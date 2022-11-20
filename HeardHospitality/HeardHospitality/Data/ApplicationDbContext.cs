@@ -4,7 +4,7 @@ using HeardHospitality.Models;
 
 namespace HeardHospitality.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<LoginDetail>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -24,6 +24,23 @@ namespace HeardHospitality.Data
         public DbSet<Reply> Reply { get; set; }
         public DbSet<Skill> Skill { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Address>().ToTable("Address");
+            modelBuilder.Entity<Business>().ToTable("Business");
+            modelBuilder.Entity<EmployeeExperience>().ToTable("EmployeeExperience");
+            modelBuilder.Entity<Employee>().ToTable("Employee");
+            modelBuilder.Entity<EmpSkill>().ToTable("EmpSkill");
+            modelBuilder.Entity<JobApplication>().ToTable("JobApplication");
+            modelBuilder.Entity<JobInfo>().ToTable("JobInfo");
+            modelBuilder.Entity<JobPerk>().ToTable("JobPerk");
+            modelBuilder.Entity<LoginDetail>().ToTable("LoginDetail");
+            modelBuilder.Entity<Perk>().ToTable("Perk");
+            modelBuilder.Entity<Rating>().ToTable("Rating");
+            modelBuilder.Entity<Reply>().ToTable("Reply");
+            modelBuilder.Entity<Skill>().ToTable("Skill");
+        }
 
     }
 

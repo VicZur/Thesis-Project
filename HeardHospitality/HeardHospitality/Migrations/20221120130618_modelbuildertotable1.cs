@@ -2,9 +2,9 @@
 
 #nullable disable
 
-namespace HeardHospitality.Data.Migrations
+namespace HeardHospitality.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class modelbuildertotable1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

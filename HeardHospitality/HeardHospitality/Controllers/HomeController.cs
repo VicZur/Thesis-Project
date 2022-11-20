@@ -1,6 +1,12 @@
 ﻿using HeardHospitality.Models;
+using HeardHospitality.ViewModels;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using System.Diagnostics;
+using System.Text.Encodings.Web;
+using System.Text;
 
 namespace HeardHospitality.Controllers
 {
@@ -17,6 +23,25 @@ namespace HeardHospitality.Controllers
         {
             return View();
         }
+
+        //public IActionResult UpdateProfile(UpdateEmployeeProfileViewModel eup)
+        //{
+        //    return View(eup);
+        //}
+
+        //public IActionResult UpdateProfileSubmit(UpdateEmployeeProfileViewModel eup)
+        //{
+
+            
+        //    return View(eup);
+        //}
+
+
+        //public IActionResult UpdateWorkHistory(EmployeeExperience ee)
+        //{
+        //    return View(ee);
+        //}
+
 
         public IActionResult Privacy()
         {
