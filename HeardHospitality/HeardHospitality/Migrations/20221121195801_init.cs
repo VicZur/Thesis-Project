@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HeardHospitality.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,10 +24,13 @@ namespace HeardHospitality.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
+                name: "LoginDetail",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    isBusinessAccount = table.Column<bool>(type: "bit", nullable: false),
+                    isEmployeeAccount = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -45,27 +48,7 @@ namespace HeardHospitality.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LoginDetail",
-                columns: table => new
-                {
-                    LoginDetailId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AccountType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LoginDetail", x => x.LoginDetailId);
+                    table.PrimaryKey("PK_LoginDetail", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -129,9 +112,9 @@ namespace HeardHospitality.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        name: "FK_AspNetUserClaims_LoginDetail_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "LoginDetail",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -149,9 +132,9 @@ namespace HeardHospitality.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
-                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        name: "FK_AspNetUserLogins_LoginDetail_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "LoginDetail",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -173,9 +156,9 @@ namespace HeardHospitality.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        name: "FK_AspNetUserRoles_LoginDetail_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "LoginDetail",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -193,9 +176,9 @@ namespace HeardHospitality.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        name: "FK_AspNetUserTokens_LoginDetail_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "LoginDetail",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -209,17 +192,17 @@ namespace HeardHospitality.Migrations
                     BusinessName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNum = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsVerified = table.Column<bool>(type: "bit", nullable: false),
-                    LoginDetailId = table.Column<int>(type: "int", nullable: false)
+                    LoginDetailId = table.Column<int>(type: "int", nullable: false),
+                    LoginDetailsId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Business", x => x.BusinessID);
                     table.ForeignKey(
-                        name: "FK_Business_LoginDetail_LoginDetailId",
-                        column: x => x.LoginDetailId,
+                        name: "FK_Business_LoginDetail_LoginDetailsId",
+                        column: x => x.LoginDetailsId,
                         principalTable: "LoginDetail",
-                        principalColumn: "LoginDetailId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -228,27 +211,26 @@ namespace HeardHospitality.Migrations
                 {
                     EmployeeID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    County = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmpBio = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DesiredJob = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    County = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmpBio = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DesiredJob = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsSearching = table.Column<bool>(type: "bit", nullable: false),
                     IsVisible = table.Column<bool>(type: "bit", nullable: false),
-                    LoginDetailID = table.Column<int>(type: "int", nullable: false)
+                    LoginDetailsId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employee", x => x.EmployeeID);
                     table.ForeignKey(
-                        name: "FK_Employee_LoginDetail_LoginDetailID",
-                        column: x => x.LoginDetailID,
+                        name: "FK_Employee_LoginDetail_LoginDetailsId",
+                        column: x => x.LoginDetailsId,
                         principalTable: "LoginDetail",
-                        principalColumn: "LoginDetailId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -514,26 +496,14 @@ namespace HeardHospitality.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "EmailIndex",
-                table: "AspNetUsers",
-                column: "NormalizedEmail");
-
-            migrationBuilder.CreateIndex(
-                name: "UserNameIndex",
-                table: "AspNetUsers",
-                column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Business_LoginDetailId",
+                name: "IX_Business_LoginDetailsId",
                 table: "Business",
-                column: "LoginDetailId");
+                column: "LoginDetailsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employee_LoginDetailID",
+                name: "IX_Employee_LoginDetailsId",
                 table: "Employee",
-                column: "LoginDetailID");
+                column: "LoginDetailsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmployeeExperience_EmployeeID",
@@ -574,6 +544,18 @@ namespace HeardHospitality.Migrations
                 name: "IX_JobPerk_PerkID",
                 table: "JobPerk",
                 column: "PerkID");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "LoginDetail",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "LoginDetail",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rating_BusinessID",
@@ -635,9 +617,6 @@ namespace HeardHospitality.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Skill");

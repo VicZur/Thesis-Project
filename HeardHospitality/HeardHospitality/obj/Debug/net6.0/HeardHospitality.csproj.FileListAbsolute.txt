@@ -560,3 +560,5 @@ C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospita
 C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\obj\Debug\net6.0\HeardHospitality.pdb
 C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\obj\Debug\net6.0\HeardHospitality.genruntimeconfig.cache
 C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\obj\Debug\net6.0\ref\HeardHospitality.dll
+C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\bin\Debug\net6.0\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll

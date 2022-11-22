@@ -64,12 +64,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vczur/Desktop/FinalProject/Thesis-Project/HeardHospitality/HeardHospitality/Views/Profile/UpdateProfile.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmlsZVxVcGRhdGVQcm9maWxlLmNzaHRtbA==
+[C:/Users/vczur/Desktop/FinalProject/Thesis-Project/HeardHospitality/HeardHospitality/Views/Profile/AddEmployeeExperience.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmlsZVxBZGRFbXBsb3llZUV4cGVyaWVuY2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vczur/Desktop/FinalProject/Thesis-Project/HeardHospitality/HeardHospitality/Views/Profile/UpdateWorkHistory.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmlsZVxVcGRhdGVXb3JrSGlzdG9yeS5jc2h0bWw=
+[C:/Users/vczur/Desktop/FinalProject/Thesis-Project/HeardHospitality/HeardHospitality/Views/Profile/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmlsZVxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vczur/Desktop/FinalProject/Thesis-Project/HeardHospitality/HeardHospitality/Views/Profile/SubmitEmployeeExperience.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmlsZVxTdWJtaXRFbXBsb3llZUV4cGVyaWVuY2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vczur/Desktop/FinalProject/Thesis-Project/HeardHospitality/HeardHospitality/Views/Profile/UpdateProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmlsZVxVcGRhdGVQcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/vczur/Desktop/FinalProject/Thesis-Project/HeardHospitality/HeardHospitality/Views/Shared/Error.cshtml]

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HeardHospitality.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221114211153_customFields")]
-    partial class customFields
+    [Migration("20221121195933_empnonnullfk")]
+    partial class empnonnullfk
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -63,7 +63,7 @@ namespace HeardHospitality.Migrations
 
                     b.HasIndex("BusinessID");
 
-                    b.ToTable("Address");
+                    b.ToTable("Address", (string)null);
                 });
 
             modelBuilder.Entity("HeardHospitality.Models.Business", b =>
@@ -95,7 +95,7 @@ namespace HeardHospitality.Migrations
 
                     b.HasIndex("LoginDetailsId");
 
-                    b.ToTable("Business");
+                    b.ToTable("Business", (string)null);
                 });
 
             modelBuilder.Entity("HeardHospitality.Models.Employee", b =>
@@ -107,27 +107,21 @@ namespace HeardHospitality.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeID"), 1L, 1);
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("County")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DesiredJob")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmpBio")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsSearching")
@@ -137,24 +131,20 @@ namespace HeardHospitality.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LoginDetailID")
-                        .HasColumnType("int");
-
                     b.Property<string>("LoginDetailsId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("EmployeeID");
 
                     b.HasIndex("LoginDetailsId");
 
-                    b.ToTable("Employee");
+                    b.ToTable("Employee", (string)null);
                 });
 
             modelBuilder.Entity("HeardHospitality.Models.EmployeeExperience", b =>
@@ -204,7 +194,7 @@ namespace HeardHospitality.Migrations
 
                     b.HasIndex("EmployeeID");
 
-                    b.ToTable("EmployeeExperience");
+                    b.ToTable("EmployeeExperience", (string)null);
                 });
 
             modelBuilder.Entity("HeardHospitality.Models.EmpSkill", b =>
@@ -230,7 +220,7 @@ namespace HeardHospitality.Migrations
 
                     b.HasIndex("SkillID");
 
-                    b.ToTable("EmpSkill");
+                    b.ToTable("EmpSkill", (string)null);
                 });
 
             modelBuilder.Entity("HeardHospitality.Models.JobApplication", b =>
@@ -259,7 +249,7 @@ namespace HeardHospitality.Migrations
 
                     b.HasIndex("JobInfoID");
 
-                    b.ToTable("JobApplication");
+                    b.ToTable("JobApplication", (string)null);
                 });
 
             modelBuilder.Entity("HeardHospitality.Models.JobInfo", b =>
@@ -318,7 +308,7 @@ namespace HeardHospitality.Migrations
 
                     b.HasIndex("BusinessID");
 
-                    b.ToTable("JobInfo");
+                    b.ToTable("JobInfo", (string)null);
                 });
 
             modelBuilder.Entity("HeardHospitality.Models.JobPerk", b =>
@@ -345,7 +335,7 @@ namespace HeardHospitality.Migrations
 
                     b.HasIndex("PerkID");
 
-                    b.ToTable("JobPerk");
+                    b.ToTable("JobPerk", (string)null);
                 });
 
             modelBuilder.Entity("HeardHospitality.Models.LoginDetail", b =>
@@ -355,10 +345,6 @@ namespace HeardHospitality.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
-
-                    b.Property<string>("AccountType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -379,9 +365,6 @@ namespace HeardHospitality.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("LoginDetailId")
-                        .HasColumnType("int");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -410,6 +393,12 @@ namespace HeardHospitality.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<bool>("isBusinessAccount")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isEmployeeAccount")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -420,7 +409,7 @@ namespace HeardHospitality.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.ToTable("LoginDetail", (string)null);
                 });
 
             modelBuilder.Entity("HeardHospitality.Models.Perk", b =>
@@ -437,7 +426,7 @@ namespace HeardHospitality.Migrations
 
                     b.HasKey("PerkID");
 
-                    b.ToTable("Perk");
+                    b.ToTable("Perk", (string)null);
                 });
 
             modelBuilder.Entity("HeardHospitality.Models.Rating", b =>
@@ -491,7 +480,7 @@ namespace HeardHospitality.Migrations
 
                     b.HasIndex("EmployeeExperienceID");
 
-                    b.ToTable("Rating");
+                    b.ToTable("Rating", (string)null);
                 });
 
             modelBuilder.Entity("HeardHospitality.Models.Reply", b =>
@@ -529,7 +518,7 @@ namespace HeardHospitality.Migrations
 
                     b.HasIndex("ReplysReplyID");
 
-                    b.ToTable("Reply");
+                    b.ToTable("Reply", (string)null);
                 });
 
             modelBuilder.Entity("HeardHospitality.Models.Skill", b =>
@@ -546,7 +535,7 @@ namespace HeardHospitality.Migrations
 
                     b.HasKey("SkillID");
 
-                    b.ToTable("Skill");
+                    b.ToTable("Skill", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -710,7 +699,9 @@ namespace HeardHospitality.Migrations
                 {
                     b.HasOne("HeardHospitality.Models.LoginDetail", "LoginDetails")
                         .WithMany()
-                        .HasForeignKey("LoginDetailsId");
+                        .HasForeignKey("LoginDetailsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("LoginDetails");
                 });

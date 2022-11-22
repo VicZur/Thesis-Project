@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Update Profile";
+}
+
+@model HeardHospitality.Models.EmployeeExperience
+@Html.Hidden("EmployeeExperienceID")
+@Html.Hidden("EmployeeID")
+@Html.Hidden("IsVerified")
+
+<div class="text-center">
+    <h1 class="display-4">Update Profile</h1>
+
+    <h2>Work History</h2>
+
+    <form asp-controller="Profile" asp-action="SubmitEmployeeExperience" method="post">
+
+        <input placeholder="Job Title" asp-for="JobTitle" />
+        <br />
+        <input placeholder="Position Type" asp-for="PositionType" />
+        <br />
+        <input placeholder="Start Date" asp-for="StartDate" />
+        <br />
+        <input placeholder="End Date" asp-for="EndDate" />
+        <br />
+        <input placeholder="Company" asp-for="Company" />
+        <br />
+        <input placeholder="City" asp-for="City" />
+        <br />
+        <input placeholder="County" asp-for="County" />
+        <br />
+        <input type="checkbox" asp-for="DisplayOnProfile" />
+        <label asp-for="DisplayOnProfile">Display this job on my profile</label>
+        <br />
+        <br />
+        <button type="submit">Add</button>
+    </form>
+
+
+</div>
