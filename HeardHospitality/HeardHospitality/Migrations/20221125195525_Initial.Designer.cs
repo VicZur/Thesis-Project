@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HeardHospitality.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221121195801_init")]
-    partial class init
+    [Migration("20221125195525_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,7 +37,6 @@ namespace HeardHospitality.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddressLine2")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("BusinessID")
@@ -56,7 +55,6 @@ namespace HeardHospitality.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EirCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AddressID");
@@ -81,10 +79,8 @@ namespace HeardHospitality.Migrations
                     b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LoginDetailId")
-                        .HasColumnType("int");
-
                     b.Property<string>("LoginDetailsId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PhoneNum")
@@ -134,6 +130,7 @@ namespace HeardHospitality.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LoginDetailsId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Phone")
@@ -676,20 +673,22 @@ namespace HeardHospitality.Migrations
 
             modelBuilder.Entity("HeardHospitality.Models.Address", b =>
                 {
-                    b.HasOne("HeardHospitality.Models.Business", "Business")
+                    b.HasOne("HeardHospitality.Models.Business", "Businesses")
                         .WithMany("Addresses")
                         .HasForeignKey("BusinessID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Business");
+                    b.Navigation("Businesses");
                 });
 
             modelBuilder.Entity("HeardHospitality.Models.Business", b =>
                 {
                     b.HasOne("HeardHospitality.Models.LoginDetail", "LoginDetails")
                         .WithMany()
-                        .HasForeignKey("LoginDetailsId");
+                        .HasForeignKey("LoginDetailsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("LoginDetails");
                 });
@@ -698,7 +697,9 @@ namespace HeardHospitality.Migrations
                 {
                     b.HasOne("HeardHospitality.Models.LoginDetail", "LoginDetails")
                         .WithMany()
-                        .HasForeignKey("LoginDetailsId");
+                        .HasForeignKey("LoginDetailsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("LoginDetails");
                 });

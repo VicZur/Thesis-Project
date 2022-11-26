@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HeardHospitality.Migrations
 {
-    public partial class init : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -192,8 +192,7 @@ namespace HeardHospitality.Migrations
                     BusinessName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNum = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsVerified = table.Column<bool>(type: "bit", nullable: false),
-                    LoginDetailId = table.Column<int>(type: "int", nullable: false),
-                    LoginDetailsId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    LoginDetailsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -202,7 +201,8 @@ namespace HeardHospitality.Migrations
                         name: "FK_Business_LoginDetail_LoginDetailsId",
                         column: x => x.LoginDetailsId,
                         principalTable: "LoginDetail",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -221,7 +221,7 @@ namespace HeardHospitality.Migrations
                     DesiredJob = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsSearching = table.Column<bool>(type: "bit", nullable: false),
                     IsVisible = table.Column<bool>(type: "bit", nullable: false),
-                    LoginDetailsId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    LoginDetailsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -230,7 +230,8 @@ namespace HeardHospitality.Migrations
                         name: "FK_Employee_LoginDetail_LoginDetailsId",
                         column: x => x.LoginDetailsId,
                         principalTable: "LoginDetail",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -240,10 +241,10 @@ namespace HeardHospitality.Migrations
                     AddressID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AddressLine1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AddressLine2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddressLine2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     County = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EirCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EirCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BusinessID = table.Column<int>(type: "int", nullable: false)
                 },

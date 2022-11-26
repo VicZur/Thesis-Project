@@ -23,9 +23,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Data.SqlClient;
+using System.Security.Claims;
+
+
 
 using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 
 namespace HeardHospitality.Areas.Identity.Pages.Account
@@ -80,15 +84,70 @@ namespace HeardHospitality.Areas.Identity.Pages.Account
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
+        ///     
+        /// 
+        [BindProperty]
+        public bool isBusinessAccount { get; set; }
+
+        [BindProperty]
+        public bool isEmployeeAccount { get; set; }
+
+        [BindProperty]
+        public string BusinessName { get; set; }
+
+        [BindProperty]
+        public string PhoneNum { get; set; }
+
+
         /// </summary>
         public class InputModel
         {
-
+            [BindProperty]
             [Display(Name = "Business Account")]
             public bool isBusinessAccount { get; set; }
 
+            [BindProperty]
             [Display(Name = "Employee Account")]
             public bool isEmployeeAccount { get; set; }
+
+            [BindProperty]
+            [Display(Name = "Business Name")]
+            public string BusinessName { get; set; }
+
+            [BindProperty]
+            [Display(Name = "Phone Number")]
+            public string PhoneNum { get; set; }
+
+
+            [BindProperty]
+            [Display(Name = "Address Line 1")]
+            public string? AddressLine1 { get; set; }
+
+
+            [BindProperty]
+            [Display(Name = "Address Line 2")]
+            public string? AddressLine2 { get; set; }
+
+
+            [BindProperty]
+            [Display(Name = "City")]
+            public string City { get; set; }
+
+
+            [BindProperty]
+            [Display(Name = "County")]
+            public string County { get; set; }
+
+
+            [BindProperty]
+            [Display(Name = "EirCode")]
+            public string? EirCode { get; set; }
+
+
+            [BindProperty]
+            [Display(Name = "Country")]
+            public string Country { get; set; }
+
 
 
             /// <summary>
@@ -120,12 +179,32 @@ namespace HeardHospitality.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
         }
 
-
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(string returnUrl = null, string id = "EmployeeAccount")
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            RegisterModel rm = new RegisterModel(_userManager, _userStore, _signInManager, _logger, _emailSender, _configuration);
+
+            if (id == "BusinessAccount")
+            {
+                isEmployeeAccount = false;
+                isBusinessAccount = true;
+            }
+            else
+            {
+                isBusinessAccount = false;
+                isEmployeeAccount = true;
+            }
+
         }
+
+
+
+        //public async Task<IActionResult> OnContinueAsync()
+        //{
+
+        //}
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
@@ -133,66 +212,21 @@ namespace HeardHospitality.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                //var user = CreateUser();
-                var user = new LoginDetail { DateCreated = DateTime.Now, isEmployeeAccount = Input.isEmployeeAccount, isBusinessAccount = Input.isBusinessAccount };
+                bool isEmp = true;
+                bool isBus = false;
+
+                if (Input.isBusinessAccount == true)
+                {
+                    isEmp = false;
+                    isBus = true;
+                }
+                var user = new LoginDetail { DateCreated = DateTime.Now, isEmployeeAccount = isEmp, isBusinessAccount = isBus };
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
-
-
-
-                if (Input.isEmployeeAccount == true)
-                {
-                    //create record in employee table linking to new user
-                    var employee = new Employee { FirstName = "", LastName = "", City = "", County = "", Gender = "", Phone = "", EmpBio = "", DesiredJob = "", IsSearching = false, IsVisible = false, LoginDetails = user };
-
-
-                    string connStr = _configuration.GetConnectionString("DefaultConnection");
-                    SqlConnection conn = new SqlConnection(connStr);
-
-                    string query = "INSERT INTO dbo.Employee (FirstName, LastName, City, County, Gender, Phone, EmpBio, DesiredJob, IsSearching, IsVisible, LoginDetailsId) VALUES (@FirstName, @LastName, @City, @County, @Gender, @Phone, @EmpBio, @DesiredJob, @IsSearching, @IsVisible, @LoginDetailsId)";
-
-
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    //cmd.Connection = conn;
-                    //cmd.CommandType = System.Data.CommandType.Insert;
-                    //cmd.CommandText = "uspNewEmployee";
-
-                    cmd.Parameters.AddWithValue("@FirstName", "");
-                    cmd.Parameters.AddWithValue("@LastName", "");
-                    cmd.Parameters.AddWithValue("@City", "");
-                    cmd.Parameters.AddWithValue("@County", "");
-                    cmd.Parameters.AddWithValue("@Gender", "");
-                    cmd.Parameters.AddWithValue("@Phone", "");
-                    cmd.Parameters.AddWithValue("@EmpBio", "");
-                    cmd.Parameters.AddWithValue("@DesiredJob", "");
-                    cmd.Parameters.AddWithValue("@IsSearching", 0);
-                    cmd.Parameters.AddWithValue("@IsVisible", 0);
-                    cmd.Parameters.AddWithValue("@LoginDetailsId", user.Id);
-
-
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                    //object o = cmd.ExecuteScalar();
-                    conn.Close();
-
-
-                    //if (await TryUpdateModelAsync<Employee>(employee))
-                    // {
-
-                    //_context.Employee.Add(employee);
-                    //await _context.SaveChangesAsync();
-                    //   }
-
-                }
-                else if (Input.isBusinessAccount == true)
-                {
-
-                    //create record in business table linking to new user
-                }
 
 
                 if (result.Succeeded)
@@ -210,6 +244,100 @@ namespace HeardHospitality.Areas.Identity.Pages.Account
 
 
 
+                    if (Input.isEmployeeAccount == true)
+                    {
+                        //create record in employee table linking to new user
+                        var employee = new Employee { FirstName = "", LastName = "", City = "", County = "", Gender = "", Phone = "", EmpBio = "", DesiredJob = "", IsSearching = false, IsVisible = false, LoginDetails = user };
+
+                        string connStr = _configuration.GetConnectionString("DefaultConnection");
+                        SqlConnection conn = new SqlConnection(connStr);
+
+                        string query = "INSERT INTO dbo.Employee (FirstName, LastName, City, County, Gender, Phone, EmpBio, DesiredJob, IsSearching, IsVisible, LoginDetailsId) VALUES (@FirstName, @LastName, @City, @County, @Gender, @Phone, @EmpBio, @DesiredJob, @IsSearching, @IsVisible, @LoginDetailsId)";
+
+                        SqlCommand cmd = new SqlCommand(query, conn);
+
+                        cmd.Parameters.AddWithValue("@FirstName", "");
+                        cmd.Parameters.AddWithValue("@LastName", "");
+                        cmd.Parameters.AddWithValue("@City", "");
+                        cmd.Parameters.AddWithValue("@County", "");
+                        cmd.Parameters.AddWithValue("@Gender", "");
+                        cmd.Parameters.AddWithValue("@Phone", "");
+                        cmd.Parameters.AddWithValue("@EmpBio", "");
+                        cmd.Parameters.AddWithValue("@DesiredJob", "");
+                        cmd.Parameters.AddWithValue("@IsSearching", 0);
+                        cmd.Parameters.AddWithValue("@IsVisible", 0);
+                        cmd.Parameters.AddWithValue("@LoginDetailsId", user.Id);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+
+
+
+                    }
+                    else if (Input.isBusinessAccount == true)
+                    {
+                        //create record in business table linking to new user
+                        var business = new Business { BusinessName = "", PhoneNum = "", IsVerified = false, LoginDetails = user };
+
+                        string connStr = _configuration.GetConnectionString("DefaultConnection");
+                        SqlConnection conn = new SqlConnection(connStr);
+
+                        string query = "INSERT INTO dbo.Business (BusinessName, PhoneNum, IsVerified, LoginDetailsId) VALUES (@BusinessName, @PhoneNum, @IsVerified, @LoginDetailsId) " +
+                                        "SELECT SCOPE_IDENTITY()";
+
+                        SqlCommand cmd = new SqlCommand(query, conn);
+
+                        cmd.Parameters.AddWithValue("@BusinessName", Input.BusinessName);
+                        cmd.Parameters.AddWithValue("@PhoneNum", Input.PhoneNum);
+                        cmd.Parameters.AddWithValue("@IsVerified", "");
+                        cmd.Parameters.AddWithValue("@LoginDetailsId", user.Id);
+
+                        conn.Open();
+                        int lastId = Convert.ToInt32(cmd.ExecuteScalar());
+                        //int lastId = (int)cmd.ExecuteScalar();
+                        conn.Close();
+
+
+
+                        //get current business user's ID to allow display data
+                       
+                        connStr = _configuration.GetConnectionString("DefaultConnection");
+                        conn = new SqlConnection(connStr);
+
+
+                        //query = "SELECT * FROM Business WHERE Business.LoginDetailsId = @LoginDetailsId";
+
+                        //cmd = new SqlCommand(query, conn);
+
+                        //cmd.Parameters.AddWithValue("@LoginDetailsId", lastId);
+
+
+
+                        //create record in address table linking to new user
+                        var address = new Address { AddressLine1 = "", AddressLine2 = "", City = "", County = "", EirCode = "", Country = "", BusinessID = lastId};
+
+                        query = "insert into dbo.Address (AddressLine1, AddressLine2, City, County, EirCode, Country, BusinessId) " +
+                                "values (@addressline1, @addressline2, @city, @county, @eircode, @country, @businessid)";
+
+                        cmd = new SqlCommand(query, conn);
+
+                        cmd.Parameters.AddWithValue("@addressline1", "");
+                        cmd.Parameters.AddWithValue("@addressline2", "");
+                        cmd.Parameters.AddWithValue("@city", Input.City);
+                        cmd.Parameters.AddWithValue("@county", Input.County);
+                        cmd.Parameters.AddWithValue("@eircode", "");
+                        cmd.Parameters.AddWithValue("@country", "");
+                        cmd.Parameters.AddWithValue("@businessid", lastId);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+
+
+                    }
+
+
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
@@ -222,6 +350,9 @@ namespace HeardHospitality.Areas.Identity.Pages.Account
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
+
+
+
                 }
                 foreach (var error in result.Errors)
                 {

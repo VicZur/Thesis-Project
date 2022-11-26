@@ -19,7 +19,9 @@ namespace HeardHospitality.Models
         public bool IsVerified { get; set; }
 
         //FK details to DBLoginDetailModel
-        public int LoginDetailId { get; set; }
+        //public int LoginDetailId { get; set; }
+
+        [Required]
         public LoginDetail LoginDetails { get; set; }
 
 
@@ -33,5 +35,4 @@ namespace HeardHospitality.Models
         public ICollection<JobInfo> JobInfos { get; set; }
 
     }
-
 }

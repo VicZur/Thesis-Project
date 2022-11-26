@@ -31,8 +31,12 @@ namespace HeardHospitality.Controllers
         {
             //get current user's ID to allow display data
             var currentuser = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+
             string connStr = _configuration.GetConnectionString("DefaultConnection");
             SqlConnection conn = new SqlConnection(connStr);
+
+
             string query = "SELECT * FROM Employee WHERE Employee.LoginDetailsId = @LoginDetailsId";
 
             SqlCommand cmd = new SqlCommand(query, conn);
@@ -46,7 +50,7 @@ namespace HeardHospitality.Controllers
             while (rdr.Read())
             {
 
-                employee.FirstName = rdr["FirstName"].ToString();
+                employee.FirstName = rdr["FirstName"].ToString(); 
                 employee.LastName = rdr["LastName"].ToString();
                 employee.City = rdr["City"].ToString();
                 employee.County = rdr["County"].ToString();
@@ -65,7 +69,7 @@ namespace HeardHospitality.Controllers
         }
 
         // POST: UpdateEmployeeProfileController/Edit/5
-        [HttpPost]
+        [HttpPost] 
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Employee e)
         {

@@ -315,6 +315,7 @@ C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospita
 C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\bin\Debug\net6.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
 C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\bin\Debug\net6.0\Microsoft.Data.SqlClient.dll
 C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\bin\Debug\net6.0\Microsoft.DiaSymReader.dll
+C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\bin\Debug\net6.0\Microsoft.DotNet.PlatformAbstractions.dll
 C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\bin\Debug\net6.0\Microsoft.DotNet.Scaffolding.Shared.dll
 C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
 C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
@@ -323,6 +324,7 @@ C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospita
 C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.SqlServer.dll
 C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
 C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
 C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\bin\Debug\net6.0\Microsoft.Extensions.FileProviders.Embedded.dll
 C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll
@@ -560,5 +562,3 @@ C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospita
 C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\obj\Debug\net6.0\HeardHospitality.pdb
 C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\obj\Debug\net6.0\HeardHospitality.genruntimeconfig.cache
 C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\obj\Debug\net6.0\ref\HeardHospitality.dll
-C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\bin\Debug\net6.0\Microsoft.DotNet.PlatformAbstractions.dll
-C:\Users\vczur\Desktop\FinalProject\Thesis-Project\HeardHospitality\HeardHospitality\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll

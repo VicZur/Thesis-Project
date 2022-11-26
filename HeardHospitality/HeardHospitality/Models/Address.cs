@@ -11,19 +11,19 @@ namespace HeardHospitality.Models
 
         public string AddressLine1 { get; set; }
         
-        public string AddressLine2 { get; set; }
+        public string ? AddressLine2 { get; set; }
 
         public string City { get; set; }
 
         public string County { get; set; }
 
-        public string EirCode { get; set; }
+        public string ? EirCode { get; set; }
 
         public string Country { get; set; }
 
 
         public int BusinessID { get; set; }
-        public Business Business { get; set; }
+        public Business Businesses { get; set; }
 
     }
 }
