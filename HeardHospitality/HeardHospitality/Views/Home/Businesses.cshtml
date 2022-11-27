@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "Businesses";
+}
+
+@model List<BusinessInfoViewModel>
+
+@Html.Hidden("BusinessID")
+
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <div class="text-center">
+        <h1 class="display-4">Businesses</h1>
+
+        <table>
+            <tr>
+                <th>
+                    Business Name
+                </th>
+                <th>
+                    Phone Number
+                </th>
+                <th>
+                    Address Line 1
+                </th>
+                <th>
+                    Address Line 2
+                </th>
+                <th>
+                    City
+                </th>
+                <th>
+                    County
+                </th>
+                <th>
+                    EirCode
+                </th>
+                <th>
+                    Country
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+            @foreach (var business in Model)
+            {
+
+                <tr >
+                    <td>
+                        @business.BusinessName
+                    </td>
+                    <td>
+                        @business.PhoneNum
+                    </td>
+                    <td>
+                        @business.AddressLine1
+                    </td>
+                    <td>
+                        @business.AddressLine2
+                    </td>
+                    <td>
+                        @business.City
+                    </td>
+                    <td>
+                        @business.County
+                    </td>
+                    <td>
+                        @business.EirCode
+                    </td>
+                    <td>
+                        @business.Country
+                    </td>
+                    <td onclick="location.href= '@Url.Action("All", "Rating", new { busID=business.BusinessID })'">
+                        VIEW ALL RATINGS
+                    </td>
+                    <td onclick="location.href= '@Url.Action("New", "Rating", new { busID=business.BusinessID })'">
+                        Leave Rating
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</body>
+</html>

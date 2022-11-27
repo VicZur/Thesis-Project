@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Ratings";
+}
+
+@model Rating
+
+@Html.Hidden("BusinessID")
+@Html.Hidden("RatingID")
+@Html.Hidden("EmployeeExperienceID")
+@Html.Hidden("IsDisplayed")
+
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <div class="text-center">
+        <h1 class="display-4">Ratings</h1>
+
+        <form asp-controller="Rating" asp-action="SubmitRating" method="post">
+
+
+            <input placeholder="OverallRating" asp-for="OverallRating" />
+            <br />
+            <input type="checkbox" asp-for="WouldWorkAgain" />
+            <label a sp-for="WouldWorkAgain">I would work here again</label>
+            <br />
+            <input place holder="Comments" asp-for="Comments" />
+            <br />
+            <input placeholder="Salary Rating" asp-for="SalaryRating" />
+            <br />
+            <input placeholder="Management Rating" asp-for="ManagementRating" />
+            <br />
+            <input place holder="Fairness Rating" asp-for="FairnessRating" />
+            <br />
+            <input placeholder="Clientele Rating" asp-for="ClienteleRating" />
+            <br />
+            <input type="checkbox" asp-for="UnpaidTrialShift" />
+            <label asp-for="UnpaidTrialShift">I was asked to work an unpaid trial shift</label>
+            <br />
+            <input DefaultValuse=@Model.BusinessID asp-for="BusinessID" hidden="hidden"/>
+            <br />
+            <button type="submit">Submit</button>
+        </form>
+
+    </div>
+</body>
+</html>

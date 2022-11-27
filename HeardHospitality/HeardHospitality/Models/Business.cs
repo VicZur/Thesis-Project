@@ -35,4 +35,6 @@ namespace HeardHospitality.Models
         public ICollection<JobInfo> JobInfos { get; set; }
 
     }
+
+
 }
