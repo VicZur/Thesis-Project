@@ -6,13 +6,9 @@ using System.Threading.Tasks;
 
 namespace HeardHospitality.Models
 {
-    public class BusinessSignUpViewModel
+    public class BusinessInfoViewModel
     {
-        public string Email { get; set; }
-
-        public string Username { get; set; }
-
-        public string PasswordHash { get; set; }
+        public int BusinessID { get; set; }
 
         public string BusinessName { get; set; }
 

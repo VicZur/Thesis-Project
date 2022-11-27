@@ -26,15 +26,59 @@ namespace HeardHospitality.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        //GET: UpdateBusinessProfileController
+        public IActionResult UpdateBusinessProfile(BusinessInfoViewModel bi)
         {
-            return View();
+            //get current user's ID to allow display data
+            var currentuser = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            string connStr = _configuration.GetConnectionString("DefaultConnection");
+            SqlConnection conn = new SqlConnection(connStr);
+
+
+            string query = "SELECT * FROM Business WHERE Business.LoginDetailsId = @LoginDetailsId";
+
+            SqlCommand cmd = new SqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("@LoginDetailsId", currentuser);
+
+            var businessinfo = new BusinessInfoViewModel();
+            conn.Open();
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                businessinfo.BusinessID = Convert.ToInt32(rdr["BusinessID"]);
+                businessinfo.BusinessName = rdr["BusinessName"].ToString();
+                businessinfo.PhoneNum = rdr["PhoneNum"].ToString();
+
+            }
+            conn.Close();
+
+            query = "SELECT * FROM Address WHERE Address.BusinessID = @BusinessID";
+            cmd = new SqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("@BusinessID", businessinfo.BusinessID);
+
+            conn.Open();
+            rdr = cmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                businessinfo.AddressLine1 = rdr["AddressLine1"].ToString();
+                businessinfo.AddressLine2 = rdr["AddressLine2"].ToString();
+                businessinfo.City = rdr["City"].ToString();
+                businessinfo.County = rdr["County"].ToString();
+                businessinfo.EirCode = rdr["EirCode"].ToString();
+                businessinfo.Country = rdr["Country"].ToString();
+            }
+
+            return View(businessinfo);
         }
 
-        //POST: UpdateEmployeeProfileController/Edit/5
+        //POST: UpdateBusinessProfileController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(Business b)
+        public ActionResult Edit(BusinessInfoViewModel bi)
         {
             try
             {
@@ -44,25 +88,41 @@ namespace HeardHospitality.Controllers
                 string connStr = _configuration.GetConnectionString("DefaultConnection");
                 SqlConnection conn = new SqlConnection(connStr);
 
-                string query = "UPDATE Business SET BusinessName = @BusinessName, PhoneNum = @PhoneNum, LoginDetailsId = @LoginDetailsId " +
-                    "WHERE Business.LoginDetailsId = @LoginDetailsId";
+                string query = "UPDATE Business SET BusinessName = @BusinessName, PhoneNum = @PhoneNum " +
+                    "OUTPUT inserted.BusinessID WHERE Business.LoginDetailsId = @LoginDetailsId";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
 
-
                 cmd.Parameters.AddWithValue("@LoginDetailsId", currentuser);
-                cmd.Parameters.AddWithValue("@BusinessName", b.BusinessName);
-                cmd.Parameters.AddWithValue("@PhoneNum", b.PhoneNum);
+                cmd.Parameters.AddWithValue("@BusinessName", bi.BusinessName);
+                cmd.Parameters.AddWithValue("@PhoneNum", bi.PhoneNum);
+
+                conn.Open();
+                int currentbusinessId = Convert.ToInt32(cmd.ExecuteScalar());
+                conn.Close();
+
+                query = "UPDATE Address SET AddressLine1 = @AddressLine1, AddressLine2 = @AddressLine2, City = @City, County = @County, EirCode = @EirCode, Country = @Country " +
+                    "WHERE Address.BusinessId = @BusinessId";
+
+                 cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@BusinessId", currentbusinessId);
+                cmd.Parameters.AddWithValue("@AddressLine1", bi.AddressLine1);
+                cmd.Parameters.AddWithValue("@AddressLine2", bi.AddressLine2);
+                cmd.Parameters.AddWithValue("@City", bi.City);
+                cmd.Parameters.AddWithValue("@County", bi.County);
+                cmd.Parameters.AddWithValue("@EirCode", bi.AddressLine1);
+                cmd.Parameters.AddWithValue("@Country", bi.Country);
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
                 conn.Close();
 
-                return RedirectToPage("Index");
+                return View(bi);
             }
             catch
             {
-                return RedirectToPage("Business");
+                return View(bi);
             }
         }
     }

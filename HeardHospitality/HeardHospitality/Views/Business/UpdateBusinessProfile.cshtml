@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Update Profile";
+}
+
+@model HeardHospitality.Models.BusinessInfoViewModel
+
+@Html.Hidden("EmployeeID")
+@Html.Hidden("LoginDetailID")
+
+<div class="text-center">
+    <h1 class="display-4">Update Profile</h1>
+
+@*          <a class="navbar-brand" asp-area="" asp-controller="Business" asp-action="UpdateBusinessProfile">Update Business Info</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>*@
+
+    <h2>Business Info</h2>
+
+
+
+    <form asp-controller="Business" asp-action="Edit" method="post">
+
+        <input placeholder="Business Name" asp-for="BusinessName" />
+        <br />
+        <input placeholder="Phone Number" asp-for="PhoneNum" />
+        <br />
+        <input placeholder="Address Line 1" asp-for="AddressLine1" />
+        <br />
+        <input placeholder="Address Line 2" asp-for="AddressLine2" />
+        <br />
+        <input placeholder="City" asp-for="City" />
+        <br />
+        <input placeholder="County" asp-for="County" />
+        <br />
+        <input placeholder="EirCode" asp-for="EirCode" />
+        <br />
+        <input placeholder="Country" asp-for="Country" />
+        <br />
+        <button type="submit">Save</button>
+    </form>
+
+</div>

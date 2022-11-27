@@ -29,47 +29,111 @@ namespace HeardHospitality.Controllers
         //GET: UpdateEmployeeProfileController
         public IActionResult UpdateProfile(Employee e)
         {
+
             //get current user's ID to allow display data
             var currentuser = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
 
             string connStr = _configuration.GetConnectionString("DefaultConnection");
             SqlConnection conn = new SqlConnection(connStr);
 
 
-            string query = "SELECT * FROM Employee WHERE Employee.LoginDetailsId = @LoginDetailsId";
+            string query = "SELECT * FROM LoginDetail WHERE LoginDetail.Id = @userID";
 
             SqlCommand cmd = new SqlCommand(query, conn);
 
-            cmd.Parameters.AddWithValue("@LoginDetailsId", currentuser);
+            cmd.Parameters.AddWithValue("@userID", currentuser);
 
-            var employee = new Employee();
+            var user = new LoginDetail();
             conn.Open();
             SqlDataReader rdr = cmd.ExecuteReader();
 
             while (rdr.Read())
             {
-
-                employee.FirstName = rdr["FirstName"].ToString(); 
-                employee.LastName = rdr["LastName"].ToString();
-                employee.City = rdr["City"].ToString();
-                employee.County = rdr["County"].ToString();
-                employee.Gender = rdr["Gender"].ToString();
-                employee.Phone = rdr["Phone"].ToString();
-                employee.EmpBio = rdr["EmpBio"].ToString();
-                employee.DesiredJob = rdr["DesiredJob"].ToString();
-                employee.IsSearching = Convert.ToBoolean(rdr["IsSearching"]);
-                employee.IsVisible = Convert.ToBoolean(rdr["IsVisible"]);
-
+                user.Id = currentuser;
+                user.isBusinessAccount = Convert.ToBoolean(rdr["isBusinessAccount"]);
+                user.isEmployeeAccount = Convert.ToBoolean(rdr["isEmployeeAccount"]);
             }
             conn.Close();
 
 
-            return View(employee);
+            if (user.isBusinessAccount == true)
+            {
+                return RedirectToAction("UpdateBusinessProfile", "Business", new { area = "" });
+            }
+            else
+            {
+                connStr = _configuration.GetConnectionString("DefaultConnection");
+                conn = new SqlConnection(connStr);
+
+
+                query = "SELECT * FROM Employee WHERE Employee.LoginDetailsId = @LoginDetailsId";
+
+                cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@LoginDetailsId", currentuser);
+
+                var employee = new Employee();
+                conn.Open();
+                rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+
+                    employee.FirstName = rdr["FirstName"].ToString();
+                    employee.LastName = rdr["LastName"].ToString();
+                    employee.City = rdr["City"].ToString();
+                    employee.County = rdr["County"].ToString();
+                    employee.Gender = rdr["Gender"].ToString();
+                    employee.Phone = rdr["Phone"].ToString();
+                    employee.EmpBio = rdr["EmpBio"].ToString();
+                    employee.DesiredJob = rdr["DesiredJob"].ToString();
+                    employee.IsSearching = Convert.ToBoolean(rdr["IsSearching"]);
+                    employee.IsVisible = Convert.ToBoolean(rdr["IsVisible"]);
+
+                }
+                conn.Close();
+
+                //--------------------------------------------------------
+                //with OG variable declarations - to use when writing seperate methods
+
+                //string connStr = _configuration.GetConnectionString("DefaultConnection");
+                //SqlConnection conn = new SqlConnection(connStr);
+
+
+                //string query = "SELECT * FROM Employee WHERE Employee.LoginDetailsId = @LoginDetailsId";
+
+                //SqlCommand cmd = new SqlCommand(query, conn);
+
+                //cmd.Parameters.AddWithValue("@LoginDetailsId", currentuser);
+
+                //var employee = new Employee();
+                //conn.Open();
+                //SqlDataReader rdr = cmd.ExecuteReader();
+
+                //while (rdr.Read())
+                //{
+
+                //    employee.FirstName = rdr["FirstName"].ToString();
+                //    employee.LastName = rdr["LastName"].ToString();
+                //    employee.City = rdr["City"].ToString();
+                //    employee.County = rdr["County"].ToString();
+                //    employee.Gender = rdr["Gender"].ToString();
+                //    employee.Phone = rdr["Phone"].ToString();
+                //    employee.EmpBio = rdr["EmpBio"].ToString();
+                //    employee.DesiredJob = rdr["DesiredJob"].ToString();
+                //    employee.IsSearching = Convert.ToBoolean(rdr["IsSearching"]);
+                //    employee.IsVisible = Convert.ToBoolean(rdr["IsVisible"]);
+
+                //}
+                //conn.Close();
+
+
+                return View(employee);
+            }
         }
 
         // POST: UpdateEmployeeProfileController/Edit/5
-        [HttpPost] 
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Employee e)
         {
@@ -84,9 +148,9 @@ namespace HeardHospitality.Controllers
 
                 string query = "UPDATE Employee SET FirstName = @FirstName, LastName = @LastName, City = @City, County = @County, Gender = @Gender, Phone = @Phone, EmpBio = @EmpBio, DesiredJob = @DesiredJob, IsSearching = @IsSearching, IsVisible = @IsVisible, LoginDetailsId = @LoginDetailsId " +
                     "WHERE Employee.LoginDetailsId = @LoginDetailsId";
-                  //string query = "UPDATE Employee (FirstName, LastName, City, County, Gender, Phone, EmpBio, DesiredJob, IsSearching, IsVisible) " +
-                  //  "SET (FirstName = @FirstName, LastName = @LastName, City = @City, County = @County, Gender = @Gender, Phone = @Phone, EmpBip = @EmpBio, DesiredJob = @DesiredJob, IsSearching = @IsSearching, IsVisible = @IsVisible, LoginDetailsId = @LoginDetailsId) " +
-                  //  "WHERE Employee.LoginDetailsId = @LoginDetailsId";
+                //string query = "UPDATE Employee (FirstName, LastName, City, County, Gender, Phone, EmpBio, DesiredJob, IsSearching, IsVisible) " +
+                //  "SET (FirstName = @FirstName, LastName = @LastName, City = @City, County = @County, Gender = @Gender, Phone = @Phone, EmpBip = @EmpBio, DesiredJob = @DesiredJob, IsSearching = @IsSearching, IsVisible = @IsVisible, LoginDetailsId = @LoginDetailsId) " +
+                //  "WHERE Employee.LoginDetailsId = @LoginDetailsId";
 
 
                 SqlCommand cmd = new SqlCommand(query, conn);
@@ -267,7 +331,7 @@ namespace HeardHospitality.Controllers
                 cmd.Parameters.AddWithValue("@City", ee.City);
                 cmd.Parameters.AddWithValue("@County", ee.County);
                 cmd.Parameters.AddWithValue("@IsVerified", 0);
-                 cmd.Parameters.AddWithValue("@DisplayOnProfile", ee.DisplayOnProfile);
+                cmd.Parameters.AddWithValue("@DisplayOnProfile", ee.DisplayOnProfile);
                 cmd.Parameters.AddWithValue("@EmployeeID", currentEmpId);
 
                 conn.Open();
