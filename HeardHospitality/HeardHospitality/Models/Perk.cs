@@ -9,7 +9,7 @@ namespace HeardHospitality.Models
     {
         public int PerkID { get; set; }
 
-        public string PerkDescription { get; set; }
+        public string PerkName { get; set; }
 
         public ICollection<JobPerk> JobPerks { get; set; }
 

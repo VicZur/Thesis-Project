@@ -1,0 +1,98 @@
+﻿@{
+    ViewData["Title"] = "Jobs";
+}
+
+@model List<JobPostingViewModel>
+
+@Html.Hidden("BusinessID")
+@Html.Hidden("JobInfoID")
+@Html.Hidden("JobPerkID")
+@Html.Hidden("PerkID")
+@Html.Hidden("PhoneNum")
+@Html.Hidden("AddressLine1")
+@Html.Hidden("AddressLine2")
+@Html.Hidden("EirCode")
+@Html.Hidden("Country")
+@Html.Hidden("JobDescription")
+@Html.Hidden("MinExperience")
+@Html.Hidden("IsActive")
+@Html.Hidden("Details")
+@Html.Hidden("PerkName")
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <div class="text-center">
+        <h1 class="display-4">Current Job Openings</h1>
+
+        <table>
+            <tr>
+                <th>
+                    Business Name
+                </th>
+                <th>
+                    City
+                </th>
+                <th>
+                    County
+                </th>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Position Type
+                </th>
+                <th>
+                    Salary
+                </th>
+                <th>
+                    Posted Date
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                    Company
+                </th>
+            </tr>
+            @foreach (var job in Model)
+            {
+
+
+                <tr>
+                    <td>
+                        @job.BusinessName
+                    </td>
+                    <td>
+                        @job.City
+                    </td>
+                    <td>
+                        @job.County
+                    </td>
+                    <td>
+                        @job.Title
+                    </td>
+                    <td>
+                        @job.PositionType
+                    </td>
+                    <td>
+                        @job.Salary
+                    </td>
+                    <td>
+                        @job.PostedDate
+                    </td>
+                    <td>
+                        @job.Category
+                    </td>
+                    <td>
+                        @job.Company
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</body>
+</html>

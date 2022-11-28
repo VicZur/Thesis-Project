@@ -4,6 +4,7 @@ using HeardHospitality.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HeardHospitality.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221128194200_addcolumnjobperk")]
+    partial class addcolumnjobperk
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -323,6 +325,10 @@ namespace HeardHospitality.Migrations
                     b.Property<int>("PerkID")
                         .HasColumnType("int");
 
+                    b.Property<string>("PerkName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("JobPerkID");
 
                     b.HasIndex("JobInfoID");
@@ -414,7 +420,7 @@ namespace HeardHospitality.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PerkID"), 1L, 1);
 
-                    b.Property<string>("PerkName")
+                    b.Property<string>("PerkDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
