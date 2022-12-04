@@ -59,8 +59,6 @@
             </tr>
             @foreach (var job in Model)
             {
-
-
                 <tr>
                     <td>
                         @job.BusinessName
@@ -88,6 +86,9 @@
                     </td>
                     <td>
                         @job.Company
+                    </td>
+                    <td onclick="location.href= '@Url.Action("JobDetails", "Job", new { jobId=job.JobInfoID })'">
+                        More Details
                     </td>
                 </tr>
             }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HeardHospitality.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221128194200_addcolumnjobperk")]
-    partial class addcolumnjobperk
+    [Migration("20221204192937_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -278,6 +278,9 @@ namespace HeardHospitality.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsReported")
+                        .HasColumnType("bit");
+
                     b.Property<string>("JobDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -324,10 +327,6 @@ namespace HeardHospitality.Migrations
 
                     b.Property<int>("PerkID")
                         .HasColumnType("int");
-
-                    b.Property<string>("PerkName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("JobPerkID");
 
@@ -420,7 +419,7 @@ namespace HeardHospitality.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PerkID"), 1L, 1);
 
-                    b.Property<string>("PerkDescription")
+                    b.Property<string>("PerkName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -457,6 +456,9 @@ namespace HeardHospitality.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDisplayed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsReported")
                         .HasColumnType("bit");
 
                     b.Property<int>("ManagementRating")
@@ -519,6 +521,44 @@ namespace HeardHospitality.Migrations
                     b.HasIndex("ReplysReplyID");
 
                     b.ToTable("Reply", (string)null);
+                });
+
+            modelBuilder.Entity("HeardHospitality.Models.ReportedJobDetail", b =>
+                {
+                    b.Property<int>("ReportedJobDetailID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReportedJobDetailID"), 1L, 1);
+
+                    b.Property<bool>("AdDetailsIncorrect")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("EmployeeID")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IllegalExpectations")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("JobInfoID")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("PerksListedIncorrect")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SalaryIncorrect")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ReportedJobDetailID");
+
+                    b.HasIndex("EmployeeID");
+
+                    b.HasIndex("JobInfoID");
+
+                    b.ToTable("ReportedJobDetail", (string)null);
                 });
 
             modelBuilder.Entity("HeardHospitality.Models.Skill", b =>
@@ -817,6 +857,21 @@ namespace HeardHospitality.Migrations
                     b.Navigation("Replys");
                 });
 
+            modelBuilder.Entity("HeardHospitality.Models.ReportedJobDetail", b =>
+                {
+                    b.HasOne("HeardHospitality.Models.Employee", "Employees")
+                        .WithMany("ReportedJobDetails")
+                        .HasForeignKey("EmployeeID");
+
+                    b.HasOne("HeardHospitality.Models.JobInfo", "JobInfos")
+                        .WithMany("ReportedJobDetails")
+                        .HasForeignKey("JobInfoID");
+
+                    b.Navigation("Employees");
+
+                    b.Navigation("JobInfos");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -886,6 +941,8 @@ namespace HeardHospitality.Migrations
                     b.Navigation("EmployeeExperiences");
 
                     b.Navigation("JobApplications");
+
+                    b.Navigation("ReportedJobDetails");
                 });
 
             modelBuilder.Entity("HeardHospitality.Models.JobInfo", b =>
@@ -893,6 +950,8 @@ namespace HeardHospitality.Migrations
                     b.Navigation("JobApplications");
 
                     b.Navigation("JobPerks");
+
+                    b.Navigation("ReportedJobDetails");
                 });
 
             modelBuilder.Entity("HeardHospitality.Models.Perk", b =>

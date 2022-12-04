@@ -38,6 +38,7 @@ namespace HeardHospitality.Models
 
         public ICollection<JobPerk> JobPerks { get; set; }
         public ICollection<JobApplication> JobApplications { get; set; }
+        public ICollection<ReportedJobDetail> ReportedJobDetails { get; set; }
         
     }
 }

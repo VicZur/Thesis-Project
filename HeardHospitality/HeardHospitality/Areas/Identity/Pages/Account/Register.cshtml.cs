@@ -44,13 +44,15 @@ namespace HeardHospitality.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<LoginDetail> userManager,
             IUserStore<LoginDetail> userStore,
             SignInManager<LoginDetail> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,
+            IEmailSender emailSender, 
+            RoleManager<IdentityRole> roleManager,
             IConfiguration config)
         {
             _userManager = userManager;
@@ -59,6 +61,7 @@ namespace HeardHospitality.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
             _configuration = config;
         }
 
@@ -184,7 +187,7 @@ namespace HeardHospitality.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-            RegisterModel rm = new RegisterModel(_userManager, _userStore, _signInManager, _logger, _emailSender, _configuration);
+            RegisterModel rm = new RegisterModel(_userManager, _userStore, _signInManager, _logger, _emailSender, _roleManager, _configuration);
 
             if (id == "BusinessAccount")
             {
@@ -272,7 +275,8 @@ namespace HeardHospitality.Areas.Identity.Pages.Account
                         cmd.ExecuteNonQuery();
                         conn.Close();
 
-
+                        var emprole = _roleManager.FindByNameAsync("EmployeeUser").Result;
+                        IdentityResult roleresult = await _userManager.AddToRoleAsync(user, emprole.Name);
 
                     }
                     else if (Input.isBusinessAccount == true)
@@ -334,6 +338,8 @@ namespace HeardHospitality.Areas.Identity.Pages.Account
                         cmd.ExecuteNonQuery();
                         conn.Close();
 
+                        var busrole = _roleManager.FindByNameAsync("BusinessUser").Result;
+                        IdentityResult roleresult = await _userManager.AddToRoleAsync(user, busrole.Name);
 
                     }
 

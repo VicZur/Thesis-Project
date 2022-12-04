@@ -521,6 +521,44 @@ namespace HeardHospitality.Migrations
                     b.ToTable("Reply", (string)null);
                 });
 
+            modelBuilder.Entity("HeardHospitality.Models.ReportedJobDetail", b =>
+                {
+                    b.Property<int>("ReportedJobDetailID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReportedJobDetailID"), 1L, 1);
+
+                    b.Property<bool>("AdDetailsIncorrect")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("EmployeeID")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IllegalExpectations")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("JobInfoID")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("PerksListedIncorrect")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SalaryIncorrect")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ReportedJobDetailID");
+
+                    b.HasIndex("EmployeeID");
+
+                    b.HasIndex("JobInfoID");
+
+                    b.ToTable("ReportedJobDetail", (string)null);
+                });
+
             modelBuilder.Entity("HeardHospitality.Models.Skill", b =>
                 {
                     b.Property<int>("SkillID")
@@ -817,6 +855,21 @@ namespace HeardHospitality.Migrations
                     b.Navigation("Replys");
                 });
 
+            modelBuilder.Entity("HeardHospitality.Models.ReportedJobDetail", b =>
+                {
+                    b.HasOne("HeardHospitality.Models.Employee", "Employees")
+                        .WithMany("ReportedJobDetails")
+                        .HasForeignKey("EmployeeID");
+
+                    b.HasOne("HeardHospitality.Models.JobInfo", "JobInfos")
+                        .WithMany("ReportedJobDetails")
+                        .HasForeignKey("JobInfoID");
+
+                    b.Navigation("Employees");
+
+                    b.Navigation("JobInfos");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -886,6 +939,8 @@ namespace HeardHospitality.Migrations
                     b.Navigation("EmployeeExperiences");
 
                     b.Navigation("JobApplications");
+
+                    b.Navigation("ReportedJobDetails");
                 });
 
             modelBuilder.Entity("HeardHospitality.Models.JobInfo", b =>
@@ -893,6 +948,8 @@ namespace HeardHospitality.Migrations
                     b.Navigation("JobApplications");
 
                     b.Navigation("JobPerks");
+
+                    b.Navigation("ReportedJobDetails");
                 });
 
             modelBuilder.Entity("HeardHospitality.Models.Perk", b =>

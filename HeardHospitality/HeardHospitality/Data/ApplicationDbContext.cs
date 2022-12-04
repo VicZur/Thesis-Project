@@ -23,6 +23,7 @@ namespace HeardHospitality.Data
         public DbSet<Rating> Rating { get; set; }
         public DbSet<Reply> Reply { get; set; }
         public DbSet<Skill> Skill { get; set; }
+        public DbSet<ReportedJobDetail> ReportedJobDetail { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,6 +41,9 @@ namespace HeardHospitality.Data
             modelBuilder.Entity<Rating>().ToTable("Rating");
             modelBuilder.Entity<Reply>().ToTable("Reply");
             modelBuilder.Entity<Skill>().ToTable("Skill");
+            modelBuilder.Entity<ReportedJobDetail>().ToTable("ReportedJobDetail");
+
+
         }
 
     }

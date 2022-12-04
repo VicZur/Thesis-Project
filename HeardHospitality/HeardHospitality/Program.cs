@@ -17,8 +17,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<LoginDetail>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//    .AddRoles<IdentityRole>();
 
 var app = builder.Build();
 
@@ -57,9 +61,28 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
+await app.CreateRolesAsync(builder.Configuration);
+
 app.Run();
 
+public static class WebApplicationExtensions
+{
+    public static async Task<WebApplication> CreateRolesAsync(this WebApplication app, IConfiguration configuration)
+    {
+        using var scope = app.Services.CreateScope();
+        var roleManager = (RoleManager<IdentityRole>)scope.ServiceProvider.GetService(typeof(RoleManager<IdentityRole>));
+        var roles = new List<string>() { "admin", "businessuser", "employeeuser" };
+        //var roles = configuration.GetSection("Roles").Get<List<string>>();
 
+        foreach (var role in roles)
+        {
+            if (!await roleManager.RoleExistsAsync(role))
+                await roleManager.CreateAsync(new IdentityRole(role));
+        }
+
+        return app;
+    }
+}
 
 //namespace HeardHospitality
 //{

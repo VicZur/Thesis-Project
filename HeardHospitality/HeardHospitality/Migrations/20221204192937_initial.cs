@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HeardHospitality.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -57,7 +57,7 @@ namespace HeardHospitality.Migrations
                 {
                     PerkID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PerkDescription = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PerkName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -276,6 +276,7 @@ namespace HeardHospitality.Migrations
                     County = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Company = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsReported = table.Column<bool>(type: "bit", nullable: false),
                     BusinessID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -398,6 +399,35 @@ namespace HeardHospitality.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ReportedJobDetail",
+                columns: table => new
+                {
+                    ReportedJobDetailID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AdDetailsIncorrect = table.Column<bool>(type: "bit", nullable: false),
+                    PerksListedIncorrect = table.Column<bool>(type: "bit", nullable: false),
+                    SalaryIncorrect = table.Column<bool>(type: "bit", nullable: false),
+                    IllegalExpectations = table.Column<bool>(type: "bit", nullable: false),
+                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    JobInfoID = table.Column<int>(type: "int", nullable: true),
+                    EmployeeID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReportedJobDetail", x => x.ReportedJobDetailID);
+                    table.ForeignKey(
+                        name: "FK_ReportedJobDetail_Employee_EmployeeID",
+                        column: x => x.EmployeeID,
+                        principalTable: "Employee",
+                        principalColumn: "EmployeeID");
+                    table.ForeignKey(
+                        name: "FK_ReportedJobDetail_JobInfo_JobInfoID",
+                        column: x => x.JobInfoID,
+                        principalTable: "JobInfo",
+                        principalColumn: "JobInfoID");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Rating",
                 columns: table => new
                 {
@@ -413,6 +443,7 @@ namespace HeardHospitality.Migrations
                     Comments = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DatePosted = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDisplayed = table.Column<bool>(type: "bit", nullable: false),
+                    IsReported = table.Column<bool>(type: "bit", nullable: false),
                     EmployeeExperienceID = table.Column<int>(type: "int", nullable: true),
                     BusinessID = table.Column<int>(type: "int", nullable: true)
                 },
@@ -582,6 +613,16 @@ namespace HeardHospitality.Migrations
                 name: "IX_Reply_ReplysReplyID",
                 table: "Reply",
                 column: "ReplysReplyID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReportedJobDetail_EmployeeID",
+                table: "ReportedJobDetail",
+                column: "EmployeeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReportedJobDetail_JobInfoID",
+                table: "ReportedJobDetail",
+                column: "JobInfoID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -617,13 +658,13 @@ namespace HeardHospitality.Migrations
                 name: "Reply");
 
             migrationBuilder.DropTable(
+                name: "ReportedJobDetail");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Skill");
-
-            migrationBuilder.DropTable(
-                name: "JobInfo");
 
             migrationBuilder.DropTable(
                 name: "Perk");
@@ -632,10 +673,13 @@ namespace HeardHospitality.Migrations
                 name: "Rating");
 
             migrationBuilder.DropTable(
-                name: "Business");
+                name: "JobInfo");
 
             migrationBuilder.DropTable(
                 name: "EmployeeExperience");
+
+            migrationBuilder.DropTable(
+                name: "Business");
 
             migrationBuilder.DropTable(
                 name: "Employee");

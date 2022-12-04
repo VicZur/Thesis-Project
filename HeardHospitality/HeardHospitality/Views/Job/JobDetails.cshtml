@@ -18,7 +18,6 @@
 
     <table>
         <tr>
-            <th></th>
             <th>
                 Business Name
             </th>
@@ -30,9 +29,6 @@
             </th>
             <th>
                 Salary
-            </th>
-            <th>
-
             </th>
             <th>
                 Date Posted
@@ -68,7 +64,25 @@
                 @Model.BusinessName
             </td>
             <td>
-                @Model.PhoneNum
+                @Model.Title
+            </td>
+            <td>
+                @Model.JobDescription
+            </td>
+            <td>
+                @Model.Salary
+            </td>
+            <td>
+                @Model.PostedDate
+            </td>
+            <td>
+                @Model.MinExperience
+            </td>
+            <td>
+                @Model.PositionType
+            </td>
+            <td>
+                @Model.Category
             </td>
             <td>
                 @Model.AddressLine1
@@ -85,7 +99,10 @@
             <td>
                 @Model.EirCode
             </td>
-            <td>
-                @Model.Country
-            </td>
         </tr>
+    </table>
+    <p onclick="location.href= '@Url.Action("ReportJob", "Job", new { jobId=Model.JobInfoID })'">
+        Report this Job
+    </p>
+
+</div>
