@@ -31,6 +31,8 @@ namespace HeardHospitality.Models
 
         public bool IsActive { get; set; }
 
+        public bool IsReported { get; set; }
+
         public int BusinessID { get; set; }
         public Business Business { get; set; } 
 

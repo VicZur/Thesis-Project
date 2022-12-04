@@ -31,6 +31,8 @@ namespace HeardHospitality.Models
 
         public bool IsDisplayed { get; set; }
 
+        public bool IsReported { get; set; }    
+
         public int? EmployeeExperienceID { get; set; }
         public EmployeeExperience? Experience { get; set; }
 

@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Add A New Job Ad";
+}
+
+@model JobPostingViewModel
+
+@Html.Hidden("BusinessID")
+@Html.Hidden("JobInfoID")
+@Html.Hidden("JobPerkID")
+@Html.Hidden("PerkID")
+@Html.Hidden("BusinessName")
+@Html.Hidden("PhoneNum")
+@Html.Hidden("AddressLine1")
+@Html.Hidden("AddressLine2")
+@Html.Hidden("City")
+@Html.Hidden("County")
+@Html.Hidden("EirCode")
+@Html.Hidden("Country")
+@Html.Hidden("PostedDate")
+@Html.Hidden("IsActive")
+@Html.Hidden("IsReported")
+
+
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <div class="text-center">
+        <h1 class="display-4">New Ad</h1>
+
+        <form asp-controller="Job" asp-action="SubmitJob" method="post">
+
+
+            <input placeholder="Title" asp-for="Title" />
+            <br />
+            <input placeholder="Position Type" asp-for="PositionType" />
+            <br />
+            <input placeholder="Salary" asp-for="Salary" />
+            <br />
+            <input placeholder="Job Description" asp-for="JobDescription" />
+            <br />           
+            <input placeholder="Minimum Experience" asp-for="MinExperience" />
+            <br />
+            <input placeholder="Category" asp-for="Category" />
+            <br />           
+            <input placeholder="Company" asp-for="Company" />
+            <br />
+            <p>Are there any additional Perks for Employees that you would like to highlight? For example: Staff Meals, Set Schedules, 4 Day weeks, etc.</p>
+            <input placeholder="Perk" asp-for="PerkName" />
+            <br />
+            <input placeholder="Description" asp-for="Details" />
+            <button type="button" onclick="addperk">Add Another Perk</button>
+            <br />
+            <br />
+            <input type="hidden" asp-for="BusinessID" value="@Model.BusinessID" />
+            <input type="hidden" asp-for="City" value="@Model.City" />
+            <input type="hidden" asp-for="County" value="@Model.County" />
+            <button type="submit">Submit</button>
+        </form>
+
+    </div>
+</body>
+</html>

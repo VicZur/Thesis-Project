@@ -1,0 +1,91 @@
+﻿@{
+    ViewData["Title"] = "Job Details";
+}
+
+@model HeardHospitality.Models.JobPostingViewModel
+
+@Html.Hidden("BusinessID")
+@Html.Hidden("JobInfoID")
+@Html.Hidden("JobPerkID")
+@Html.Hidden("PerkID")
+@Html.Hidden("Country")
+@Html.Hidden("PhoneNum")
+@Html.Hidden("IsActive")
+@Html.Hidden("IsReported")
+
+<div class="text-center">
+    <h1 class="display-4">Job Details</h1>
+
+    <table>
+        <tr>
+            <th></th>
+            <th>
+                Business Name
+            </th>
+            <th>
+                Job Title
+            </th>
+            <th>
+                Job Description
+            </th>
+            <th>
+                Salary
+            </th>
+            <th>
+
+            </th>
+            <th>
+                Date Posted
+            </th>
+            <th>
+                Minumum Experience
+            </th>
+            <th>
+                Position Type
+            </th>
+            <th>
+                Position Category
+            </th>
+            <th>
+                Address Line 1
+            </th>
+            <th>
+                Address Line 2
+            </th>
+            <th>
+                City
+            </th>
+            <th>
+                County
+            </th>
+            <th>
+                EirCode
+            </th>
+        </tr>
+
+        <tr>
+            <td>
+                @Model.BusinessName
+            </td>
+            <td>
+                @Model.PhoneNum
+            </td>
+            <td>
+                @Model.AddressLine1
+            </td>
+            <td>
+                @Model.AddressLine2
+            </td>
+            <td>
+                @Model.City
+            </td>
+            <td>
+                @Model.County
+            </td>
+            <td>
+                @Model.EirCode
+            </td>
+            <td>
+                @Model.Country
+            </td>
+        </tr>
