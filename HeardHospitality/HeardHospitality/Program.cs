@@ -16,13 +16,21 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<LoginDetail>(options => options.SignIn.RequireConfirmedAccount = true)
+//builder.Services.AddDefaultIdentity<LoginDetail>(options => options.SignIn.RequireConfirmedAccount = true)
+//    .AddRoles<IdentityRole>()
+//    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<LoginDetail, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultUI();
+
 builder.Services.AddControllersWithViews();
 
 //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 //    .AddRoles<IdentityRole>();
+
+
+builder.Services.AddMvc();
 
 var app = builder.Build();
 
@@ -43,7 +51,7 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
 
     var context = services.GetRequiredService<ApplicationDbContext>();
-    context.Database.EnsureCreated();   
+    context.Database.EnsureCreated();
     DbInitializer.Initialize(context);
 }
 
@@ -59,11 +67,15 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
 app.MapRazorPages();
+
 
 await app.CreateRolesAsync(builder.Configuration);
 
 app.Run();
+
 
 public static class WebApplicationExtensions
 {

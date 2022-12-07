@@ -3,7 +3,7 @@
 }
 
 @model List<JobPostingViewModel>
-
+@*
 @Html.Hidden("BusinessID")
 @Html.Hidden("JobInfoID")
 @Html.Hidden("JobPerkID")
@@ -17,7 +17,80 @@
 @Html.Hidden("MinExperience")
 @Html.Hidden("IsActive")
 @Html.Hidden("Details")
-@Html.Hidden("PerkName")
+@Html.Hidden("PerkName")*@
+
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <div class="text-center">
+        <h1 class="display-4">Current Job Openings</h1>
+        <table>
+            <tr>
+                <th>
+                    Business Name
+                </th>
+                <th>
+                    Job Title
+                </th>
+                <th>
+                    Job Description
+                </th>
+                <th>
+                    Salary
+                </th>
+                <th>
+                    Date Posted
+                </th>
+                <th>
+                    Minumum Experience
+                </th>
+                <th>
+                    Position Type
+                </th>
+                <th>
+                    Position Category
+                </th>
+            </tr>
+
+            @foreach (var job in Model)
+            {
+                <tr>
+                    <td>
+                        @job.BusinessName
+                    </td>
+                    <td>
+                        @job.Title
+                    </td>
+                    <td>
+                        @job.JobDescription
+                    </td>
+                    <td>
+                        @job.Salary
+                    </td>
+                    <td>
+                        @job.PostedDate
+                    </td>
+                    <td>
+                        @job.MinExperience
+                    </td>
+                    <td>
+                        @job.PositionType
+                    </td>
+                    <td>
+                        @job.Category
+                    </td>
+                    <td>
+                        @Html.ActionLink("Delete", "Delete", new { jobId=job.JobInfoID }, new { onclick = "return confirm('Are you sure you want to delete this job?');"} )
+                    </td>
+
+                </tr>
+            }
+        </table>
+
+    </div>
+</body>
+</html>
+@*
 
 
 
@@ -99,4 +172,4 @@
         </table>
     </div>
 </body>
-</html>
+</html>*@

@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "Ratings";
+}
+
+@model List<Rating>
+
+@Html.Hidden("BusinessID")
+@Html.Hidden("RatingID")
+@Html.Hidden("EmployeeExperienceID")
+@Html.Hidden("IsDisplayed")
+
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <div class="text-center">
+        <h1 class="display-4">Ratings</h1>
+
+        <table>
+            <tr>
+                <th>
+                    Overall Rating
+                </th>
+                <th>
+                    Would Work Again
+                </th>
+                <th>
+                    Comments
+                </th>
+                <th>
+                    Salary Rating
+                </th>
+                <th>
+                    Management Rating
+                </th>
+                <th>
+                    Fairness Rating
+                </th>
+                <th>
+                    Clientele Rating
+                </th>
+                <th>
+                    Unpaid Trial Shift
+                </th>
+                <th>
+                    Date Posted
+                </th>
+            </tr>
+            @foreach (var rating in Model)
+            {
+
+
+                <tr>
+                    <td>
+                        @rating.OverallRating
+                    </td>
+                    <td>
+                        @rating.WouldWorkAgain
+                    </td>
+                    <td>
+                        @rating.Comments
+                    </td>
+                    <td>
+                        @rating.SalaryRating
+                    </td>
+                    <td>
+                        @rating.ManagementRating
+                    </td>
+                    <td>
+                        @rating.FairnessRating
+                    </td>
+                    <td>
+                        @rating.ClienteleRating
+                    </td>
+                    <td>
+                        @rating.UnpaidTrialShift
+                    </td>
+                    <td>
+                        @rating.DatePosted
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</body>
+</html>

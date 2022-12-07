@@ -9,11 +9,18 @@
 <div class="text-center">
     <h1 class="display-4">Update Profile</h1>
 
-          <a class="navbar-brand" asp-area="" asp-controller="EmployeeExperience" asp-action="AddEmployeeExperience">Update Work History</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+    <a class="navbar-brand" asp-area="" asp-controller="EmployeeExperience" asp-action="AddEmployeeExperience">Add Work History</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <a class="navbar-brand" asp-area="" asp-controller="EmployeeExperience" asp-action="ViewEmployeeExperience">View Work History</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
 
     <h2>Personal Info</h2>
 
@@ -38,13 +45,13 @@
         <input placeholder="Desired Job" asp-for="DesiredJob" />
         <br />
         @*<div class="form-floating">*@
-            <input type="checkbox" asp-for="IsSearching" />
-            <label asp-for="IsSearching">Are you looking for a new job?</label>
+        <input type="checkbox" asp-for="IsSearching" />
+        <label asp-for="IsSearching">Are you looking for a new job?</label>
         <br />
         @*</div>*@
         @*<div class="form-floating">*@
-            <input type="checkbox" asp-for="IsVisible" />
-            <label asp-for="IsVisible">Would you like businesses to be able to view your profile details</label>
+        <input type="checkbox" asp-for="IsVisible" />
+        <label asp-for="IsVisible">Would you like businesses to be able to view your profile details</label>
         @*</div>*@
         <br />
         <button type="submit">Save</button>

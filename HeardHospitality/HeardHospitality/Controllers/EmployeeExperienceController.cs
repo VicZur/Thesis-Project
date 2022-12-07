@@ -22,6 +22,63 @@ namespace HeardHospitality.Controllers
             _userManager = userManager;
         }
 
+        public IActionResult ViewEmployeeExperience(EmployeeExperience ee)
+        {
+            //get current user's ID to allow for update
+            var currentuser = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            string connStr = _configuration.GetConnectionString("DefaultConnection");
+            SqlConnection conn = new SqlConnection(connStr);
+
+            string queryGetEmpID = "Select EmployeeID From Dbo.Employee where LoginDetailsId = @LoginDetailsID";
+
+            SqlCommand command = new SqlCommand(queryGetEmpID, conn);
+
+            command.Parameters.AddWithValue("@LoginDetailsID", currentuser);
+
+            conn.Open();
+            var currentEmpId = (Int32)command.ExecuteScalar();
+            conn.Close();
+
+
+            string query = "Select * From Dbo.EmployeeExperience WHERE EmployeeID = @EmployeeID";
+
+            command = new SqlCommand(query, conn);
+
+            command.Parameters.AddWithValue("@EmployeeID", currentEmpId);
+
+            conn.Open();
+            SqlDataReader rdr = command.ExecuteReader();
+
+            List<EmployeeExperience> experience_List = new List<EmployeeExperience>();
+
+            if (rdr.HasRows)
+            {
+                while (rdr.Read())
+                {
+                    experience_List.Add(new EmployeeExperience
+                    {
+                        EmployeeExperienceID = Convert.ToInt32(rdr["EmployeeExperienceID"]),
+                        JobTitle = Convert.ToString(rdr["JobTitle"]),
+                        PositionType = Convert.ToString(rdr["PositionType"]),
+                        StartDate = Convert.ToDateTime(rdr["StartDate"]),
+                        EndDate = Convert.ToDateTime(rdr["EndDate"]),
+                        Company = Convert.ToString(rdr["Company"]),
+                        City = Convert.ToString(rdr["City"]),
+                        County = Convert.ToString(rdr["County"]),
+                        IsVerified = Convert.ToBoolean(rdr["IsVerified"]),
+                        DisplayOnProfile = Convert.ToBoolean(rdr["DisplayOnProfile"]),
+                        EmployeeID = Convert.ToInt32(rdr["EmployeeID"]),
+                    });
+                }
+            }
+
+            conn.Close();
+
+
+            return View(experience_List);
+        }
+
 
 
         public IActionResult AddEmployeeExperience(EmployeeExperience ee)

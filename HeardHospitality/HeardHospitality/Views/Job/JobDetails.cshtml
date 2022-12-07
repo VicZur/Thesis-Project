@@ -101,8 +101,12 @@
             </td>
         </tr>
     </table>
-    <p onclick="location.href= '@Url.Action("ReportJob", "Job", new { jobId=Model.JobInfoID })'">
-        Report this Job
-    </p>
+    @if (User.IsInRole("employeeuser"))
+    {
+        <p onclick="location.href= '@Url.Action("ReportJob", "Job", new { jobId=Model.JobInfoID })'">
+            Report this Job
+        </p>
+    }
+
 
 </div>

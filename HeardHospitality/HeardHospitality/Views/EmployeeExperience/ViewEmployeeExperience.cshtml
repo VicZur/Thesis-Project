@@ -1,0 +1,80 @@
+﻿@{
+    ViewData["Title"] = "My Experience";
+}
+
+@model List<EmployeeExperience>
+
+@Html.Hidden("EmployeeExperienceID")
+@Html.Hidden("EmployeeID")
+@Html.Hidden("IsVerified")
+
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <div class="text-center">
+        <h1 class="display-4">Ratings</h1>
+
+        <table>
+            <tr>
+                <th>
+                    Job Title
+                </th>
+                <th>
+                    Position Type
+                </th>
+                <th>
+                    Start Date
+                </th>
+                <th>
+                    End Date
+                </th>
+                <th>
+                    Company
+                </th>
+                <th>
+                    City
+                </th>
+                <th>
+                    County
+                </th>
+                <th>
+                    Is Displayed on my Profile
+                </th>
+
+            </tr>
+            @foreach (var experience in Model)
+            {
+
+
+                <tr>
+                    <td>
+                        @experience.JobTitle
+                    </td>
+                    <td>
+                        @experience.PositionType
+                    </td>
+                    <td>
+                        @experience.StartDate
+                    </td>
+                    <td>
+                        @experience.EndDate
+                    </td>
+                    <td>
+                        @experience.Company
+                    </td>
+                    <td>
+                        @experience.City
+                    </td>
+                    <td>
+                        @experience.County
+                    </td>
+                    <td>
+                        @experience.DisplayOnProfile
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</body>
+</html>

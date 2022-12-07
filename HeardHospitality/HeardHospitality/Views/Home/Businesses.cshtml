@@ -44,7 +44,7 @@
             @foreach (var business in Model)
             {
 
-                <tr >
+                <tr>
                     <td>
                         @business.BusinessName
                     </td>
@@ -72,9 +72,12 @@
                     <td onclick="location.href= '@Url.Action("All", "Rating", new { busID=business.BusinessID })'">
                         VIEW ALL RATINGS
                     </td>
-                    <td onclick="location.href= '@Url.Action("New", "Rating", new { busID=business.BusinessID })'">
-                        Leave Rating
-                    </td>
+                    @if (User.IsInRole("employeeuser"))
+                    {
+                        <td onclick="location.href= '@Url.Action("New", "Rating", new { busID=business.BusinessID })'">
+                            Leave Rating
+                        </td>
+                    }
                 </tr>
             }
 

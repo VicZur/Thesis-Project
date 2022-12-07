@@ -64,6 +64,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVFeHBlcmllbmNlXFN1Ym1pdEVtcGxveWVlRXhwZXJpZW5jZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/vczur/Desktop/FinalProject/Thesis-Project/HeardHospitality/HeardHospitality/Views/EmployeeExperience/ViewEmployeeExperience.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVFeHBlcmllbmNlXFZpZXdFbXBsb3llZUV4cGVyaWVuY2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/vczur/Desktop/FinalProject/Thesis-Project/HeardHospitality/HeardHospitality/Views/Employee/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -112,8 +116,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSm9iXFJlcG9ydGVkU3VjY2Vzc2Z1bGx5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/vczur/Desktop/FinalProject/Thesis-Project/HeardHospitality/HeardHospitality/Views/Job/ReportedUnSuccessfully.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSm9iXFJlcG9ydGVkVW5TdWNjZXNzZnVsbHkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/vczur/Desktop/FinalProject/Thesis-Project/HeardHospitality/HeardHospitality/Views/Job/ReportJob.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSm9iXFJlcG9ydEpvYi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vczur/Desktop/FinalProject/Thesis-Project/HeardHospitality/HeardHospitality/Views/Job/ViewBusinessJobs.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSm9iXFZpZXdCdXNpbmVzc0pvYnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/vczur/Desktop/FinalProject/Thesis-Project/HeardHospitality/HeardHospitality/Views/Profile/Edit.cshtml]
@@ -126,6 +138,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/vczur/Desktop/FinalProject/Thesis-Project/HeardHospitality/HeardHospitality/Views/Rating/All.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmF0aW5nXEFsbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vczur/Desktop/FinalProject/Thesis-Project/HeardHospitality/HeardHospitality/Views/Rating/MyRatings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmF0aW5nXE15UmF0aW5ncy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/vczur/Desktop/FinalProject/Thesis-Project/HeardHospitality/HeardHospitality/Views/Rating/New.cshtml]

@@ -24,8 +24,11 @@ namespace HeardHospitality.Controllers
             _userManager = userManager;
 
         }
+
         public IActionResult Index()
         {
+
+
             return View();
         }
 

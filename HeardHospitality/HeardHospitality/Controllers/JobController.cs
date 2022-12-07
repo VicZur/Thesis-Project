@@ -6,6 +6,7 @@ using Microsoft.Data.SqlClient;
 using System;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using static Humanizer.In;
 
 namespace HeardHospitality.Controllers
 {
@@ -83,7 +84,7 @@ namespace HeardHospitality.Controllers
             return View(jobs_List);
         }
 
-        [Authorize(Roles = "BusinessUser")]
+        [Authorize(Roles = "businessuser")]
         public IActionResult AddJob(JobPostingViewModel j)
         {
             //Get current business ID to be able to link to new job posting
@@ -136,7 +137,7 @@ namespace HeardHospitality.Controllers
 
 
 
-        [Authorize(Roles = "BusinessUser")]
+        [Authorize(Roles = "businessuser")]
         public IActionResult SubmitJob(JobPostingViewModel j)
         {
             try
@@ -326,32 +327,53 @@ namespace HeardHospitality.Controllers
                 string connStr = _configuration.GetConnectionString("DefaultConnection");
                 SqlConnection conn = new SqlConnection(connStr);
 
-                string query = "UPDATE JobInfo SET IsReported = @IsReported " +
-                    "WHERE JobInfo.JobInfoID = @JobID";
+                //Check to make sure the user has not already reported this job before - to ensure can only report once
+                string query = "SELECT CAST(CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END AS BIT) FROM ReportedJobDetail WHERE EmployeeID = @EmployeeID; ";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@JobId", rjd.JobInfoID);
-                cmd.Parameters.AddWithValue("@IsReported", 1);
-                conn.Open();
-                cmd.ExecuteNonQuery();
-                conn.Close();
 
-                query = "INSERT INTO dbo.ReportedJobDetail (AdDetailsIncorrect, PerksListedIncorrect, SalaryIncorrect, IllegalExpectations, Comments, JobInfoID, EmployeeID) " +
-                        "Values (@AdDetailsIncorrect, @PerksListedIncorrect, @SalaryIncorrect, @IllegalExpectations, @Comments, @JobInfoID, @EmployeeID)";
 
-                cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@AdDetailsIncorrect", rjd.AdDetailsIncorrect);
-                cmd.Parameters.AddWithValue("@PerksListedIncorrect", rjd.PerksListedIncorrect);
-                cmd.Parameters.AddWithValue("@SalaryIncorrect", rjd.SalaryIncorrect);
-                cmd.Parameters.AddWithValue("@IllegalExpectations", rjd.IllegalExpectations);
-                cmd.Parameters.AddWithValue("@Comments", rjd.Comments);
-                cmd.Parameters.AddWithValue("@JobInfoID", rjd.JobInfoID);
                 cmd.Parameters.AddWithValue("@EmployeeID", rjd.EmployeeID);
+
                 conn.Open();
-                cmd.ExecuteNonQuery();
+                bool alreadyReported = Convert.ToBoolean(cmd.ExecuteScalar());
                 conn.Close();
 
-                return RedirectToAction("ReportedSuccessfully");
+
+
+                if (alreadyReported == false)
+                {
+                    query = "UPDATE JobInfo SET IsReported = @IsReported " +
+                    "WHERE JobInfo.JobInfoID = @JobID";
+
+                    cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@JobId", rjd.JobInfoID);
+                    cmd.Parameters.AddWithValue("@IsReported", 1);
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+
+                    query = "INSERT INTO dbo.ReportedJobDetail (AdDetailsIncorrect, PerksListedIncorrect, SalaryIncorrect, IllegalExpectations, Comments, JobInfoID, EmployeeID) " +
+                            "Values (@AdDetailsIncorrect, @PerksListedIncorrect, @SalaryIncorrect, @IllegalExpectations, @Comments, @JobInfoID, @EmployeeID)";
+
+                    cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@AdDetailsIncorrect", rjd.AdDetailsIncorrect);
+                    cmd.Parameters.AddWithValue("@PerksListedIncorrect", rjd.PerksListedIncorrect);
+                    cmd.Parameters.AddWithValue("@SalaryIncorrect", rjd.SalaryIncorrect);
+                    cmd.Parameters.AddWithValue("@IllegalExpectations", rjd.IllegalExpectations);
+                    cmd.Parameters.AddWithValue("@Comments", rjd.Comments);
+                    cmd.Parameters.AddWithValue("@JobInfoID", rjd.JobInfoID);
+                    cmd.Parameters.AddWithValue("@EmployeeID", rjd.EmployeeID);
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+
+                    return RedirectToAction("ReportedSuccessfully");
+                }
+                else
+                {
+                    return RedirectToAction("ReportedUnSuccessfully");
+                }
 
             }
             catch
@@ -368,5 +390,107 @@ namespace HeardHospitality.Controllers
             return View();
         }
 
+        public IActionResult ReportedUnSuccessfully()
+        {
+            return View();
+        }
+
+        public IActionResult ViewBusinessJobs(JobPostingViewModel j)
+        {
+            //get current user's ID to allow for all that user's jobs to be displayed
+            var currentuser = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            string connStr = _configuration.GetConnectionString("DefaultConnection");
+            SqlConnection conn = new SqlConnection(connStr);
+
+            string query = "SELECT BusinessID FROM Business WHERE Business.LoginDetailsId = @LoginDetailsId";
+
+            SqlCommand cmd = new SqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("@LoginDetailsId", currentuser);
+
+            conn.Open();
+            int currentbusinessId = Convert.ToInt32(cmd.ExecuteScalar());
+            conn.Close();
+
+
+
+            connStr = _configuration.GetConnectionString("DefaultConnection");
+            conn = new SqlConnection(connStr);
+
+            query = "SELECT * FROM JobInfo INNER JOIN Business on JobInfo.BusinessID = Business.BusinessID " +
+                "INNER JOIN Address on Business.BusinessID = Address.BusinessID " +
+                "WHERE JobInfo.IsActive = 1 AND JobInfo.BusinessID = @BusinessID";
+
+            cmd = new SqlCommand(query, conn);
+
+
+            cmd.Parameters.AddWithValue("@BusinessID", currentbusinessId);
+
+
+            conn.Open();
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            List<JobPostingViewModel> jobs_List = new List<JobPostingViewModel>();
+
+            if (rdr.HasRows)
+            {
+                while (rdr.Read())
+                {
+                    jobs_List.Add(new JobPostingViewModel
+                    {
+                        BusinessID = Convert.ToInt32(rdr["BusinessId"]),
+                        JobInfoID = Convert.ToInt32(rdr["JobInfoID"]),
+                        //JobPerkID = Convert.ToInt32(rdr["JobPerkID"]),
+                        //PerkID = Convert.ToInt32(rdr["PerkID"]),
+                        BusinessName = Convert.ToString(rdr["BusinessName"]),
+                        PhoneNum = Convert.ToString(rdr["PhoneNum"]),
+                        AddressLine1 = Convert.ToString(rdr["AddressLine1"]),
+                        AddressLine2 = Convert.ToString(rdr["AddressLine2"]),
+                        City = Convert.ToString(rdr["City"]),
+                        County = Convert.ToString(rdr["County"]),
+                        EirCode = Convert.ToString(rdr["EirCode"]),
+                        Country = Convert.ToString(rdr["Country"]),
+                        Title = Convert.ToString(rdr["Title"]),
+                        PositionType = Convert.ToString(rdr["PositionType"]),
+                        Salary = Convert.ToDouble(rdr["Salary"]),
+                        JobDescription = Convert.ToString(rdr["JobDescription"]),
+                        PostedDate = Convert.ToDateTime(rdr["PostedDate"]),
+                        MinExperience = Convert.ToString(rdr["MinExperience"]),
+                        Category = Convert.ToString(rdr["Category"]),
+                        Company = Convert.ToString(rdr["Company"]),
+                        IsActive = Convert.ToBoolean(rdr["IsActive"]),
+                        //PerkName = Convert.ToString(rdr["PerkName"]),
+                        //Details = Convert.ToString(rdr["Details"]),
+                    });
+                }
+            }
+
+            conn.Close();
+
+            return View(jobs_List);
+        }
+
+
+        public IActionResult Delete(JobPostingViewModel j, int jobID)
+        {
+            string connStr = _configuration.GetConnectionString("DefaultConnection");
+            SqlConnection conn = new SqlConnection(connStr);
+
+            string query =  "DELETE FROM dbo.ReportedJobDetail WHERE JobInfoID = @JobInfoID; " +
+                            "DELETE FROM dbo.JobPerk WHERE jobInfoID = @JobInfoID; " +
+                            "DELETE FROM dbo.JobInfo WHERE JobInfoID = @JobInfoID";
+
+            SqlCommand cmd = new SqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("@JobInfoID", jobID);
+
+            conn.Open();
+            cmd.ExecuteNonQuery();
+            conn.Close();
+
+            return RedirectToAction("Index");
+        }
     }
 }
+
