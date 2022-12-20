@@ -7,6 +7,7 @@ using System;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using static Humanizer.In;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HeardHospitality.Controllers
 {
@@ -21,21 +22,90 @@ namespace HeardHospitality.Controllers
             _userManager = userManager;
         }
 
+        public IActionResult SearchJob(JobPostingViewModel j)
+        {
+            string connStr = _configuration.GetConnectionString("DefaultConnection");
+            SqlConnection conn = new SqlConnection(connStr);
+
+            string query = "SELECT * FROM JobInfo INNER JOIN Business on JobInfo.BusinessID = Business.BusinessID " +
+                "INNER JOIN Address on Business.BusinessID = Address.BusinessID " +
+                "WHERE (JobInfo.IsActive = 1) " +
+                "AND (@Salary IS NULL OR @Salary = '0' OR JobInfo.Salary LIKE @Salary) " +
+                "AND (@Title IS NULL OR JobInfo.Title LIKE @Title) " +
+                "AND (@Company IS NULL OR JobInfo.Company LIKE @Company) " +
+                "AND (@PositionType IS NULL OR JobInfo.PositionType LIKE @PositionType) " +
+                "AND (@City IS NULL OR Address.City LIKE @City) " +
+                "AND (@County IS NULL OR Address.County LIKE @County)";
+
+            SqlCommand cmd = new SqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("@Title", "%" + j.Title + "%");
+            cmd.Parameters.AddWithValue("@Salary", j.Salary);
+            cmd.Parameters.AddWithValue("@PositionType", "%" + j.PositionType + "%");
+            cmd.Parameters.AddWithValue("@City", "%" + j.City + "%");
+            cmd.Parameters.AddWithValue("@County", "%" + j.County + "%");
+            cmd.Parameters.AddWithValue("@Company", "%" + j.Company + "%");
+
+            conn.Open();
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            List<JobPostingViewModel> jobs_List = new List<JobPostingViewModel>();
+
+            if (rdr.HasRows)
+            {
+                while (rdr.Read())
+                {
+                    jobs_List.Add(new JobPostingViewModel
+                    {
+                        BusinessID = Convert.ToInt32(rdr["BusinessId"]),
+                        JobInfoID = Convert.ToInt32(rdr["JobInfoID"]),
+                        //JobPerkID = Convert.ToInt32(rdr["JobPerkID"]),
+                        //PerkID = Convert.ToInt32(rdr["PerkID"]),
+                        BusinessName = Convert.ToString(rdr["BusinessName"]),
+                        PhoneNum = Convert.ToString(rdr["PhoneNum"]),
+                        AddressLine1 = Convert.ToString(rdr["AddressLine1"]),
+                        AddressLine2 = Convert.ToString(rdr["AddressLine2"]),
+                        City = Convert.ToString(rdr["City"]),
+                        County = Convert.ToString(rdr["County"]),
+                        EirCode = Convert.ToString(rdr["EirCode"]),
+                        Country = Convert.ToString(rdr["Country"]),
+                        Title = Convert.ToString(rdr["Title"]),
+                        PositionType = Convert.ToString(rdr["PositionType"]),
+                        Salary = Convert.ToDouble(rdr["Salary"]),
+                        JobDescription = Convert.ToString(rdr["JobDescription"]),
+                        PostedDate = Convert.ToDateTime(rdr["PostedDate"]),
+                        MinExperience = Convert.ToString(rdr["MinExperience"]),
+                        Category = Convert.ToString(rdr["Category"]),
+                        Company = Convert.ToString(rdr["Company"]),
+                        IsActive = Convert.ToBoolean(rdr["IsActive"]),
+                        //PerkName = Convert.ToString(rdr["PerkName"]),
+                        //Details = Convert.ToString(rdr["Details"]),
+                    });
+                }
+            }
+
+            conn.Close();
+
+            return View(jobs_List);
+        }
+
+
+
         public IActionResult Index(JobPostingViewModel j)
         {
             string connStr = _configuration.GetConnectionString("DefaultConnection");
             SqlConnection conn = new SqlConnection(connStr);
 
 
-            //string query =  "SELECT * FROM JobInfo INNER JOIN Business on JobInfo.BusinessID = Business.BusinessID " +
-            //                "INNER JOIN Address on Business.BusinessID = Address.BusinessID " +
-            //                "INNER JOIN JobPerk on JobInfo.JobInfoID = JobPerk.JobInfoID " +
-            //                "INNER JOIN Perk on JobPerk.PerkID = Perk.PerkID " +
-            //                "WHERE JobInfo.IsActive = 1";
-
             string query = "SELECT * FROM JobInfo INNER JOIN Business on JobInfo.BusinessID = Business.BusinessID " +
-                "INNER JOIN Address on Business.BusinessID = Address.BusinessID " +
-                "WHERE JobInfo.IsActive = 1";
+                            "INNER JOIN Address on Business.BusinessID = Address.BusinessID " +
+                            "INNER JOIN JobPerk on JobInfo.JobInfoID = JobPerk.JobInfoID " +
+                            "INNER JOIN Perk on JobPerk.PerkID = Perk.PerkID " +
+                            "WHERE JobInfo.IsActive = 1";
+
+            //string query = "SELECT * FROM JobInfo INNER JOIN Business on JobInfo.BusinessID = Business.BusinessID " +
+            //    "INNER JOIN Address on Business.BusinessID = Address.BusinessID " +
+            //    "WHERE JobInfo.IsActive = 1";
 
             SqlCommand cmd = new SqlCommand(query, conn);
 
@@ -100,6 +170,11 @@ namespace HeardHospitality.Controllers
             cmd.Parameters.AddWithValue("@LoginDetailsId", currentuser);
 
             var jobposting = new JobPostingViewModel();
+
+
+            jobposting.Perks = new List<PerkViewModel>();
+
+
             conn.Open();
             SqlDataReader rdr = cmd.ExecuteReader();
 
@@ -129,48 +204,119 @@ namespace HeardHospitality.Controllers
                 jobposting.Country = rdr["Country"].ToString();
             }
 
-
             conn.Close();
 
             return View(jobposting);
         }
 
+        //public void addPerk()
+        //{
+        //    model.Perks.Add(new PerkViewModel());
+        //}
 
+
+
+        //[Authorize(Roles = "businessuser")]
+        //public IActionResult SubmitJob(JobPostingViewModel j)
+        //{
+        //    try
+        //    {
+        //        ////Get current business user ID
+        //        //var currentuser = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //        //string connStr = _configuration.GetConnectionString("DefaultConnection");
+        //        //SqlConnection conn = new SqlConnection(connStr);
+        //        //string query = "SELECT * FROM Business WHERE Business.LoginDetailsId = @LoginDetailsId";
+        //        //SqlCommand cmd = new SqlCommand(query, conn);
+        //        //cmd.Parameters.AddWithValue("@LoginDetailsId", currentuser);
+
+
+        //        //conn.Open();
+        //        //int currentbusID = Convert.ToInt32(cmd.ExecuteScalar());
+        //        //conn.Close();
+
+
+        //        string connStr = _configuration.GetConnectionString("DefaultConnection");
+        //        SqlConnection conn = new SqlConnection(connStr);
+
+        //        string query = "INSERT INTO dbo.JobInfo (Title, PositionType, Salary, JobDescription, PostedDate, MinExperience, Category, City, County, Company, IsActive, IsReported, BusinessID) " +
+        //                        "VALUES (@Title, @PositionType, @Salary, @JobDescription, @PostedDate, @MinExperience, @Category, @City, @County, @Company, @IsActive, @IsReported, @BusinessID); " +
+        //                        "INSERT INTO dbo.Perk (PerkName) VALUES (@PerkName);";
+
+        //        SqlCommand cmd = new SqlCommand(query, conn);
+
+        //        //SqlCommand cmd = new SqlCommand();
+        //        //cmd.Connection = conn;
+        //        //cmd.CommandType = System.Data.CommandType.Text;
+        //        //cmd.CommandText = query;
+
+
+        //        cmd.Parameters.AddWithValue("@Title", j.Title);
+        //        cmd.Parameters.AddWithValue("@PositionType", j.PositionType);
+        //        cmd.Parameters.AddWithValue("@Salary", j.Salary);
+        //        cmd.Parameters.AddWithValue("@JobDescription", j.JobDescription);
+        //        cmd.Parameters.AddWithValue("@PostedDate", DateTime.Now);
+        //        cmd.Parameters.AddWithValue("@MinExperience", j.MinExperience);
+        //        cmd.Parameters.AddWithValue("@Category", j.Category);
+        //        cmd.Parameters.AddWithValue("@City", j.City);
+        //        cmd.Parameters.AddWithValue("@County", j.County);
+        //        cmd.Parameters.AddWithValue("@Company", j.Company);
+        //        cmd.Parameters.AddWithValue("@IsActive", 1);
+        //        cmd.Parameters.AddWithValue("@IsReported", 0);
+        //        cmd.Parameters.AddWithValue("@BusinessID", j.BusinessID);
+        //        cmd.Parameters.AddWithValue("@PerkName", j.PerkName);
+
+
+        //        conn.Open();
+        //        cmd.ExecuteNonQuery();
+        //        conn.Close();
+
+        //        return RedirectToAction("Index", "Home");
+        //    }
+        //    catch
+        //    {
+        //        return RedirectToAction("AddJob", "Job");
+
+        //    }
+
+        //    return RedirectToAction("AddJob", "Job");
+        //}
 
         [Authorize(Roles = "businessuser")]
         public IActionResult SubmitJob(JobPostingViewModel j)
         {
             try
             {
-                ////Get current business user ID
-                //var currentuser = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                //string connStr = _configuration.GetConnectionString("DefaultConnection");
-                //SqlConnection conn = new SqlConnection(connStr);
-                //string query = "SELECT * FROM Business WHERE Business.LoginDetailsId = @LoginDetailsId";
-                //SqlCommand cmd = new SqlCommand(query, conn);
-                //cmd.Parameters.AddWithValue("@LoginDetailsId", currentuser);
-
-
-                //conn.Open();
-                //int currentbusID = Convert.ToInt32(cmd.ExecuteScalar());
-                //conn.Close();
-
-
                 string connStr = _configuration.GetConnectionString("DefaultConnection");
                 SqlConnection conn = new SqlConnection(connStr);
+                SqlCommand cmd = new SqlCommand();
 
-                string query = "INSERT INTO dbo.JobInfo (Title, PositionType, Salary, JobDescription, PostedDate, MinExperience, Category, City, County, Company, IsActive, IsReported, BusinessID) " +
-                                "VALUES (@Title, @PositionType, @Salary, @JobDescription, @PostedDate, @MinExperience, @Category, @City, @County, @Company, @IsActive, @IsReported, @BusinessID); " +
-                                "INSERT INTO dbo.Perk (PerkName) VALUES (@PerkName);";
+                foreach (var perk in j.Perks)
+                {
 
-                SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd = new SqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandText = "uspAddPerkIfNotExists"; //This sproc checks to see if the perk already exists in the DB, if it does NOT, the sproc will add it
 
-                //SqlCommand cmd = new SqlCommand();
-                //cmd.Connection = conn;
-                //cmd.CommandType = System.Data.CommandType.Text;
-                //cmd.CommandText = query;
+                    cmd.Parameters.AddWithValue("@PerkName", perk.PerkName);
+                    conn.Open();
+                    object o = cmd.ExecuteScalar();
+                    conn.Close();
+                }
 
 
+
+                //string connStr = _configuration.GetConnectionString("DefaultConnection");
+                //SqlConnection conn = new SqlConnection(connStr);
+
+                //Reference for calling sproc
+                //https://stackoverflow.com/questions/39587606/how-to-call-and-execute-stored-procedures-in-asp-net-mvcc
+
+                cmd.Connection = conn;
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandText = "uspAddJob";
+
+                cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@Title", j.Title);
                 cmd.Parameters.AddWithValue("@PositionType", j.PositionType);
                 cmd.Parameters.AddWithValue("@Salary", j.Salary);
@@ -184,14 +330,32 @@ namespace HeardHospitality.Controllers
                 cmd.Parameters.AddWithValue("@IsActive", 1);
                 cmd.Parameters.AddWithValue("@IsReported", 0);
                 cmd.Parameters.AddWithValue("@BusinessID", j.BusinessID);
-                cmd.Parameters.AddWithValue("@PerkName", j.PerkName);
-
-
                 conn.Open();
-                cmd.ExecuteNonQuery();
+                var newJobID = cmd.ExecuteScalar();
                 conn.Close();
 
-                return RedirectToAction("Index", "Home");
+
+                foreach (var perk in j.Perks)
+                {
+                    cmd = new SqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandText = "uspAddJobPerk"; //This sproc adds new job perks 
+
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@JobInfoId", newJobID);
+                    cmd.Parameters.AddWithValue("@PerkName", perk.PerkName);
+                    cmd.Parameters.AddWithValue("@Details", perk.Details);
+
+                    conn.Open();
+                    object o = cmd.ExecuteScalar();
+                    conn.Close();
+                }
+
+
+
+
+                //return RedirectToAction("Index", "Home");
             }
             catch
             {
@@ -477,7 +641,7 @@ namespace HeardHospitality.Controllers
             string connStr = _configuration.GetConnectionString("DefaultConnection");
             SqlConnection conn = new SqlConnection(connStr);
 
-            string query =  "DELETE FROM dbo.ReportedJobDetail WHERE JobInfoID = @JobInfoID; " +
+            string query = "DELETE FROM dbo.ReportedJobDetail WHERE JobInfoID = @JobInfoID; " +
                             "DELETE FROM dbo.JobPerk WHERE jobInfoID = @JobInfoID; " +
                             "DELETE FROM dbo.JobInfo WHERE JobInfoID = @JobInfoID";
 

@@ -27,7 +27,10 @@
     <div class="text-center">
         <h1 class="display-4">New Ad</h1>
 
-        <form asp-controller="Job" asp-action="SubmitJob" method="post">
+
+
+
+        <form id="new-job-form" asp-controller="Job" asp-action="SubmitJob" method="post">
 
 
             <input placeholder="Title" asp-for="Title" />
@@ -37,26 +40,115 @@
             <input placeholder="Salary" asp-for="Salary" />
             <br />
             <input placeholder="Job Description" asp-for="JobDescription" />
-            <br />           
+            <br />
             <input placeholder="Minimum Experience" asp-for="MinExperience" />
             <br />
             <input placeholder="Category" asp-for="Category" />
-            <br />           
+            <br />
             <input placeholder="Company" asp-for="Company" />
             <br />
             <p>Are there any additional Perks for Employees that you would like to highlight? For example: Staff Meals, Set Schedules, 4 Day weeks, etc.</p>
-            <input placeholder="Perk" asp-for="PerkName" />
+
+
+
+
+            @*           <div id="perks-container">
+
+            @for (int i = 0; i < Model.Perks.Count; i++)
+            {
+            <div>
             <br />
-            <input placeholder="Description" asp-for="Details" />
-            <button type="button" onclick="addperk">Add Another Perk</button>
+            <input placeholder="Perk" name="Perks[@i].PerkName" type="text" id="Perks.PerkName" asp-for="Perks[@i].PerkName" />
+            <br />
+            <input placeholder="Description" name="Perks[@i].Details" type="text" id="Perks.Details" asp-for="Perks[@i].Details" />
+            <br />
+            </div>
+
+
+            }*@
+
+            @for (int i = 0; i < Model.Perks.Count; i++)
+            {
+                    <div>
+                        <label>Name:</label>
+                        <input type="text" class="PerkName" name="Perks[i].PerkName" value="@Model.Perks[i].PerkName" />
+                    </div>
+                    <div>
+                        <label>Details:</label>
+                        <input type="text" name="Perks[i].Details" value="@Model.Perks[i].Details" />
+                    </div>
+            }
+
+
+            <button type="button" onclick="AddPerk();">Add Another Perk</button>
+            @*    </div>*@
+
+            <br />
+
             <br />
             <br />
             <input type="hidden" asp-for="BusinessID" value="@Model.BusinessID" />
             <input type="hidden" asp-for="City" value="@Model.City" />
             <input type="hidden" asp-for="County" value="@Model.County" />
-            <button type="submit">Submit</button>
+            <input type="submit" />
         </form>
 
     </div>
 </body>
 </html>
+
+<script>
+
+    function AddPerk() {
+
+        // Get the current number of Perk fields
+        var count = $('input[class^="PerkName"]').length;
+
+        // Create the new Perk fields
+        var nameField = $('<input type="text" class="PerkName" name="Perks[' + count + '].PerkName"  placeholder="Perk" />');
+        var detailsField = $('<input type="text" name="Perks[' + count + '].Details"  placeholder="Description" /> <br />');
+
+        // Append the new fields to the form
+        $('#new-job-form').append(nameField);
+        $('#new-job-form').append(detailsField);
+
+
+        //var container = document.getElementById("perks-container");
+
+        //// Create a new div element to hold the new perks input fields
+        //var perksDiv = document.createElement("div");
+
+        //// Create new input elements for the "Perks" fields
+        //var perkNameInput = document.createElement("input");
+        //perkNameInput.type = "text";
+        //perkNameInput.placeholder = "Perk Name";
+        ////perkNameInput.name = "Perks[0].PerkName";
+        ////perkNameInput.id = "Perks[0].PerkName";
+        //perkNameInput.name = "Perks[" + i + "].PerkName";
+        //perkNameInput.id = "Perks[" + i + "].PerkName";
+        ////perkNameInput.asp-for = "Perks[" + i + "].PerkName";
+
+
+        //var perkDetailsInput = document.createElement("input");
+        //perkDetailsInput.type = "text";
+        //perkDetailsInput.placeholder = "Details";
+        //perkDetailsInput.name = "Perks[" + i + "].Details";
+        //perkDetailsInput.id = "Perks[" + i + "].Details";
+        //perkDetailsInput.asp -for = "Perks[" + i + "].Details";
+        //    //perkDetailsInput.name = "Perks[0].Details";
+        //    //perkDetailsInput.id = "Perks[0].Details";
+
+        //    // Add the new input elements to the div element
+        //    perksDiv.appendChild(perkNameInput);
+        //    perksDiv.appendChild(perkDetailsInput);
+
+        //// Add the new div element to the container
+        //container.appendChild(perksDiv);
+
+        //i = i + 1;
+
+        //return i;
+
+    };
+
+</script>

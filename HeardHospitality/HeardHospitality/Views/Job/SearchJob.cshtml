@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Jobs";
+    ViewData["Title"] = "Search Jobs";
 }
 
 @model List<JobPostingViewModel>
@@ -25,56 +25,30 @@
 <html lang="en">
 <body>
     <div class="text-center">
-        <h1 class="display-4">Current Job Openings</h1>
+        <h1 class="display-4">Search Job Openings</h1>
 
-        @foreach (var job in Model)
-        {
-            <div class="job-listing">
+        <form asp-controller="Job" asp-action="SearchJob" method="get">
+            <label>Search by Title:</label>
+            <input type="text" name="Title" />
+            <br />
+            <label>Search by Position Type:</label>
+            <input type="text" name="PositionType" />
+            <br />
+            <label>Search by Company:</label>
+            <input type="text" name="Company" />
+            <br />
+            <label>Search by Salary:</label>
+            <input type="text" name="Salary" />
+            <br />
+            <label>Search by City:</label>
+            <input type="text" name="City" />
+            <br />
+            <label>Search by County:</label>
+            <input type="text" name="County" />
+            <br />
+            <input type="submit" value="Search" />
+        </form>
 
-                
-                <h3>@job.Title</h3>
-
-                <br/>
-                
-                @job.BusinessName
-
-                <div class="location">
-                <i class="bi bi-geo-alt-fill"></i>
-                    @job.City, @job.County
-                </div>
-
-                <br />
-                @job.PositionType
-
-                <br />
-                @job.Salary
-
-
-                <br />
-                @job.Category
-
-                <br />
-                @job.Company
-
-
-                <br />
-                @job.PostedDate
-
-
-                <div onclick="location.href= '@Url.Action("JobDetails", "Job", new { jobId=job.JobInfoID })'">
-                    More Details
-                </div>
-
-            </div>
-
-
-        }
-
-    </div>
-</body>
-@*<body>
-    <div class="text-center">
-        <h1 class="display-4">Current Job Openings</h1>
 
         <table>
             <tr>
@@ -109,46 +83,43 @@
             @foreach (var job in Model)
             {
                 <tr>
-                    <div class="job-listing">
-
                     <td>
-                            @job.BusinessName
+                        @job.BusinessName
                     </td>
                     <td>
-                            @job.City
+                        @job.City
                     </td>
                     <td>
-                            @job.County
+                        @job.County
                     </td>
                     <td>
-                            @job.Title
+                        @job.Title
                     </td>
                     <td>
-                            @job.PositionType
+                        @job.PositionType
                     </td>
                     <td>
-                            @job.Salary
+                        @job.Salary
                     </td>
                     <td>
-                            @job.PostedDate
+                        @job.PostedDate
                     </td>
                     <td>
-                            @job.Category
+                        @job.Category
                     </td>
                     <td>
-                            @job.Company
+                        @job.Company
                     </td>
 
                     <td onclick="location.href= '@Url.Action("JobDetails", "Job", new { jobId=job.JobInfoID })'">
                         More Details
                     </td>
 
-        </div>
-        </tr>
 
+                </tr>
             }
+        </table>
 
-    </table>
     </div>
-</body>*@
+</body>
 </html>

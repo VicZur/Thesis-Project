@@ -21,6 +21,23 @@
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
     <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\icons\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\fonts\LICENSE.txt" />
+    <None Include="wwwroot\fonts\Roboto-Black.ttf" />
+    <None Include="wwwroot\fonts\Roboto-BlackItalic.ttf" />
+    <None Include="wwwroot\fonts\Roboto-Bold.ttf" />
+    <None Include="wwwroot\fonts\Roboto-BoldItalic.ttf" />
+    <None Include="wwwroot\fonts\Roboto-Italic.ttf" />
+    <None Include="wwwroot\fonts\Roboto-Light.ttf" />
+    <None Include="wwwroot\fonts\Roboto-LightItalic.ttf" />
+    <None Include="wwwroot\fonts\Roboto-Medium.ttf" />
+    <None Include="wwwroot\fonts\Roboto-MediumItalic.ttf" />
+    <None Include="wwwroot\fonts\Roboto-Regular.ttf" />
+    <None Include="wwwroot\fonts\Roboto-Thin.ttf" />
+    <None Include="wwwroot\fonts\Roboto-ThinItalic.ttf" />
   </ItemGroup>
 
 </Project>

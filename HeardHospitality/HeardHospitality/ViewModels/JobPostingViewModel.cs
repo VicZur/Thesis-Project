@@ -58,16 +58,14 @@ namespace HeardHospitality.Models
 
         public bool IsReported { get; set; }
 
-        //From JobPerk Model
-        //public List<JobPerk> Details { get; set; }
-        public string Details { get; set; }
-
-        //From Perk Model
-        //public List<Perk> PerkName { get; set; }
-        public string PerkName { get; set; }
-
-
-
+        public List<PerkViewModel> Perks { get; set; }
 
     }
+
+    //public class PerkViewModel
+    //{
+    //    public string PerkName { get; set; }
+
+    //    public string Details { get; set; }
+    //}
 }
