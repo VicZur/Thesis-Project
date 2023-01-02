@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 
 namespace HeardHospitality.Models
@@ -42,6 +44,10 @@ namespace HeardHospitality.Models
 
         public string PositionType { get; set; }
 
+
+        [Display(Name = "Salary")]
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public double Salary { get; set; }
 
         public string JobDescription { get; set; }

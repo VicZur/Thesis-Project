@@ -2,7 +2,7 @@
     ViewData["Title"] = "Ratings";
 }
 
-@model Rating
+@model RatingViewModel
 
 @Html.Hidden("BusinessID")
 @Html.Hidden("RatingID")
@@ -16,29 +16,49 @@
         <h1 class="display-4">Ratings</h1>
 
         <form asp-controller="Rating" asp-action="SubmitRating" method="post">
+            <h3>Leave a rating for @Model.Company</h3>
+
+            <label class="form-label" for="Overall Rating">Overall Rating 1-10</label>
+            <input type="number" min="1" max="10" placeholder="OverallRating" asp-for="OverallRating" />
+            <br />
 
 
-            <input placeholder="OverallRating" asp-for="OverallRating" />
+
+
+            <label class="form-label" for="SalaryRating">Salary Rating 1-10</label>
+            <input type="number" min="1" max="10" placeholder="Salary Rating" asp-for="SalaryRating" />
             <br />
-            <input type="checkbox" asp-for="WouldWorkAgain" />
-            <label a sp-for="WouldWorkAgain">I would work here again</label>
+
+            <label class="form-label" for="Management Rating">Management Rating 1-10</label>
+            <input type="number" min="1" max="10" placeholder="Management Rating" asp-for="ManagementRating" />
             <br />
-            <input place holder="Comments" asp-for="Comments" />
+
+            <label class="form-label" for="FairnessRating">Fairness Rating 1-10</label>
+            <input type="number" min="1" max="10" placeholder="Fairness Rating" asp-for="FairnessRating" />
             <br />
-            <input placeholder="Salary Rating" asp-for="SalaryRating" />
+
+            <label class="form-label" for="ClienteleRating">Clientele Rating 1-10</label>
+            <input type="number" min="1" max="10" placeholder="Clientele Rating" asp-for="ClienteleRating" />
             <br />
-            <input placeholder="Management Rating" asp-for="ManagementRating" />
+
+
+            <label class="form-label" for="Comments">Comments</label>
+            <textarea id="rating-comments" type="text" placeholder="Comments" asp-for="Comments"><</textarea>
             <br />
-            <input place holder="Fairness Rating" asp-for="FairnessRating" />
+
+            <div class="form-check">
+                <input type="checkbox" asp-for="UnpaidTrialShift" />
+                <label asp-for="UnpaidTrialShift">I was asked to work an unpaid trial shift</label>
+            </div>
             <br />
-            <input placeholder="Clientele Rating" asp-for="ClienteleRating" />
+            <div class="form-check">
+                <input type="checkbox" asp-for="WouldWorkAgain" />
+                <label a sp-for="WouldWorkAgain">I would work here again</label>
+            </div>
             <br />
-            <input type="checkbox" asp-for="UnpaidTrialShift" />
-            <label asp-for="UnpaidTrialShift">I was asked to work an unpaid trial shift</label>
-            <br />
-            <input DefaultValuse=@Model.BusinessID asp-for="BusinessID" hidden="hidden"/>
-            <br />
-            <button type="submit">Submit</button>
+
+            <input DefaultValue=@Model.BusinessID asp-for="BusinessID" hidden="hidden" />
+            <button class="form-btn btn btn-secondary" type="submit">Submit</button>
         </form>
 
     </div>

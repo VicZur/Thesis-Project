@@ -18,6 +18,7 @@
 @Html.Hidden("IsActive")
 @Html.Hidden("Details")
 @Html.Hidden("PerkName")
+@Html.Hidden("Company")
 
 
 
@@ -27,48 +28,46 @@
     <div class="text-center">
         <h1 class="display-4">Current Job Openings</h1>
 
-        @foreach (var job in Model)
-        {
-            <div class="job-listing">
 
-                
-                <h3>@job.Title</h3>
+        <form asp-controller="Job" asp-action="SearchJob" method="get" id="search-form">
 
-                <br/>
-                
-                @job.BusinessName
-
-                <div class="location">
-                <i class="bi bi-geo-alt-fill"></i>
-                    @job.City, @job.County
+            <div class="input-group">
+                <div class="form-outline">
+                    <input type="text" name="JobDescription" class="form-control" placeholder="Search by: Job Title, Company Name, City or County..." />
+                    @*<label class="form-label" for="form1">Search</label>*@
                 </div>
-
-                <br />
-                @job.PositionType
-
-                <br />
-                @job.Salary
-
-
-                <br />
-                @job.Category
-
-                <br />
-                @job.Company
-
-
-                <br />
-                @job.PostedDate
-
-
-                <div onclick="location.href= '@Url.Action("JobDetails", "Job", new { jobId=job.JobInfoID })'">
-                    More Details
-                </div>
-
+                <button type="submit" class="btn btn-secondary">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
             </div>
 
+            @*
+            <label>Search by Title:</label>
+            <input type="text" name="Title" />
+            <br />
+            <label>Search by Position Type:</label>
+            <input type="text" name="PositionType" />
+            <br />
+            <label>Search by Company:</label>
+            <input type="text" name="Company" />
+            <br />
+            <label>Search by Salary:</label>
+            <input type="text" name="Salary" />
+            <br />
+            <label>Search by City:</label>
+            <input type="text" name="City" />
+            <br />
+            <label>Search by County:</label>
+            <input type="text" name="County" />
+            <br />
+            <button type="submit" class="btn btn-secondary form-btn"><i class="fa fa-search" aria-hidden="true"></i> Search</button>*@
 
-        }
+        </form>
+
+
+
+
+        <partial name="_JobsPartial" />
 
     </div>
 </body>

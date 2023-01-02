@@ -1,0 +1,29 @@
+﻿@model List<BusinessInfoViewModel>
+
+@*@Html.Hidden("BusinessID")*@
+@Html.Hidden("AddressLine2")
+@Html.Hidden("Country")
+
+
+<form>
+
+@foreach (var business in Model)
+{
+    <div class="bus-info radio-div">
+        <input type="radio" class="business-radio" id="@business.BusinessID" name="selectedBusiness" value="@business.BusinessID" />
+
+        @business.BusinessName
+        @business.PhoneNum
+        @business.AddressLine1
+        @business.City
+        @business.County
+        @business.EirCode
+        <br />
+    </div>
+}
+<div class="no-option radio-div">
+    <input type="radio" id="noOption" name="selectedBusiness" value="0" />
+    <label for="noOption">None of these options match the company I worked for</label>
+</div>
+
+</form>

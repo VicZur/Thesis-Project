@@ -1,7 +1,11 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace HeardHospitality.Models
 {
@@ -11,7 +15,7 @@ namespace HeardHospitality.Models
 
         public string JobTitle { get; set; }
 
-        public string PositionType { get; set; }
+        public string Details { get; set; }
 
         public DateTime StartDate { get; set; }
 
@@ -27,10 +31,19 @@ namespace HeardHospitality.Models
 
         public bool DisplayOnProfile { get; set; }
 
-        public int EmployeeID { get; set; }
-        public Employee Employee { get; set; }
+        public int ? EmployeeID { get; set; }
+        public Employee ? Employee { get; set; }
 
-        ICollection<Rating> Ratings { get; set; }
+        //[ForeignKey("Business")]
+        //[ForeignKey("Business")]
+        //[OnDelete(DeleteBehavior.NoAction)]
+        public int ? BusinessID { get; set; }
+
+        public Business ? Business { get; set; }
+
+
+
+        public ICollection<Rating> Ratings { get; set; }
 
     }
 }

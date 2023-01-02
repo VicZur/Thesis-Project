@@ -1,12 +1,13 @@
 ﻿using HeardHospitality.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using static Humanizer.In;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HeardHospitality.Controllers
@@ -22,29 +23,51 @@ namespace HeardHospitality.Controllers
             _userManager = userManager;
         }
 
+
+
+
+
+
         public IActionResult SearchJob(JobPostingViewModel j)
         {
             string connStr = _configuration.GetConnectionString("DefaultConnection");
             SqlConnection conn = new SqlConnection(connStr);
 
+            //string query = "SELECT * FROM JobInfo INNER JOIN Business on JobInfo.BusinessID = Business.BusinessID " +
+            //    "INNER JOIN Address on Business.BusinessID = Address.BusinessID " +
+            //    "WHERE (JobInfo.IsActive = 1) " +
+            //    "AND (@Salary IS NULL OR @Salary = '0' OR JobInfo.Salary LIKE @Salary) " +
+            //    "AND (@Title IS NULL OR JobInfo.Title LIKE @Title) " +
+            //    "AND (@Company IS NULL OR JobInfo.Company LIKE @Company) " +
+            //    "AND (@PositionType IS NULL OR JobInfo.PositionType LIKE @PositionType) " +
+            //    "AND (@City IS NULL OR Address.City LIKE @City) " +
+            //    "AND (@County IS NULL OR Address.County LIKE @County) " +
+            //    "ORDER BY PostedDate DESC";
+
+
             string query = "SELECT * FROM JobInfo INNER JOIN Business on JobInfo.BusinessID = Business.BusinessID " +
-                "INNER JOIN Address on Business.BusinessID = Address.BusinessID " +
-                "WHERE (JobInfo.IsActive = 1) " +
-                "AND (@Salary IS NULL OR @Salary = '0' OR JobInfo.Salary LIKE @Salary) " +
-                "AND (@Title IS NULL OR JobInfo.Title LIKE @Title) " +
-                "AND (@Company IS NULL OR JobInfo.Company LIKE @Company) " +
-                "AND (@PositionType IS NULL OR JobInfo.PositionType LIKE @PositionType) " +
-                "AND (@City IS NULL OR Address.City LIKE @City) " +
-                "AND (@County IS NULL OR Address.County LIKE @County)";
+                           "INNER JOIN Address on Business.BusinessID = Address.BusinessID " +
+                           "WHERE (JobInfo.IsActive = 1) " +
+                           "AND (JobInfo.Title LIKE @Title OR JobInfo.Company LIKE @Company OR JobInfo.PositionType LIKE @PositionType OR Address.City LIKE @City OR Address.County LIKE @County) " +
+                           "ORDER BY PostedDate DESC";
+
 
             SqlCommand cmd = new SqlCommand(query, conn);
 
-            cmd.Parameters.AddWithValue("@Title", "%" + j.Title + "%");
-            cmd.Parameters.AddWithValue("@Salary", j.Salary);
-            cmd.Parameters.AddWithValue("@PositionType", "%" + j.PositionType + "%");
-            cmd.Parameters.AddWithValue("@City", "%" + j.City + "%");
-            cmd.Parameters.AddWithValue("@County", "%" + j.County + "%");
-            cmd.Parameters.AddWithValue("@Company", "%" + j.Company + "%");
+            //cmd.Parameters.AddWithValue("@Title", "%" + j.Title + "%");
+            //cmd.Parameters.AddWithValue("@Salary", j.Salary);
+            //cmd.Parameters.AddWithValue("@PositionType", "%" + j.PositionType + "%");
+            //cmd.Parameters.AddWithValue("@City", "%" + j.City + "%");
+            //cmd.Parameters.AddWithValue("@County", "%" + j.County + "%");
+            //cmd.Parameters.AddWithValue("@Company", "%" + j.Company + "%");
+
+
+            cmd.Parameters.AddWithValue("@Title", "%" + j.JobDescription + "%");
+            //cmd.Parameters.AddWithValue("@Salary", j.JobDescription);
+            cmd.Parameters.AddWithValue("@PositionType", "%" + j.JobDescription + "%");
+            cmd.Parameters.AddWithValue("@City", "%" + j.JobDescription + "%");
+            cmd.Parameters.AddWithValue("@County", "%" + j.JobDescription + "%");
+            cmd.Parameters.AddWithValue("@Company", "%" + j.JobDescription + "%");
 
             conn.Open();
             SqlDataReader rdr = cmd.ExecuteReader();
@@ -83,25 +106,41 @@ namespace HeardHospitality.Controllers
                     });
                 }
             }
-
             conn.Close();
 
+
+
+            // return RedirectToAction("Index");
+            // return RedirectToAction("Index", new { list = jobs_List });
             return View(jobs_List);
         }
 
 
 
+
+
         public IActionResult Index(JobPostingViewModel j)
         {
+
+
+            // if (jobs_List == null)
+            // {
             string connStr = _configuration.GetConnectionString("DefaultConnection");
             SqlConnection conn = new SqlConnection(connStr);
 
 
+            //string query = "SELECT * FROM JobInfo INNER JOIN Business on JobInfo.BusinessID = Business.BusinessID " +
+            //                "INNER JOIN Address on Business.BusinessID = Address.BusinessID " +
+            //                "INNER JOIN JobPerk on JobInfo.JobInfoID = JobPerk.JobInfoID " +
+            //                "INNER JOIN Perk on JobPerk.PerkID = Perk.PerkID " +
+            //                "WHERE JobInfo.IsActive = 1";
+
             string query = "SELECT * FROM JobInfo INNER JOIN Business on JobInfo.BusinessID = Business.BusinessID " +
-                            "INNER JOIN Address on Business.BusinessID = Address.BusinessID " +
-                            "INNER JOIN JobPerk on JobInfo.JobInfoID = JobPerk.JobInfoID " +
-                            "INNER JOIN Perk on JobPerk.PerkID = Perk.PerkID " +
-                            "WHERE JobInfo.IsActive = 1";
+                "INNER JOIN Address on Business.BusinessID = Address.BusinessID " +
+                //"INNER JOIN JobPerk on JobInfo.JobInfoID = JobPerk.JobInfoID " +
+                //"INNER JOIN Perk on JobPerk.PerkID = Perk.PerkID " +
+                "WHERE JobInfo.IsActive = 1 " +
+                "ORDER BY PostedDate DESC";
 
             //string query = "SELECT * FROM JobInfo INNER JOIN Business on JobInfo.BusinessID = Business.BusinessID " +
             //    "INNER JOIN Address on Business.BusinessID = Address.BusinessID " +
@@ -149,6 +188,7 @@ namespace HeardHospitality.Controllers
 
             conn.Close();
 
+            // }
 
 
             return View(jobs_List);
@@ -380,9 +420,13 @@ namespace HeardHospitality.Controllers
 
             string query = "SELECT * FROM JobInfo INNER JOIN Business on JobInfo.BusinessID = Business.BusinessID " +
                 "INNER JOIN Address on Business.BusinessID = Address.BusinessID " +
-                "WHERE JobInfo.IsActive = 1";
+                "WHERE JobInfo.IsActive = 1 " +
+                "AND JobInfoID = @JobID";
 
             SqlCommand cmd = new SqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("@JobID", jobID);
+
 
             conn.Open();
             SqlDataReader rdr = cmd.ExecuteReader();
@@ -418,7 +462,39 @@ namespace HeardHospitality.Controllers
                     //jobPosting.Details = Convert.ToString(rdr["Details"]);
                 }
             }
+            conn.Close();
 
+
+            query = "SELECT * FROM dbo.JobPerk INNER JOIN Perk on Perk.PerkID = JobPerk.PerkID WHERE JobInfoID = @JobInfoID";
+
+            cmd = new SqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("@JobInfoID", jobID);
+
+            conn.Open();
+            rdr = cmd.ExecuteReader();
+
+            List<PerkViewModel> perks = new List<PerkViewModel>();
+
+            if (rdr.HasRows)
+            {
+
+                while (rdr.Read())
+                {
+
+                    PerkViewModel perk = new PerkViewModel();
+                    perk.PerkName = Convert.ToString(rdr["PerkName"]);
+                    perk.Details = Convert.ToString(rdr["Details"]);
+                    perks.Add(perk);
+
+                    //jobPosting.JobPerkID = Convert.ToInt32(rdr["JobPerkID"]);
+                    //jobPosting.PerkID = Convert.ToInt32(rdr["PerkID"]);
+                    //jobPosting.PerkName = Convert.ToString(rdr["PerkName"]);
+                    //jobPosting.Details = Convert.ToString(rdr["Details"]);
+                }
+            }
+
+            jobPosting.Perks = perks;
 
             conn.Close();
 
@@ -641,9 +717,13 @@ namespace HeardHospitality.Controllers
             string connStr = _configuration.GetConnectionString("DefaultConnection");
             SqlConnection conn = new SqlConnection(connStr);
 
-            string query = "DELETE FROM dbo.ReportedJobDetail WHERE JobInfoID = @JobInfoID; " +
-                            "DELETE FROM dbo.JobPerk WHERE jobInfoID = @JobInfoID; " +
-                            "DELETE FROM dbo.JobInfo WHERE JobInfoID = @JobInfoID";
+            //string query = "DELETE FROM dbo.ReportedJobDetail WHERE JobInfoID = @JobInfoID; " +
+            //                "DELETE FROM dbo.JobPerk WHERE jobInfoID = @JobInfoID; " +
+            //                "DELETE FROM dbo.JobInfo WHERE JobInfoID = @JobInfoID";
+
+            string query = "UPDATE JobInfo SET isActive = 0 WHERE JobInfoID = @JobInfoID";
+
+
 
             SqlCommand cmd = new SqlCommand(query, conn);
 
@@ -653,7 +733,7 @@ namespace HeardHospitality.Controllers
             cmd.ExecuteNonQuery();
             conn.Close();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("ViewBusinessJobs");
         }
     }
 }

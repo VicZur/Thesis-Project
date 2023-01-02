@@ -58,7 +58,7 @@ namespace HeardHospitality.Controllers
                         DatePosted = Convert.ToDateTime(rdr["DatePosted"]),
                         IsDisplayed = Convert.ToBoolean(rdr["IsDisplayed"]),
                         EmployeeExperienceID = Convert.ToInt32(rdr["EmployeeExperienceID"]),
-                        BusinessID = Convert.ToInt32(rdr["BusinessID"]),
+                        //BusinessID = Convert.ToInt32(rdr["BusinessID"]),
                     });
                 }
             }
@@ -70,9 +70,22 @@ namespace HeardHospitality.Controllers
         }
 
         [Authorize(Roles = "employeeuser")]
-        public IActionResult New(Rating r, int busID)
+        public IActionResult New(RatingViewModel r, int busID)
         {
-            var rating = new Rating { BusinessID = busID };
+            var rating = new RatingViewModel { BusinessID = busID };
+
+            string connStr = _configuration.GetConnectionString("DefaultConnection");
+            SqlConnection conn = new SqlConnection(connStr);
+
+            string query = "SELECT BusinessName FROM dbo.Business WHERE BusinessID = @BusinessID";
+
+            SqlCommand cmd = new SqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("@BusinessID", rating.BusinessID);
+
+            conn.Open();
+            rating.Company = Convert.ToString(cmd.ExecuteScalar());
+            conn.Close();
 
             return View(rating);
         }
@@ -81,7 +94,7 @@ namespace HeardHospitality.Controllers
         //POST: UpdateEmployeeProfileController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SubmitRating(Rating r)
+        public ActionResult SubmitRating(RatingViewModel r)
         {
             try
             {
@@ -181,7 +194,7 @@ namespace HeardHospitality.Controllers
                         DatePosted = Convert.ToDateTime(rdr["DatePosted"]),
                         IsDisplayed = Convert.ToBoolean(rdr["IsDisplayed"]),
                         EmployeeExperienceID = Convert.ToInt32(rdr["EmployeeExperienceID"]),
-                        BusinessID = Convert.ToInt32(rdr["BusinessID"]),
+                        //BusinessID = Convert.ToInt32(rdr["BusinessID"]),
                     });
                 }
             }

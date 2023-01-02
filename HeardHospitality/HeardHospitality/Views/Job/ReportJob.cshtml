@@ -13,27 +13,38 @@
 <html lang="en">
 <body>
     <div class="text-center">
-        <h1 class="display-4">New Ad</h1>
+        <h1 class="display-4">Report Job</h1>
 
-        <form asp-controller="Job" asp-action="SubmitReporting" method="post">
+        <form id="report-form" asp-controller="Job" asp-action="SubmitReporting" method="post">
 
-
+            <div class="report-reason">
             <input type="checkbox" asp-for="AdDetailsIncorrect" />
             <label asp-for="AdDetailsIncorrect">The Ad Details are incorrect</label>
+            </div>
+
             <br />
+            <div class="report-reason">
             <input type="checkbox" asp-for="PerksListedIncorrect" />
             <label asp-for="PerksListedIncorrect">The Perks that are listed are incorrect</label>
+            </div>
 
             <br />
+
+            <div class="report-reason">
             <input type="checkbox" asp-for="SalaryIncorrect" />
             <label asp-for="SalaryIncorrect">Salary details are missing or incorrect</label>
+            </div>
 
             <br />
+
+            <div class="report-reason">
             <input type="checkbox" asp-for="IllegalExpectations" />
             <label asp-for="IllegalExpectations">This listing sugggest illegal expectations</label>
+            </div>
+
 
             <br />
-            <input placeholder="Comments" asp-for="Comments" />
+            <textarea type="text" placeholder="Comments" id="report-comments" asp-for="Comments"></textarea>
             <br />
             <br />
             <br />

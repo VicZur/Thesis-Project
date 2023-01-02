@@ -69,12 +69,12 @@
                     <td>
                         @business.Country
                     </td>
-                    <td onclick="location.href= '@Url.Action("All", "Rating", new { busID=business.BusinessID })'">
+                    <td class="btn btn-light" onclick="location.href= '@Url.Action("All", "Rating", new { busID=business.BusinessID })'">
                         VIEW ALL RATINGS
                     </td>
                     @if (User.IsInRole("employeeuser"))
                     {
-                        <td onclick="location.href= '@Url.Action("New", "Rating", new { busID=business.BusinessID })'">
+                        <td class="btn btn-light" onclick="location.href= '@Url.Action("New", "Rating", new { busID=business.BusinessID })'">
                             Leave Rating
                         </td>
                     }

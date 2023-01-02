@@ -36,8 +36,8 @@ namespace HeardHospitality.Models
         public int? EmployeeExperienceID { get; set; }
         public EmployeeExperience? Experience { get; set; }
 
-        public int? BusinessID { get; set; }
-        public Business? Business { get; set; }
+        //public int? BusinessID { get; set; }
+        //public Business? Business { get; set; }
 
         public ICollection<Reply> Replys { get; set; }
 

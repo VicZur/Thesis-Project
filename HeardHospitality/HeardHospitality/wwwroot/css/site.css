@@ -20,16 +20,264 @@ html {
 
 body {
     margin-bottom: 60px;
-    font-family: 'Roboto-Light', serif;
+    font-family: 'Roboto-Light', sans-serif;
+    /*background-color: #d6c3b1;*/
+    background-color: #e1d4c6;
 }
 
 .job-listing {
+    margin: 0 auto;
     margin-bottom: 20px;
-    height: 250px;
+    height: auto;
+    min-height: 250px;
+    background-color: #f2ece6;
+    width: 30%;
 }
 
 h3 {
     font-size: 42px;
     text-align: left;
     display: inline;
+}
+
+input, select {
+    margin: 10px;
+    width: 70%;
+}
+
+.form-label {
+    margin-bottom: 0px;
+    display: block;
+    text-align: left;
+    margin-left: 15%;
+    margin-top: 10px;
+}
+
+.form-div {
+    width: 70%;
+    text-align: center;
+    display: block;
+    margin: auto;
+}
+
+.form-btn {
+    width: 70%;
+    margin: 10px;
+}
+
+tr {
+    margin: 10px;
+}
+
+td.btn {
+    margin: 10px;
+}
+
+th {
+    padding: 20px;
+}
+
+form {
+    background-color: #efe8e1;
+    width: 70%;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+#search-form {
+    background-color: #efe8e1;
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+#search-form input {
+    margin: 0;
+}
+
+
+#filter-form{
+    margin-bottom: 20px;
+}
+
+.form-outline {
+    width: 95%;
+}
+
+.input-group {
+    flex-wrap: nowrap;
+}
+
+h1 {
+    margin: 40px;
+}
+
+#logout-button {
+    background-color: white;
+    padding: 0;
+    max-width: 100%;
+}
+
+#filter-button {
+    margin-bottom: 40px;
+}
+
+
+.btn-check:focus + .btn-secondary, .btn-secondary:focus {
+    box-shadow: none;
+}
+
+
+.form-title {
+    font-size: 30px;
+    font-weight: bold;
+    margin: 20px;
+}
+
+.report-reason {
+    width: 100%;
+    display: inline-block;
+    text-align: left;
+}
+
+.report-reason input[type="checkbox"] {
+    display: inline-block;
+    width: auto;
+}
+
+.report-reason label {
+    display: inline-block;
+}
+
+#report-form{
+    width: 30%;
+}
+
+#report-comments {
+    width: 95%;
+    height: 90px;
+    resize: vertical;
+    white-space: normal;
+}
+
+.form-check {
+    width: 77%;
+    display: inline-block;
+    text-align: left;
+}
+
+.form-check input[type="checkbox"] {
+    display: inline-block;
+    width: auto;
+}
+
+.form-check label {
+    display: inline-block;
+}
+
+.date-div {
+    background-color: white;
+    width: 70%;
+    border: 1px solid rgb(133, 133, 133);
+    margin: 0 auto;
+    border-radius: 2px;
+    overflow: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 30px;
+    color: dimgray;
+}
+
+.spacer{
+    height:2px;
+}
+
+.date-input{
+    display: inline-block;
+    width: 69%;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    text-align: right;
+    float: right;
+}
+
+.date-label {
+    display: inline-block;
+    width: 19%%;
+    text-align: left;
+    /*margin-left: -25%;*/
+    padding: 0px;
+    margin: 0px;
+    float: left;
+    padding-left: 5px;
+}
+
+#emp-experience-button-group {
+    width: 100%;
+    display: flex;
+}
+
+.emp-exp-btn {
+    width: 16%;
+    margin: 10px auto;
+}
+
+.emp-experience {
+    width: 70%;
+    margin: 20px auto;
+    border: 2px solid #75593d;
+    background-color: #f2ece6;
+}
+
+.btn-left{
+    margin-right: -30%;
+}
+
+h1 {
+    color:rgba(0,0,0,.9);
+}
+
+#rating-comments{
+    width: 70%;
+}
+
+.radio-div{
+    width:100%;
+    display:inline-block;
+    text-align: left;
+}
+
+input[type="radio"]{
+    width:20px;
+}
+
+
+.modal-header{
+    width: 100%;
+    display: inline-block;
+}
+
+.modal-header h5, h6{
+    text-align: left;
+    width: 80%;
+}
+
+#close-btn{
+    margin-top: -100px;
+    float: right;
+}
+
+#error-message {
+    border: none;
+    color: darkred;
+}
+
+.error {
+    border: 1px solid darkred;
+}
+
+.hidden {
+    display: none;
 }

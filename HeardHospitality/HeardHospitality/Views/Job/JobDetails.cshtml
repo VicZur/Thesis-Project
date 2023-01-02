@@ -16,97 +16,95 @@
 <div class="text-center">
     <h1 class="display-4">Job Details</h1>
 
-    <table>
-        <tr>
-            <th>
-                Business Name
-            </th>
-            <th>
-                Job Title
-            </th>
-            <th>
-                Job Description
-            </th>
-            <th>
-                Salary
-            </th>
-            <th>
-                Date Posted
-            </th>
-            <th>
-                Minumum Experience
-            </th>
-            <th>
-                Position Type
-            </th>
-            <th>
-                Position Category
-            </th>
-            <th>
-                Address Line 1
-            </th>
-            <th>
-                Address Line 2
-            </th>
-            <th>
-                City
-            </th>
-            <th>
-                County
-            </th>
-            <th>
-                EirCode
-            </th>
-        </tr>
 
-        <tr>
-            <td>
-                @Model.BusinessName
-            </td>
-            <td>
-                @Model.Title
-            </td>
-            <td>
-                @Model.JobDescription
-            </td>
-            <td>
-                @Model.Salary
-            </td>
-            <td>
-                @Model.PostedDate
-            </td>
-            <td>
-                @Model.MinExperience
-            </td>
-            <td>
-                @Model.PositionType
-            </td>
-            <td>
-                @Model.Category
-            </td>
-            <td>
-                @Model.AddressLine1
-            </td>
-            <td>
-                @Model.AddressLine2
-            </td>
-            <td>
-                @Model.City
-            </td>
-            <td>
-                @Model.County
-            </td>
-            <td>
-                @Model.EirCode
-            </td>
-        </tr>
-    </table>
-    @if (User.IsInRole("employeeuser"))
-    {
-        <p onclick="location.href= '@Url.Action("ReportJob", "Job", new { jobId=Model.JobInfoID })'">
-            Report this Job
-        </p>
-    }
+    <div class="job-listing">
+
+
+        <h3>@Model.Title</h3>
+
+        <br />
+
+        <h4>@Model.BusinessName</h4>
+
+
+
+
+        <div class="location">
+
+            <i class="fa fa-map-marker" aria-hidden="true"></i>
+            @Model.City, @Model.County, @Model.EirCode
+        </div>
+
+
+        <i class="fa fa-hourglass" aria-hidden="true"></i> @Model.PositionType
+
+        <br />
+        <i class="fa fa-eur" aria-hidden="true"></i> @Model.Salary
+
+
+        <br />
+        <i class="fa fa-user" aria-hidden="true"></i> @Model.Category
+
+
+        <br />
+        <i class="fa fa-clock-o" aria-hidden="true"></i> @Model.PostedDate
+
+        <br />
+        <br />
+
+
+        <h4>Description:</h4>
+        @Model.JobDescription
+
+        <br />
+        <br />
+
+
+        <h4>Perks:</h4>
+        @foreach (var perk in Model.Perks)
+        {
+            <div>
+                @perk.PerkName: @perk.Details
+                <br />
+            </div>
+        }
+
+        <br />
+
+
+        <h4>Experience Required:</h4>
+        @Model.MinExperience
+
+
+        <br />
+        <br />
+
+
+
+        @if (User.IsInRole("employeeuser"))
+        {
+            <div class="btn btn-secondary" onclick="location.href= '@Url.Action("ReportJob", "Job", new { jobId=Model.JobInfoID })'">
+                Report this Job
+            </div>
+
+
+        }
+
+
+        @if (User.IsInRole("businessuser"))
+        {
+
+            <div class="btn btn-secondary" onclick="if (!confirm('Are you sure you want to delete this job?')) return false; location.href = '@Url.Action("Delete", "Job", new { jobId=Model.JobInfoID })';">
+                Delete
+            </div>
+
+
+        }
+        <br />
+
+
+    </div>
 
 
 </div>
+

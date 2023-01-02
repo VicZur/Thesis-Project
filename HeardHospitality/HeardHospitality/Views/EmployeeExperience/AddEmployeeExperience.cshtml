@@ -8,32 +8,183 @@
 @Html.Hidden("IsVerified")
 
 <div class="text-center">
-    <h1 class="display-4">Update Profile</h1>
+    <h1 class="display-4">My Work History</h1>
 
-    <h2>Work History</h2>
 
-    <form asp-controller="EmployeeExperience" asp-action="SubmitEmployeeExperience" method="post">
+    <form id="emp-experience-form" asp-controller="EmployeeExperience" asp-action="SubmitEmployeeExperience" method="post">
 
-        <input placeholder="Job Title" asp-for="JobTitle" />
+        <h2>Add New Job</h2>
+
+
+        <input placeholder="Job Title" asp-for="JobTitle" required />
         <br />
-        <input placeholder="Position Type" asp-for="PositionType" />
+        <input placeholder="Details" asp-for="Details" required />
         <br />
-        <input placeholder="Start Date" asp-for="StartDate" />
+        <div class="date-div">
+            <label class="form-label date-label" for="StartDate">Start Date</label>
+            <input class="date-input" type="date" value="@String.Format("{0:yyyy-MM-dd}", new DateTime(2020, 1, 1))" asp-for="StartDate" required />
+        </div>
+        <div class="form-check">
+
+            <input type="checkbox" id="current-job" />
+            <label for="current-job">I currently work here</label>
+        </div>
+        @*<div class="spacer"></div>*@
+        <div class="date-div" id="end-date-div">
+            <label class="form-label date-label" for="EndDate">End Date</label>
+            <input class="date-input" type="date" value="@String.Format("{0:yyyy-MM-dd}", new DateTime(2020, 1, 1))" asp-for="EndDate" />
+        </div>
+        <input placeholder="Company" id="Company" asp-for="Company" required />
         <br />
-        <input placeholder="End Date" asp-for="EndDate" />
+        <input placeholder="City" id="City" asp-for="City" required />
         <br />
-        <input placeholder="Company" asp-for="Company" />
+        <input placeholder="County" id="County" asp-for="County" required />
         <br />
-        <input placeholder="City" asp-for="City" />
+        <div class="form-check">
+
+            <input type="checkbox" asp-for="DisplayOnProfile" />
+            <label asp-for="DisplayOnProfile">Display this job on my profile</label>
+        </div>
         <br />
-        <input placeholder="County" asp-for="County" />
+        <div id="error-message" class="error" style="display:none;">* Please fill out all required fields *</div>
         <br />
-        <input type="checkbox" asp-for="DisplayOnProfile" />
-        <label asp-for="DisplayOnProfile">Display this job on my profile</label>
-        <br />
-        <br />
-        <button type="submit">Add</button>
+        <button type="button" id="continue-add-btn" class="btn btn-secondary" onclick="BusInfo();">Continue</button>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="businessesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Please select the company you worked for.</h5>
+                        <h6 class="sub-heading">This will help us to ensure our review system is accurate.</h6>
+
+                        <button type="button" id="close-btn" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+
+                        <div id="modal-business-list">
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>*@
+                        <button type="button" id="modal-submit-btn" onclick="SubmitForm();" class="btn btn-secondary">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" asp-for="BusinessID">
+
+
+        @*<button type="submit" class="btn btn-secondary">Add</button>*@
     </form>
 
 
 </div>
+
+
+<script>
+    $(function () {
+        $('#current-job').click(function () {
+            if ($(this).is(':checked')) {
+                $('#end-date-div').addClass('hidden');
+            } else {
+                $('#end-date-div').removeClass('hidden');
+            }
+        });
+    });
+
+
+
+    function BusInfo() {
+
+        var jobTitle = $('#JobTitle').val();
+        var details = $('#Details').val();
+        var startDate = $('#StartDate').val();
+        var company = $('#Company').val();
+        var city = $('#City').val();
+        var county = $('#County').val();
+        if (!jobTitle) {
+            $('#JobTitle').addClass('error');
+        } else {
+            $('#JobTitle').removeClass('error');
+        }
+        if (!details) {
+            $('#Details').addClass('error');
+        } else {
+            $('#Details').removeClass('error');
+        }
+        if (!startDate) {
+            $('#StartDate').addClass('error');
+        } else {
+            $('#StartDate').removeClass('error');
+        }
+        if (!company) {
+            $('#Company').addClass('error');
+        } else {
+            $('#Company').removeClass('error');
+        }
+        if (!city) {
+            $('#City').addClass('error');
+        } else {
+            $('#City').removeClass('error');
+        }
+        if (!county) {
+            $('#County').addClass('error');
+        } else {
+            $('#County').removeClass('error');
+        }
+        if (!jobTitle || !details || !startDate || !company || !city || !county) {
+            $('#error-message').show();
+            return;
+        }
+        $('#error-message').hide();
+        $.ajax({
+            type: "GET",
+            url: '/EmployeeExperience/BusinssInfo',
+            data: { company: company, city: city, county: county },
+            success: function (data) {
+                $('#modal-business-list').html(data);
+                $('#businessesModal').modal('show');
+            }
+        });
+    };
+
+
+    function SubmitForm() {
+
+        var selectedId = $('.business-radio:checked').val();
+        $('#BusinessID').val(selectedId);
+
+        //// Get the data from the modal and store it in the form
+        //var modalData = $('#modal-business-list').data('modal-data');
+        //$('#modal-data').val(modalData);
+
+        // Submit the form
+        $('#emp-experience-form').submit();
+    };
+
+
+                    //$('#emp-experience-form').submit(function (e) {
+                    //    e.preventDefault();
+                    //    var formData = $(this).serialize();
+                    //    $.ajax({
+                    //        type: "POST",
+                    //        url: '/ControllerName/ActionName',
+                    //        data: formData,
+                    //        success: function (data) {
+                    //            // Update main view with returned data
+                    //            $('#main-view-element').html(data);
+                    //        }
+                    //    });
+                    //});
+                //});
+
+
+</script>

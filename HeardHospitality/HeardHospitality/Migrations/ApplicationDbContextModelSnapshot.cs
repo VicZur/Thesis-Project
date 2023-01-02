@@ -17,7 +17,7 @@ namespace HeardHospitality.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.10")
+                .HasAnnotation("ProductVersion", "6.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -31,7 +31,6 @@ namespace HeardHospitality.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AddressID"), 1L, 1);
 
                     b.Property<string>("AddressLine1")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddressLine2")
@@ -78,11 +77,9 @@ namespace HeardHospitality.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LoginDetailsId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PhoneNum")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("BusinessID");
@@ -149,6 +146,9 @@ namespace HeardHospitality.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeExperienceID"), 1L, 1);
 
+                    b.Property<int?>("BusinessID")
+                        .HasColumnType("int");
+
                     b.Property<string>("City")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -161,10 +161,14 @@ namespace HeardHospitality.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("DisplayOnProfile")
                         .HasColumnType("bit");
 
-                    b.Property<int>("EmployeeID")
+                    b.Property<int?>("EmployeeID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
@@ -177,14 +181,12 @@ namespace HeardHospitality.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PositionType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("EmployeeExperienceID");
+
+                    b.HasIndex("BusinessID");
 
                     b.HasIndex("EmployeeID");
 
@@ -656,12 +658,10 @@ namespace HeardHospitality.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -698,12 +698,10 @@ namespace HeardHospitality.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -728,9 +726,7 @@ namespace HeardHospitality.Migrations
                 {
                     b.HasOne("HeardHospitality.Models.LoginDetail", "LoginDetails")
                         .WithMany()
-                        .HasForeignKey("LoginDetailsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LoginDetailsId");
 
                     b.Navigation("LoginDetails");
                 });
@@ -748,11 +744,15 @@ namespace HeardHospitality.Migrations
 
             modelBuilder.Entity("HeardHospitality.Models.EmployeeExperience", b =>
                 {
+                    b.HasOne("HeardHospitality.Models.Business", "Business")
+                        .WithMany("EmployeeExperiences")
+                        .HasForeignKey("BusinessID");
+
                     b.HasOne("HeardHospitality.Models.Employee", "Employee")
                         .WithMany("EmployeeExperiences")
-                        .HasForeignKey("EmployeeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EmployeeID");
+
+                    b.Navigation("Business");
 
                     b.Navigation("Employee");
                 });
@@ -823,15 +823,13 @@ namespace HeardHospitality.Migrations
 
             modelBuilder.Entity("HeardHospitality.Models.Rating", b =>
                 {
-                    b.HasOne("HeardHospitality.Models.Business", "Business")
+                    b.HasOne("HeardHospitality.Models.Business", null)
                         .WithMany("Ratings")
                         .HasForeignKey("BusinessID");
 
                     b.HasOne("HeardHospitality.Models.EmployeeExperience", "Experience")
-                        .WithMany()
+                        .WithMany("Ratings")
                         .HasForeignKey("EmployeeExperienceID");
-
-                    b.Navigation("Business");
 
                     b.Navigation("Experience");
                 });
@@ -925,6 +923,8 @@ namespace HeardHospitality.Migrations
                 {
                     b.Navigation("Addresses");
 
+                    b.Navigation("EmployeeExperiences");
+
                     b.Navigation("JobInfos");
 
                     b.Navigation("Ratings");
@@ -941,6 +941,11 @@ namespace HeardHospitality.Migrations
                     b.Navigation("JobApplications");
 
                     b.Navigation("ReportedJobDetails");
+                });
+
+            modelBuilder.Entity("HeardHospitality.Models.EmployeeExperience", b =>
+                {
+                    b.Navigation("Ratings");
                 });
 
             modelBuilder.Entity("HeardHospitality.Models.JobInfo", b =>

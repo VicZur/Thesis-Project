@@ -309,10 +309,10 @@ namespace HeardHospitality.Controllers
         //        conn.Close();
 
 
-        //        //string query = "UPDATE EmployeeExperience SET JobTitle = @JobTitle, PositionType = @PositionType, StartDate = @StartDate, EndDate = @EndDate, Company = @Company, City = @City, County = @County, IsVerified = 0, DisplayOnProfile = @DisplayOnProfile, EmployeeID = @EmployeeID " +
+        //        //string query = "UPDATE EmployeeExperience SET JobTitle = @JobTitle, Details = @Details, StartDate = @StartDate, EndDate = @EndDate, Company = @Company, City = @City, County = @County, IsVerified = 0, DisplayOnProfile = @DisplayOnProfile, EmployeeID = @EmployeeID " +
         //        //    "WHERE Employee.LoginDetailsId = @LoginDetailsId";
-        //        string query = "INSERT INTO dbo.EmployeeExperience (JobTitle, PositionType, StartDate, EndDate, Company, City, County, IsVerified, DisplayOnProfile, EmployeeID) " +
-        //          "VALUES (@JobTitle, @PositionType, @StartDate, @EndDate, @Company, @City, @County, @IsVerified, @DisplayOnProfile, @EmployeeID)";
+        //        string query = "INSERT INTO dbo.EmployeeExperience (JobTitle, Details, StartDate, EndDate, Company, City, County, IsVerified, DisplayOnProfile, EmployeeID) " +
+        //          "VALUES (@JobTitle, @Details, @StartDate, @EndDate, @Company, @City, @County, @IsVerified, @DisplayOnProfile, @EmployeeID)";
 
 
         //        SqlCommand cmd = new SqlCommand(query, conn);
@@ -324,7 +324,7 @@ namespace HeardHospitality.Controllers
 
 
         //        cmd.Parameters.AddWithValue("@JobTitle", ee.JobTitle);
-        //        cmd.Parameters.AddWithValue("@PositionType", ee.PositionType);
+        //        cmd.Parameters.AddWithValue("@Details", ee.Details);
         //        cmd.Parameters.AddWithValue("@StartDate", ee.StartDate);
         //        cmd.Parameters.AddWithValue("@EndDate", ee.EndDate);
         //        cmd.Parameters.AddWithValue("@Company", ee.Company);

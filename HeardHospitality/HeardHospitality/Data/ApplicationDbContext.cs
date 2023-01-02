@@ -30,7 +30,20 @@ namespace HeardHospitality.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Address>().ToTable("Address");
             modelBuilder.Entity<Business>().ToTable("Business");
+
             modelBuilder.Entity<EmployeeExperience>().ToTable("EmployeeExperience");
+            //.HasOne(e => e.Employee)
+            //.WithMany(e => e.EmployeeExperiences)
+            //.HasForeignKey(e => e.EmployeeID)
+            //.OnDelete(DeleteBehavior.Cascade);
+
+            //modelBuilder.Entity<EmployeeExperience>()
+            //    .ToTable("EmployeeExperience");
+            //    //.HasOne(e => e.Business)
+            //    //.WithMany(b => b.EmployeeExperiences)
+            //    //.HasForeignKey(e => e.BusinessID)
+            //    //.OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<Employee>().ToTable("Employee");
             modelBuilder.Entity<EmpSkill>().ToTable("EmpSkill");
             modelBuilder.Entity<JobApplication>().ToTable("JobApplication");
@@ -38,10 +51,20 @@ namespace HeardHospitality.Data
             modelBuilder.Entity<JobPerk>().ToTable("JobPerk");
             modelBuilder.Entity<LoginDetail>().ToTable("LoginDetail");
             modelBuilder.Entity<Perk>().ToTable("Perk");
-            modelBuilder.Entity<Rating>().ToTable("Rating");
+
+            modelBuilder.Entity<Rating>()
+                .ToTable("Rating");
+                //.HasOne(r => r.Experience)
+                //.WithMany(e => e.Ratings)
+                //.HasForeignKey(r => r.EmployeeExperienceID)
+                //.OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Reply>().ToTable("Reply");
             modelBuilder.Entity<Skill>().ToTable("Skill");
             modelBuilder.Entity<ReportedJobDetail>().ToTable("ReportedJobDetail");
+
+
+
 
 
         }

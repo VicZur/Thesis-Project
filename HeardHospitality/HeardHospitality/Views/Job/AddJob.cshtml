@@ -25,31 +25,59 @@
 <html lang="en">
 <body>
     <div class="text-center">
-        <h1 class="display-4">New Ad</h1>
-
 
 
 
         <form id="new-job-form" asp-controller="Job" asp-action="SubmitJob" method="post">
 
+            <h1 class="form-title display-4">Add a New Job Ad</h1>
 
+            <label class="form-label" for="Title">Job Title</label>
             <input placeholder="Title" asp-for="Title" />
             <br />
-            <input placeholder="Position Type" asp-for="PositionType" />
+
+            <label class="form-label" for="PositionType">Position Type</label>
+            <select asp-for="PositionType" name="PositionType">
+                <option value="" selected disabled>Select a Position Type</option>
+                <option value="Full Time">Full Time</option>
+                <option value="Part Time">Part Time</option>
+                <option value="Seasonal">Seasonal</option>
+            </select>
             <br />
+
+            <label class="form-label" for="Salary">Salary</label>
             <input placeholder="Salary" asp-for="Salary" />
             <br />
+
+            <label class="form-label" for="JobDescription">Job Description</label>
             <input placeholder="Job Description" asp-for="JobDescription" />
             <br />
+
+            <label class="form-label" for="MinExperience">Minimum Experience Required</label>
             <input placeholder="Minimum Experience" asp-for="MinExperience" />
             <br />
-            <input placeholder="Category" asp-for="Category" />
+
+            <label class="form-label" for="Category">Job Category</label>
+            <select asp-for="Category" name="Category">
+                <option value="" selected disabled>Select a Category</option>
+                <option value="Front of House">Front of House</option>
+                <option value="Back of House">Back of House</option>
+                <option value="Administration">Administration</option>
+                <option value="Other">Other</option>
+            </select>
             <br />
+
+
+            <label class="form-label" for="Company">Company Name</label>
             <input placeholder="Company" asp-for="Company" />
             <br />
-            <p>Are there any additional Perks for Employees that you would like to highlight? For example: Staff Meals, Set Schedules, 4 Day weeks, etc.</p>
 
+            <div class="form-div">Are there any additional Perks for Employees that you would like to highlight? 
+                For example: Staff Meals, Set Schedules, 4 Day weeks, etc.</div>
 
+            <div id="new-perk">
+
+            </div>
 
 
             @*           <div id="perks-container">
@@ -77,10 +105,11 @@
                         <label>Details:</label>
                         <input type="text" name="Perks[i].Details" value="@Model.Perks[i].Details" />
                     </div>
+                    <br />
             }
 
 
-            <button type="button" onclick="AddPerk();">Add Another Perk</button>
+            <button class="btn btn-secondary" type="button" onclick="AddPerk();">Add A Perk</button>
             @*    </div>*@
 
             <br />
@@ -90,7 +119,7 @@
             <input type="hidden" asp-for="BusinessID" value="@Model.BusinessID" />
             <input type="hidden" asp-for="City" value="@Model.City" />
             <input type="hidden" asp-for="County" value="@Model.County" />
-            <input type="submit" />
+            <input type="submit" class="btn btn-secondary form-btn" />
         </form>
 
     </div>
@@ -109,8 +138,8 @@
         var detailsField = $('<input type="text" name="Perks[' + count + '].Details"  placeholder="Description" /> <br />');
 
         // Append the new fields to the form
-        $('#new-job-form').append(nameField);
-        $('#new-job-form').append(detailsField);
+        $('#new-perk').append(nameField);
+        $('#new-perk').append(detailsField);
 
 
         //var container = document.getElementById("perks-container");

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 
 namespace HeardHospitality.Models
 {
@@ -14,15 +13,15 @@ namespace HeardHospitality.Models
 
         public string BusinessName { get; set; }
 
-        public string PhoneNum { get; set; }
+        public string ? PhoneNum { get; set; }
 
         public bool IsVerified { get; set; }
 
         //FK details to DBLoginDetailModel
         //public int LoginDetailId { get; set; }
 
-        [Required]
-        public LoginDetail LoginDetails { get; set; }
+        //[Required]
+        public LoginDetail ? LoginDetails { get; set; }
 
 
         //Tables that reference DBBusinessModel as their FK
@@ -33,6 +32,7 @@ namespace HeardHospitality.Models
         public ICollection<Reply> Replys { get; set; }
 
         public ICollection<JobInfo> JobInfos { get; set; }
+        public ICollection<EmployeeExperience> EmployeeExperiences { get; set; }
 
     }
 
