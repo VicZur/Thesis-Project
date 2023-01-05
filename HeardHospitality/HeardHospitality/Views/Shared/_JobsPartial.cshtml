@@ -1,0 +1,76 @@
+﻿@model List<JobPostingViewModel>
+
+@Html.Hidden("BusinessID")
+@Html.Hidden("JobInfoID")
+@Html.Hidden("JobPerkID")
+@Html.Hidden("PerkID")
+@Html.Hidden("PhoneNum")
+@Html.Hidden("AddressLine1")
+@Html.Hidden("AddressLine2")
+@Html.Hidden("EirCode")
+@Html.Hidden("Country")
+@Html.Hidden("JobDescription")
+@Html.Hidden("MinExperience")
+@Html.Hidden("IsActive")
+@Html.Hidden("Details")
+@Html.Hidden("PerkName")
+@Html.Hidden("Company")
+
+@{
+    ViewData["partialViewListCount"] = Model.Count;
+}
+
+@foreach (var job in Model)
+{
+    <div class="job-listing">
+
+
+        <h3>@job.Title</h3>
+
+        <br />
+
+        <h4>@job.BusinessName</h4>
+
+
+        <div class="location">
+
+            <i class="fa fa-map-marker" aria-hidden="true"></i>
+            @job.City, @job.County
+        </div>
+
+
+        <i class="fa fa-hourglass" aria-hidden="true"></i> @job.PositionType
+
+        <br />
+        <i class="fa fa-eur" aria-hidden="true"></i> @job.Salary
+
+
+        <br />
+        <i class="fa fa-user" aria-hidden="true"></i> @job.Category
+
+
+        <br />
+        <i class="fa fa-clock-o" aria-hidden="true"></i> @job.PostedDate
+
+        <br />
+        <div class="btn btn-secondary" onclick="location.href= '@Url.Action("JobDetails", "Job", new { jobId=job.JobInfoID })'">
+            More Details
+        </div>
+
+
+
+
+        @if (User.IsInRole("businessuser") && Convert.ToBoolean(ViewData["showButton"]))
+        {
+
+            <div class="btn btn-secondary" onclick="if (!confirm('Are you sure you want to delete this job?')) return false; location.href = '@Url.Action("Delete", "Job", new { jobId=job.JobInfoID })';">
+                Delete
+            </div>
+
+
+        }
+
+
+
+    </div>
+}

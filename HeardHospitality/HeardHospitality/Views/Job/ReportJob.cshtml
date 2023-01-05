@@ -44,14 +44,14 @@
 
 
             <br />
-            <textarea type="text" placeholder="Comments" id="report-comments" asp-for="Comments"></textarea>
+            <textarea type="text" placeholder="Comments" id="report-comments" asp-for="Comments" required></textarea>
             <br />
             <br />
             <br />
             <input type="hidden" asp-for="JobInfoID" value="@Model.JobInfoID" />
             <input type="hidden" asp-for="EmployeeID" value="@Model.EmployeeID" />
             <input type="hidden" asp-for="ReportedJobDetailID" value="@Model.ReportedJobDetailID" />
-            <button type="submit">Submit</button>
+            <button type="submit" class="btn btn-secondary">Submit</button>
         </form>
 
     </div>

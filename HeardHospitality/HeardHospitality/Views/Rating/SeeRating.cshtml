@@ -1,0 +1,83 @@
+﻿@{
+    ViewData["Title"] = "Ratings";
+}
+
+@model RatingViewModel
+@Html.Hidden("BusinessID")
+@Html.Hidden("RatingID")
+@Html.Hidden("EmployeeExperienceID")
+@Html.Hidden("IsDisplayed")
+
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <div class="text-center">
+        <h1 class="display-4">My Rating for @Model.Company </h1>
+
+        <table>
+            <tr>
+                <th>
+                    Overall Rating
+                </th>
+                <th>
+                    Would Work Again
+                </th>
+                <th>
+                    Comments
+                </th>
+                <th>
+                    Salary Rating
+                </th>
+                <th>
+                    Management Rating
+                </th>
+                <th>
+                    Fairness Rating
+                </th>
+                <th>
+                    Clientele Rating
+                </th>
+                <th>
+                    Unpaid Trial Shift
+                </th>
+                <th>
+                    Date Posted
+                </th>
+            </tr>
+
+
+            <tr>
+                <td>
+                    @Model.OverallRating
+                </td>
+                <td>
+                    @Model.WouldWorkAgain
+                </td>
+                <td>
+                    @Model.Comments
+                </td>
+                <td>
+                    @Model.SalaryRating
+                </td>
+                <td>
+                    @Model.ManagementRating
+                </td>
+                <td>
+                    @Model.FairnessRating
+                </td>
+                <td>
+                    @Model.ClienteleRating
+                </td>
+                <td>
+                    @Model.UnpaidTrialShift
+                </td>
+                <td>
+                    @Model.DatePosted
+                </td>
+            </tr>
+
+
+        </table>
+    </div>
+</body>
+</html>

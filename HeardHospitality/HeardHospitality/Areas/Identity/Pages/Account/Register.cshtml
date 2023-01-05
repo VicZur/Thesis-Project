@@ -5,87 +5,89 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
 
-<div class="row">
-    <div class="col-md-4">
+    <div class="text-center">
+        <br/>
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h2>Create a new account.</h2>
-            <hr />
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-
+            <div id="general-form">
             <div class="form-floating">
                 <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
-                <label asp-for="Input.Email"></label>
+                <label asp-for="Input.Email" class="form-label"></label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
+            <br/>
+
             <div class="form-floating">
                 <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
-                <label asp-for="Input.Password"></label>
+                <label asp-for="Input.Password" class="form-label"></label>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
+            <br/>
+
             <div class="form-floating">
                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
-                <label asp-for="Input.ConfirmPassword"></label>
+                <label asp-for="Input.ConfirmPassword" class="form-label"></label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
 
+            <br/>
+            </div>
             @if (Model.isEmployeeAccount == true)
             {
-                <div class="form-floating">
+            <div class="form-floating checkbox login-checkbox">
                     <input type="checkbox" asp-for="Input.isEmployeeAccount" hidden="hidden" checked />
                 </div>
 
-                <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-secondary">Register</button>
 
             }
 
             @if (Model.isBusinessAccount == true)
             {
-                <div class="form-floating">
+                <div class="form-floating checkbox login-checkbox">
                     <input type="checkbox" asp-for="Input.isBusinessAccount" hidden="hidden" checked />
                 </div>
 
-                <p><a class="w-100 btn btn-lg btn-primary" onclick="javascript:ShowHide('HiddenDiv')">Continue</a></p>
+                <button id="reg-continue-btn" class="w-100 btn btn-lg btn-secondary" onclick="ShowMore();">Continue</button>
+                <br/>
+
                 <div class="mid" id="HiddenDiv" style="display: none;">
                     <div class="form-floating">
-                        <input asp-for="Input.BusinessName" class="form-control" autocomplete="business-name" aria-required="true" />
-                        <label asp-for="Input.BusinessName"></label>
+                        <input asp-for="Input.BusinessName" class="form-control" autocomplete="business-name" aria-required="true" required />
+                        <label asp-for="Input.BusinessName" class="form-label"></label>
                         <span asp-validation-for="Input.BusinessName" class="text-danger"></span>
                     </div>
+                    <br/>
+
                     <div class="form-floating">
-                        <input asp-for="Input.PhoneNum" class="form-control" autocomplete="phonenumber" aria-required="true" />
-                        <label asp-for="Input.PhoneNum"></label>
+                        <input asp-for="Input.PhoneNum" class="form-control" autocomplete="phonenumber" aria-required="true" required/>
+                        <label asp-for="Input.PhoneNum" class="form-label"></label>
                         <span asp-validation-for="Input.PhoneNum" class="text-danger"></span>
                     </div>
+                    <br/>
+
                     <div class="form-floating">
-                        <input asp-for="Input.City" class="form-control" autocomplete="city" aria-required="true" />
-                        <label asp-for="Input.City"></label>
+                        <input asp-for="Input.City" class="form-control" autocomplete="city" aria-required="true" required/>
+                        <label asp-for="Input.City" class="form-label"></label>
                         <span asp-validation-for="Input.City" class="text-danger"></span>
                     </div>
+                    <br/>
+
                     <div class="form-floating">
-                        <input asp-for="Input.County" class="form-control" autocomplete="county" aria-required="true" />
-                        <label asp-for="Input.County"></label>
+                        <input asp-for="Input.County" class="form-control" autocomplete="county" aria-required="true" required/>
+                        <label asp-for="Input.County" class="form-label"></label>
                         <span asp-validation-for="Input.County" class="text-danger"></span>
                     </div>
 
+                    <br/>
 
-                    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Submit</button>
+                    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-secondary">Submit</button>
 
                 </div>
-                <script type="text/javascript">
-                    // <![CDATA[
-                    function ShowHide(divId) {
-                        if (document.getElementById(divId).style.display == 'none') {
-                            document.getElementById(divId).style.display = 'block';
-                        }
-                        else {
-                            document.getElementById(divId).style.display = 'none';
-                        }
-                    }
-                                                            // ]]></script>
 
 
             }
@@ -93,40 +95,17 @@
 
         </form>
     </div>
-  @*  <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
-                                article
-                                about setting up this ASP.NET application to support logging in via external services
-                            </a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
-    </div>*@
-</div>
+
+<script>
+    function ShowMore() {
+        $('#HiddenDiv').show();
+        $('#reg-continue-btn').hide();
+        $('#general-form').hide();
+    };
+</script>
 
 @section Scripts {
+
+
     <partial name="_ValidationScriptsPartial" />
 }

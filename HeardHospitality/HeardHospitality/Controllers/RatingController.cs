@@ -6,6 +6,7 @@ using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Xml.Linq;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace HeardHospitality.Controllers
@@ -30,7 +31,7 @@ namespace HeardHospitality.Controllers
             SqlConnection conn = new SqlConnection(connStr);
 
 
-            string query = "SELECT * FROM Rating WHERE Rating.BusinessID = @BusinessID AND IsDisplayed = 1";
+            string query = "SELECT * FROM Rating WHERE Rating.BusinessID = @BusinessID AND IsDisplayed = 1 ORDER BY DatePosted";
 
             SqlCommand cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@BusinessID", busID);
@@ -69,18 +70,68 @@ namespace HeardHospitality.Controllers
             return View(ratings_List);
         }
 
-        [Authorize(Roles = "employeeuser")]
-        public IActionResult New(RatingViewModel r, int busID)
+        public IActionResult CheckIfRated(RatingViewModel r, int busID, int empExpID)
         {
-            var rating = new RatingViewModel { BusinessID = busID };
+            var rating = new RatingViewModel { BusinessID = busID, EmployeeExperienceID = empExpID };
 
             string connStr = _configuration.GetConnectionString("DefaultConnection");
             SqlConnection conn = new SqlConnection(connStr);
+
+
+            string query = "SELECT * FROM Rating where EmployeeExperienceID = @EmployeeExperienceID and BusinessID = @BusinessID";
+            SqlCommand cmd = new SqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("@EmployeeExperienceID", empExpID);
+            cmd.Parameters.AddWithValue("@BusinessID", busID);
+
+            conn.Open();
+            SqlDataReader rdr = cmd.ExecuteReader();
+            if (rdr.HasRows)//This user has already left a review
+            {
+                while (rdr.Read())
+                {
+                    rating.RatingID = Convert.ToInt32(rdr["RatingID"]);
+                    rating.OverallRating = Convert.ToInt32(rdr["OverallRating"]);
+                    rating.WouldWorkAgain = Convert.ToBoolean(rdr["WouldWorkAgain"]);
+                    rating.SalaryRating = Convert.ToInt32(rdr["SalaryRating"]);
+                    rating.ManagementRating = Convert.ToInt32(rdr["ManagementRating"]);
+                    rating.FairnessRating = Convert.ToInt32(rdr["FairnessRating"]);
+                    rating.ClienteleRating = Convert.ToInt32(rdr["ClienteleRating"]);
+                    rating.UnpaidTrialShift = Convert.ToBoolean(rdr["UnpaidTrialShift"]);
+                    rating.Comments = Convert.ToString(rdr["Comments"]);
+                    rating.DatePosted = Convert.ToDateTime(rdr["DatePosted"]);
+                    rating.IsDisplayed = Convert.ToBoolean(rdr["IsDisplayed"]);
+                    rating.EmployeeExperienceID = Convert.ToInt32(rdr["EmployeeExperienceID"]);
+
+                }
+
+                string message = "You have already left a review for this business.";
+                return View("SeeRating", rating);
+            }
+            conn.Close();
+            if (rating.Comments == null)
+            {
+                return View("New", rating);
+            }
+            return RedirectToAction("ViewEmployeeExperience", "EmployeeExperience");
+        }
+
+
+
+        [Authorize(Roles = "employeeuser")]
+        public IActionResult New(RatingViewModel r, int busID, int empExpID)
+        {
+            var rating = new RatingViewModel { BusinessID = busID, EmployeeExperienceID = empExpID };
+
+            string connStr = _configuration.GetConnectionString("DefaultConnection");
+            SqlConnection conn = new SqlConnection(connStr);
+
 
             string query = "SELECT BusinessName FROM dbo.Business WHERE BusinessID = @BusinessID";
 
             SqlCommand cmd = new SqlCommand(query, conn);
 
+            cmd.Parameters.Clear();
             cmd.Parameters.AddWithValue("@BusinessID", rating.BusinessID);
 
             conn.Open();
@@ -88,7 +139,23 @@ namespace HeardHospitality.Controllers
             conn.Close();
 
             return View(rating);
+
         }
+
+
+        public IActionResult SeeRating(RatingViewModel r)
+        {
+
+
+            return View(r);
+        }
+
+
+
+
+
+
+
 
         [Authorize(Roles = "employeeuser")]
         //POST: UpdateEmployeeProfileController/Edit/5
@@ -122,7 +189,7 @@ namespace HeardHospitality.Controllers
                 cmd.Parameters.AddWithValue("@Comments", r.Comments);
                 cmd.Parameters.AddWithValue("@DatePosted", DateTime.Now);
                 cmd.Parameters.AddWithValue("@IsDisplayed", true);
-                cmd.Parameters.AddWithValue("@EmployeeExperienceID", 1);
+                cmd.Parameters.AddWithValue("@EmployeeExperienceID", r.EmployeeExperienceID);
                 cmd.Parameters.AddWithValue("@BusinessID", r.BusinessID);
                 cmd.Parameters.AddWithValue("@IsReported", 0);
 
@@ -131,11 +198,12 @@ namespace HeardHospitality.Controllers
                 var busID = (Int32)cmd.ExecuteScalar();
                 conn.Close();
 
-                return RedirectToAction("All", "Rating", new { busID = busID });
+                return View("SeeRating", r);
             }
             catch
             {
-                return RedirectToAction("New", "Rating", new { busID = r.BusinessID });
+                return View("SeeRating", r);
+
 
             }
         }

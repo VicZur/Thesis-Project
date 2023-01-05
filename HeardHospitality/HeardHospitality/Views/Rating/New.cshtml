@@ -19,31 +19,28 @@
             <h3>Leave a rating for @Model.Company</h3>
 
             <label class="form-label" for="Overall Rating">Overall Rating 1-10</label>
-            <input type="number" min="1" max="10" placeholder="OverallRating" asp-for="OverallRating" />
+            <input type="number" min="1" max="10" placeholder="OverallRating" asp-for="OverallRating" required/>
             <br />
 
-
-
-
             <label class="form-label" for="SalaryRating">Salary Rating 1-10</label>
-            <input type="number" min="1" max="10" placeholder="Salary Rating" asp-for="SalaryRating" />
+            <input type="number" min="1" max="10" placeholder="Salary Rating" asp-for="SalaryRating" required />
             <br />
 
             <label class="form-label" for="Management Rating">Management Rating 1-10</label>
-            <input type="number" min="1" max="10" placeholder="Management Rating" asp-for="ManagementRating" />
+            <input type="number" min="1" max="10" placeholder="Management Rating" asp-for="ManagementRating" required />
             <br />
 
             <label class="form-label" for="FairnessRating">Fairness Rating 1-10</label>
-            <input type="number" min="1" max="10" placeholder="Fairness Rating" asp-for="FairnessRating" />
+            <input type="number" min="1" max="10" placeholder="Fairness Rating" asp-for="FairnessRating" required />
             <br />
 
             <label class="form-label" for="ClienteleRating">Clientele Rating 1-10</label>
-            <input type="number" min="1" max="10" placeholder="Clientele Rating" asp-for="ClienteleRating" />
+            <input type="number" min="1" max="10" placeholder="Clientele Rating" asp-for="ClienteleRating" required />
             <br />
 
 
             <label class="form-label" for="Comments">Comments</label>
-            <textarea id="rating-comments" type="text" placeholder="Comments" asp-for="Comments"><</textarea>
+            <textarea id="rating-comments" type="text" placeholder="Comments" asp-for="Comments" required><</textarea>
             <br />
 
             <div class="form-check">
@@ -58,6 +55,7 @@
             <br />
 
             <input DefaultValue=@Model.BusinessID asp-for="BusinessID" hidden="hidden" />
+            <input DefaultValue=@Model.EmployeeExperienceID asp-for="EmployeeExperienceID" hidden="hidden" />
             <button class="form-btn btn btn-secondary" type="submit">Submit</button>
         </form>
 

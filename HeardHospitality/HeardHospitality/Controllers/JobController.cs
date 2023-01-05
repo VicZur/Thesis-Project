@@ -24,6 +24,151 @@ namespace HeardHospitality.Controllers
         }
 
 
+        public IActionResult FilterJob(string title, string company, string positiontype, double minsalary, string city, string county)
+        {
+
+
+            string connStr = _configuration.GetConnectionString("DefaultConnection");
+            SqlConnection conn = new SqlConnection(connStr);
+
+            string query = "SELECT DISTINCT * FROM JobInfo INNER JOIN Business on JobInfo.BusinessID = Business.BusinessID " +
+                "INNER JOIN Address on Business.BusinessID = Address.BusinessID " +
+                "WHERE (JobInfo.IsActive = 1) " +
+                "AND (JobInfo.Salary >= @Salary) " +
+                "AND (JobInfo.Title LIKE @Title) " +
+                "AND (JobInfo.Company LIKE @Company) " +
+                "AND (JobInfo.PositionType LIKE @PositionType) " +
+                "AND (Address.City LIKE @City) " +
+                "AND (Address.County LIKE @County) " +
+                "ORDER BY PostedDate DESC";
+
+            //        string query = "SELECT * FROM JobInfo INNER JOIN Business on JobInfo.BusinessID = Business.BusinessID " +
+            //"INNER JOIN Address on Business.BusinessID = Address.BusinessID " +
+            //"WHERE (JobInfo.IsActive = 1) " +
+            //"AND (JobInfo.Salary >= @Salary) " +
+            //"AND (@Title IS NULL OR JobInfo.Title LIKE @Title) " +
+            //"AND (@Company IS NULL OR JobInfo.Company LIKE @Company) " +
+            //"AND (@PositionType IS NULL OR JobInfo.PositionType LIKE @PositionType) " +
+            //"AND (@City IS NULL OR Address.City LIKE @City) " +
+            //"AND (@County IS NULL OR Address.County LIKE @County) " +
+            //"ORDER BY PostedDate DESC";
+
+            SqlCommand cmd = new SqlCommand(query, conn);
+
+            if (title == null)
+            {
+                cmd.Parameters.AddWithValue("@Title", "%");
+
+            }
+            else cmd.Parameters.AddWithValue("@Title", "%" + title + "%");
+
+            if (company == null)
+            {
+                cmd.Parameters.AddWithValue("@Company", "%");
+
+            }
+            else cmd.Parameters.AddWithValue("@Company", "%" + company + "%");
+            if (positiontype == null || positiontype == "all")
+            {
+                cmd.Parameters.AddWithValue("@PositionType", "%");
+
+            }
+            else if (positiontype == "fulltime")
+            {
+                cmd.Parameters.AddWithValue("@PositionType", "%" + "Full Time" + "%");
+            }
+            else cmd.Parameters.AddWithValue("@PositionType", "%" + "Part Time" + "%");
+
+            cmd.Parameters.AddWithValue("@Salary", minsalary);
+
+            if (city == null)
+            {
+                cmd.Parameters.AddWithValue("@City", "%");
+
+            }
+            else cmd.Parameters.AddWithValue("@City", "%" + city + "%");
+
+            if (county == null)
+            {
+                cmd.Parameters.AddWithValue("@County", "%");
+            }
+            else cmd.Parameters.AddWithValue("@County", "%" + county + "%");
+
+            conn.Open();
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            List<JobPostingViewModel> jobs_List = new List<JobPostingViewModel>();
+
+            if (rdr.HasRows)
+            {
+                while (rdr.Read())
+                {
+                    jobs_List.Add(new JobPostingViewModel
+                    {
+                        BusinessID = Convert.ToInt32(rdr["BusinessId"]),
+                        JobInfoID = Convert.ToInt32(rdr["JobInfoID"]),
+                        BusinessName = Convert.ToString(rdr["BusinessName"]),
+                        PhoneNum = Convert.ToString(rdr["PhoneNum"]),
+                        AddressLine1 = Convert.ToString(rdr["AddressLine1"]),
+                        AddressLine2 = Convert.ToString(rdr["AddressLine2"]),
+                        City = Convert.ToString(rdr["City"]),
+                        County = Convert.ToString(rdr["County"]),
+                        EirCode = Convert.ToString(rdr["EirCode"]),
+                        Country = Convert.ToString(rdr["Country"]),
+                        Title = Convert.ToString(rdr["Title"]),
+                        PositionType = Convert.ToString(rdr["PositionType"]),
+                        Salary = Convert.ToDouble(rdr["Salary"]),
+                        JobDescription = Convert.ToString(rdr["JobDescription"]),
+                        PostedDate = Convert.ToDateTime(rdr["PostedDate"]),
+                        MinExperience = Convert.ToString(rdr["MinExperience"]),
+                        Category = Convert.ToString(rdr["Category"]),
+                        Company = Convert.ToString(rdr["Company"]),
+                        IsActive = Convert.ToBoolean(rdr["IsActive"]),
+                    });
+                }
+            }
+            conn.Close();
+
+
+            return PartialView("_JobsPartial", jobs_List);
+
+        }
+
+
+        //public IActionResult FilterJob(string title, string company, string positionType, double? salary, string city, string county, List<JobPostingViewModel> originalList)
+        //{
+
+        //    if (!string.IsNullOrEmpty(title))
+        //    {
+        //        originalList = originalList.Where(jp => jp.Title.Contains(title)).ToList();
+        //    }
+        //    if (positionType != "all")
+        //    {
+        //        originalList = originalList.Where(jp => jp.PositionType == positionType).ToList();
+        //    }
+        //    if (!string.IsNullOrEmpty(company))
+        //    {
+        //        originalList = originalList.Where(jp => jp.Company.Contains(company)).ToList();
+        //    }
+        //    if (salary.HasValue)
+        //    {
+        //        originalList = originalList.Where(jp => jp.Salary >= salary).ToList();
+        //    }
+        //    if (!string.IsNullOrEmpty(city))
+        //    {
+        //        originalList = originalList.Where(jp => jp.City.Contains(city)).ToList();
+        //    }
+        //    if (!string.IsNullOrEmpty(county))
+        //    {
+        //        originalList = originalList.Where(jp => jp.County.Contains(county)).ToList();
+        //    }
+
+        //    int count = originalList.Count;
+
+        //    return View("SearchJob", originalList);
+
+        //}
+
 
 
 
@@ -45,10 +190,10 @@ namespace HeardHospitality.Controllers
             //    "ORDER BY PostedDate DESC";
 
 
-            string query = "SELECT * FROM JobInfo INNER JOIN Business on JobInfo.BusinessID = Business.BusinessID " +
+            string query = "SELECT DISTINCT * FROM JobInfo INNER JOIN Business on JobInfo.BusinessID = Business.BusinessID " +
                            "INNER JOIN Address on Business.BusinessID = Address.BusinessID " +
                            "WHERE (JobInfo.IsActive = 1) " +
-                           "AND (JobInfo.Title LIKE @Title OR JobInfo.Company LIKE @Company OR JobInfo.PositionType LIKE @PositionType OR Address.City LIKE @City OR Address.County LIKE @County) " +
+                           "AND (JobInfo.Title LIKE @Title OR JobInfo.Company LIKE @Company OR Business.BusinessName LIKE @Company OR JobInfo.PositionType LIKE @PositionType OR Address.City LIKE @City OR Address.County LIKE @County) " +
                            "ORDER BY PostedDate DESC";
 
 
@@ -330,21 +475,25 @@ namespace HeardHospitality.Controllers
                 SqlConnection conn = new SqlConnection(connStr);
                 SqlCommand cmd = new SqlCommand();
 
-                foreach (var perk in j.Perks)
+                if (j.Perks != null)
                 {
+                    foreach (var perk in j.Perks)
+                    {
+                        if (perk.PerkName != null)
+                        {
+                            cmd = new SqlCommand();
+                            cmd.Connection = conn;
+                            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                            cmd.CommandText = "uspAddPerkIfNotExists"; //This sproc checks to see if the perk already exists in the DB, if it does NOT, the sproc will add it
 
-                    cmd = new SqlCommand();
-                    cmd.Connection = conn;
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.CommandText = "uspAddPerkIfNotExists"; //This sproc checks to see if the perk already exists in the DB, if it does NOT, the sproc will add it
+                            cmd.Parameters.AddWithValue("@PerkName", perk.PerkName);
+                            conn.Open();
+                            object o = cmd.ExecuteScalar();
+                            conn.Close();
+                        }
+                    }
 
-                    cmd.Parameters.AddWithValue("@PerkName", perk.PerkName);
-                    conn.Open();
-                    object o = cmd.ExecuteScalar();
-                    conn.Close();
                 }
-
-
 
                 //string connStr = _configuration.GetConnectionString("DefaultConnection");
                 //SqlConnection conn = new SqlConnection(connStr);
@@ -375,27 +524,35 @@ namespace HeardHospitality.Controllers
                 conn.Close();
 
 
-                foreach (var perk in j.Perks)
+                if (j.Perks != null)
                 {
-                    cmd = new SqlCommand();
-                    cmd.Connection = conn;
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.CommandText = "uspAddJobPerk"; //This sproc adds new job perks 
+                    foreach (var perk in j.Perks)
+                    {
+                        if (perk.PerkName != null)
+                        {
+                            cmd = new SqlCommand();
+                            cmd.Connection = conn;
+                            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                            cmd.CommandText = "uspAddJobPerk"; //This sproc adds new job perks 
 
-                    cmd.Parameters.Clear();
-                    cmd.Parameters.AddWithValue("@JobInfoId", newJobID);
-                    cmd.Parameters.AddWithValue("@PerkName", perk.PerkName);
-                    cmd.Parameters.AddWithValue("@Details", perk.Details);
+                            cmd.Parameters.Clear();
+                            cmd.Parameters.AddWithValue("@JobInfoId", newJobID);
+                            cmd.Parameters.AddWithValue("@PerkName", perk.PerkName);
+                            if (perk.Details != null)
+                            {
+                                cmd.Parameters.AddWithValue("@Details", perk.Details);
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@Details", DBNull.Value);
+                            }
 
-                    conn.Open();
-                    object o = cmd.ExecuteScalar();
-                    conn.Close();
+                            conn.Open();
+                            object o = cmd.ExecuteScalar();
+                            conn.Close();
+                        }
+                    }
                 }
-
-
-
-
-                //return RedirectToAction("Index", "Home");
             }
             catch
             {
@@ -403,7 +560,7 @@ namespace HeardHospitality.Controllers
 
             }
 
-            return RedirectToAction("AddJob", "Job");
+            return RedirectToAction("ViewBusinessJobs");
         }
 
         public IActionResult JobDetails(JobPostingViewModel j, int jobID)

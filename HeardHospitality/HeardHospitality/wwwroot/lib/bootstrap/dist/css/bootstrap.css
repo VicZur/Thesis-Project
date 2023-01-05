@@ -2993,9 +2993,11 @@ textarea.form-control-lg {
 }
 
 .btn-secondary {
-  color: #fff;
-  background-color: #6c757d;
-  border-color: #6c757d;
+    color: #fff;
+    /*background-color: #6c757d;*/
+    background-color: #75593d;
+    /*border-color: #6c757d;*/
+    border-color: #75593d;
 }
 .btn-secondary:hover {
   color: #fff;

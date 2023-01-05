@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "iGr3hZACCboAf8KYV0oMXjvqFkYn4N+yO120+7mqxz/PTKxXh+oVWAIDvv1DTyT8A5HHZAjY08QtmRwuMJ5/3w==",
+  "dgSpecHash": "JYnM57Huk0uDYPjANUTtLDKyLjVXXnf6JlvheO8rfKziIO86+UIrSbww4LXJOqyMIeW1Vt7T3rZNHjFWEl3kaQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\vczur\\Desktop\\FinalProject\\Thesis-Project\\HeardHospitality\\HeardHospitality\\HeardHospitality.csproj",
   "expectedPackageFiles": [
@@ -104,7 +104,7 @@
     "C:\\Users\\vczur\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\vczur\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\vczur\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
-    "C:\\Users\\vczur\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\vczur\\.nuget\\packages\\newtonsoft.json\\13.0.2\\newtonsoft.json.13.0.2.nupkg.sha512",
     "C:\\Users\\vczur\\.nuget\\packages\\node.js\\5.3.0\\node.js.5.3.0.nupkg.sha512",
     "C:\\Users\\vczur\\.nuget\\packages\\nuget.common\\6.3.1\\nuget.common.6.3.1.nupkg.sha512",
     "C:\\Users\\vczur\\.nuget\\packages\\nuget.configuration\\6.3.1\\nuget.configuration.6.3.1.nupkg.sha512",

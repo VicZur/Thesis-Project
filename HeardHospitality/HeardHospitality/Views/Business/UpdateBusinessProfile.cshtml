@@ -17,21 +17,21 @@
 
     <form asp-controller="Business" asp-action="Edit" method="post">
 
-        <input placeholder="Business Name" asp-for="BusinessName" />
+        <input placeholder="Business Name" asp-for="BusinessName" required/>
         <br />
-        <input placeholder="Phone Number" asp-for="PhoneNum" />
+        <input placeholder="Phone Number" asp-for="PhoneNum" required/>
         <br />
-        <input placeholder="Address Line 1" asp-for="AddressLine1" />
+        <input placeholder="Address Line 1" asp-for="AddressLine1" required />
         <br />
         <input placeholder="Address Line 2" asp-for="AddressLine2" />
         <br />
-        <input placeholder="City" asp-for="City" />
+        <input placeholder="City" asp-for="City" required />
         <br />
-        <input placeholder="County" asp-for="County" />
+        <input placeholder="County" asp-for="County" required />
         <br />
         <input placeholder="EirCode" asp-for="EirCode" />
         <br />
-        <input placeholder="Country" asp-for="Country" />
+        <input placeholder="Country" asp-for="Country" required />
         <br />
         <button type="submit" class="btn btn-secondary form-btn">Save</button>
     </form>

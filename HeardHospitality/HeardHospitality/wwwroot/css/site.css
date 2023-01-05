@@ -22,7 +22,8 @@ body {
     margin-bottom: 60px;
     font-family: 'Roboto-Light', sans-serif;
     /*background-color: #d6c3b1;*/
-    background-color: #e1d4c6;
+    /*background-color: #e1d4c6;*/
+    background-color: white;
 }
 
 .job-listing {
@@ -78,26 +79,28 @@ th {
 }
 
 form {
-    background-color: #efe8e1;
+    background-color: #e4dcd8;
+    /*background-color: #efe8e1;*/
     width: 70%;
     margin: 0 auto;
     padding: 10px;
 }
 
 #search-form {
-    background-color: #efe8e1;
+    background-color: #e4dcd8;
+    /*background-color: #efe8e1;*/
     max-width: 90%;
     margin: 0 auto;
     padding: 10px;
     margin-bottom: 10px;
 }
 
-#search-form input {
-    margin: 0;
-}
+    #search-form input {
+        margin: 0;
+    }
 
 
-#filter-form{
+#filter-form {
     margin-bottom: 20px;
 }
 
@@ -141,16 +144,16 @@ h1 {
     text-align: left;
 }
 
-.report-reason input[type="checkbox"] {
-    display: inline-block;
-    width: auto;
-}
+    .report-reason input[type="checkbox"] {
+        display: inline-block;
+        width: auto;
+    }
 
-.report-reason label {
-    display: inline-block;
-}
+    .report-reason label {
+        display: inline-block;
+    }
 
-#report-form{
+#report-form {
     width: 30%;
 }
 
@@ -167,14 +170,14 @@ h1 {
     text-align: left;
 }
 
-.form-check input[type="checkbox"] {
-    display: inline-block;
-    width: auto;
-}
+    .form-check input[type="checkbox"] {
+        display: inline-block;
+        width: auto;
+    }
 
-.form-check label {
-    display: inline-block;
-}
+    .form-check label {
+        display: inline-block;
+    }
 
 .date-div {
     background-color: white;
@@ -189,11 +192,11 @@ h1 {
     color: dimgray;
 }
 
-.spacer{
-    height:2px;
+.spacer {
+    height: 2px;
 }
 
-.date-input{
+.date-input {
     display: inline-block;
     width: 69%;
     padding: 0px;
@@ -227,44 +230,45 @@ h1 {
 .emp-experience {
     width: 70%;
     margin: 20px auto;
-    border: 2px solid #75593d;
+    border: 1px solid #7c675c;
+    border-radius: 10px;
     background-color: #f2ece6;
 }
 
-.btn-left{
+.btn-left {
     margin-right: -30%;
 }
 
 h1 {
-    color:rgba(0,0,0,.9);
+    color: rgba(0,0,0,.9);
 }
 
-#rating-comments{
+#rating-comments {
     width: 70%;
 }
 
-.radio-div{
-    width:100%;
-    display:inline-block;
+.radio-div {
+    width: 100%;
+    display: inline-block;
     text-align: left;
 }
 
-input[type="radio"]{
-    width:20px;
+input[type="radio"] {
+    width: 20px;
 }
 
 
-.modal-header{
+.modal-header {
     width: 100%;
     display: inline-block;
 }
 
-.modal-header h5, h6{
-    text-align: left;
-    width: 80%;
-}
+    .modal-header h5, h6 {
+        text-align: left;
+        width: 80%;
+    }
 
-#close-btn{
+#close-btn {
     margin-top: -100px;
     float: right;
 }
@@ -280,4 +284,130 @@ input[type="radio"]{
 
 .hidden {
     display: none;
+}
+
+.navbar-nav {
+    display: flex;
+    justify-content: space-between;
+}
+
+li {
+    flex: 1;
+}
+
+ul {
+    max-width: 20%;
+    display: flex;
+}
+
+/*.my-nav{
+    width: 100%;
+}*/
+
+.btn-secondary {
+    color: #fff;
+    background-color: #b0988d;
+    border-color: #9a857a;
+    /*background-color: #9a857a;
+    border-color: #9a857a;*/
+}
+
+    .btn-secondary:hover {
+        color: #fff;
+        background-color: #7c675c;
+        border-color: #7c675c;
+    }
+
+    .btn-secondary:active {
+        color: #fff;
+        background-color: #7c675c;
+        border-color: #7c675c;
+    }
+
+#nav-header {
+    background-color: #e4dcd8 !important;
+}
+
+#logout-button {
+    background-color: #e4dcd8 !important;
+}
+
+#footer-text {
+    color: #7c675c;
+    font-weight: 500 !important;
+}
+
+.border-top {
+    border-top: 1px solid #7c675c !important;
+}
+
+.nav-link {
+    color: #53453f !important;
+    font-weight: 600;
+}
+
+form h2, h3 {
+    color: #53453f !important;
+}
+
+form {
+    border-radius: 8px;
+}
+
+/*.my-nav-links{
+        max-width: 20%;
+
+}
+*/
+
+.form-control {
+    margin: 0 auto;
+    width: 95%;
+}
+
+#login-submit {
+    margin: 0 auto;
+    width: 95%;
+}
+
+.login-links {
+    color: #53453f;
+}
+
+    .login-links:hover {
+        color: black;
+    }
+
+#register-form .form-label {
+    margin-left: 5%;
+    margin-top: 0px;
+}
+
+#account .form-label {
+    margin-left: 5%;
+    margin-top: 0px;
+}
+
+
+#bus-or-emp-reg {
+    margin: 0 auto;
+    width: 50%
+}
+
+input[type="checkbox"]:checked {
+    color: #53453f;
+}
+
+#job-description {
+    width: 70%;
+    height: 90px;
+    resize: vertical;
+    white-space: normal;
+}
+
+.form-textarea {
+    width: 70%;
+    height: 90px;
+    resize: vertical;
+    white-space: normal;
 }

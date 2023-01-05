@@ -1,8 +1,10 @@
-﻿@{
+﻿@using Newtonsoft.Json
+
+@{
     ViewData["Title"] = "Search Jobs";
 }
-
 @model List<JobPostingViewModel>
+
 
 @Html.Hidden("BusinessID")
 @Html.Hidden("JobInfoID")
@@ -27,12 +29,11 @@
     <div class="text-center">
         <h1 class="display-4">Job Openings</h1>
 
-        <form asp-controller="Job" asp-action="SearchJob" method="get" id="search-form">
+        <form asp-controller="Job" asp-action="SearchJob" method="post" id="search-form">
 
             <div class="input-group">
                 <div class="form-outline">
                     <input type="text" name="JobDescription" class="form-control" placeholder="Search by: Job Title, Company Name, City or County..." />
-                    @*<label class="form-label" for="form1">Search</label>*@
                 </div>
                 <button type="submit" class="btn btn-secondary">
                     <i class="fa fa-search" aria-hidden="true"></i>
@@ -40,32 +41,7 @@
             </div>
 
 
-
-            @*
-            <label>Search by Title:</label>
-            <input type="text" name="Title" />
-            <br />
-            <label>Search by Position Type:</label>
-            <input type="text" name="PositionType" />
-            <br />
-            <label>Search by Company:</label>
-            <input type="text" name="Company" />
-            <br />
-            <label>Search by Salary:</label>
-            <input type="text" name="Salary" />
-            <br />
-            <label>Search by City:</label>
-            <input type="text" name="City" />
-            <br />
-            <label>Search by County:</label>
-            <input type="text" name="County" />
-            <br />
-            <button type="submit" class="btn btn-secondary form-btn"><i class="fa fa-search" aria-hidden="true"></i> Search</button>*@
-
         </form>
-
-
-
 
         @if (Model.Count == 0)
         {
@@ -76,10 +52,13 @@
 
         else
         {
-            <div>
+            <div id="results-count">
                 @Model.Count jobs match your search
             </div>
         }
+
+        <div id="results-count">
+        </div>
 
 
 
@@ -88,7 +67,7 @@
         <form id="filter-form" style="display: none;">
             <h5>Filter Search</h5>
             <label>Title:</label>
-            <input type="text" name="Title" />
+            <input id="filter-title" type="text" name="Title" />
             <br />
             <label for="position-type">Position Type:</label>
             <select id="position-type">
@@ -98,23 +77,28 @@
             </select>
             <br />
             <label>Company:</label>
-            <input type="text" name="Company" />
+            <input id="filter-company" type="text" name="Company" />
             <br />
             <label>Minimum Salary:</label>
-            <input type="text" name="Salary" />
+            <input id="filter-salary" type="text" name="Salary" />
             <br />
             <label>City:</label>
-            <input type="text" name="City" />
+            <input id="filter-city" type="text" name="City" />
             <br />
             <label>County:</label>
-            <input type="text" name="County" />
+            <input id="filter-county" type="text" name="County" />
             <br />
-            <button id="apply-filter-button" class="btn btn-secondary" type="submit">Apply Filters</button>
+@*
+            <input type="hidden" id="original-list" value="@Html.Raw(JsonConvert.SerializeObject(Model))">*@
+
+            <button id="apply-filter-button" class="btn btn-secondary" onclick="applyFilters();" type="button">Apply Filters</button>
             <button id="cancel-filter-button" class="btn btn-secondary" type="button">Cancel</button>
         </form>
 
         <div id="job-openings-list">
             <partial name="_JobsPartial" />
+        </div>
+        <div id="filtered-job-openings-list" class="hidden">
         </div>
 
     </div>
@@ -143,46 +127,53 @@
 
     });
 
-    function filterJobs(filter) {
-        // Filter the list of job openings based on the parameter
-        var filteredList = @Html.Raw(Json.Serialize(Model));
-        if (!string.IsNullOrEmpty(filter)) {
-            var filters = filter.split('&');
-            for (var i = 0; i < filters.length; i++) {
-                var keyValue = filters[i].split('=');
-                var key = keyValue[0];
-                var value = keyValue[1];
-                if (key == "city") {
-                    filteredList = filteredList.filter(function (x) { return x.Location.includes(value); });
-                }
-                else if (key == "county") {
-                    filteredList = filteredList.filter(function (x) { return x.Location.includes(value); });
-                }
-                else if (key == "minSalary") {
-                    var minSalary = parseInt(value);
-                    filteredList = filteredList.filter(function (x) { return x.Salary >= minSalary; });
-                }
+
+    //function applyFilters() {
+    //    event.preventDefault(); // prevent the form from being submitted
+    //    var form = document.getElementById("filter-form");
+    //    var formData = new FormData(form); // create an object containing the form data
+    //    fetch("/Job/SearchJob", {
+    //        method: "POST",
+    //        body: formData // include the form data in the request body
+    //    }).then(function (response) {
+    //        return response.text(); // get the response as text
+    //    }).then(function (html) {
+    //        document.getElementById("job-openings-list").innerHTML = html; // update the job listings
+    //    });
+    //}
+
+    function applyFilters() {
+
+        var title = $('#filter-title').val();
+        var company = $('#filter-company').val();
+        var positiontype = $('#position-type').val();
+        var minsalary = $('#filter-salary').val();
+        var city = $('#filter-city').val();
+        var county = $('#filter-county').val();
+        ////var originalList = $('#original-list').val();
+        //var originalList = JSON.parse($('#original-list').val());
+        //console.log(originalList);
+
+        $('#error-message').hide();
+        $.ajax({
+            type: "GET",
+            url: '/Job/FilterJob',
+            data: { title: title, company: company, positiontype: positiontype, minsalary: minsalary, city: city, county: county },
+            //data: { title: title, company: company, positiontype: positiontype, minsalary: minsalary, city: city, county: county, originalList: originalList },
+            success: function (data) {
+                //$('html').html(data);
+                $('#filtered-job-openings-list').html(data);
+
+                //var count = '@ViewBag.Count';
+                //$('#results-count').text(count + ' jobs match your search');
+
+                $('#job-openings-list').addClass('hidden');
+                $('#filtered-job-openings-list').removeClass('hidden');
+
+
+
             }
-        }
-        return filteredList;
-    }
-
-
-
-    $('#apply-filter-button').click(function () {
-        // Get the filter parameter from the form
-        var filter = $('#filter-form').serialize();
-
-        // Filter the list of job openings
-        var filteredList = filterJobs(filter);
-
-        // Update the view with the filtered list
-        $('#jobList').html('');
-        for (var i = 0; i < filteredList.length; i++) {
-            var opening = filteredList[i];
-            var row = '<tr><td>' + opening.Title + '</td><td>' + opening.Company + '</td><td>' + opening.Location + '</td><td>' + opening.Salary + '</td></tr>';
-            $('#jobList').append(row);
-        }
-    });
+        });
+    };
 
 </script>

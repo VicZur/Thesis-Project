@@ -4,10 +4,10 @@
     ViewData["Title"] = "Register";
 }
 
+<div class="text-center" id="bus-or-emp-reg">
 <h1>@ViewData["Title"]</h1>
 
-<div class="row">
-    <div class="col-md-4">
+
         <form id="empOrBusinessForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h2>Create a new account.</h2>
             <hr />
@@ -15,14 +15,14 @@
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-floating">
+        <div class="checkbox form-check login-checkbox">
                 <input type="checkbox" asp-for="Input.isBusinessAccount" />
                 <label asp-for="Input.isBusinessAccount"></label>
                 <span asp-validation-for="Input.isBusinessAccount" class="text-danger"></span>
             </div>
 
 
-            <div class="form-floating">
+        <div class="checkbox form-check login-checkbox">
                 <input type="checkbox" asp-for="Input.isEmployeeAccount" />
                 <label asp-for="Input.isEmployeeAccount"></label>
                 <span asp-validation-for="Input.isEmployeeAccount" class="text-danger"></span>
@@ -31,11 +31,10 @@
             <br />
             <br />
             
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Continue</button>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-secondary">Continue</button>
         </form>
     </div>
    
-</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

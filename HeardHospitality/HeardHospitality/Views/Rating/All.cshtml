@@ -72,7 +72,14 @@
                         @rating.ClienteleRating
                     </td>
                     <td>
-                        @rating.UnpaidTrialShift
+                        @if(@rating.UnpaidTrialShift == true)
+                        {
+                            <p>Yes</p>
+                        }
+                        else{
+                            <p>No</p>
+                        }
+                        
                     </td>
                     <td>
                         @rating.DatePosted

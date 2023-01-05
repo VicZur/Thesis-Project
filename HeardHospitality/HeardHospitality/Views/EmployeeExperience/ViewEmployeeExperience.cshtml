@@ -65,76 +65,12 @@
                         Edit this Job
                     </div>
 
-                    <div class="emp-exp-btn btn btn-secondary btn-right" onclick="">
-                    @*<div class="emp-exp-btn btn btn-secondary btn-right" onclick="location.href= '@Url.Action("New", "Rating", new { busID=experience.BusinessID })'">*@
+                    <div class="emp-exp-btn btn btn-secondary btn-right" onclick="location.href= '@Url.Action("CheckIfRated", "Rating", new { busID=experience.BusinessID, empExpID=experience.EmployeeExperienceID })'">
                         Rate this Job
                     </div>
                 </div>
             </div>
         }
-
-
-        @*        <table>
-        <tr>
-        <th>
-        Job Title
-        </th>
-        <th>
-        Position Type
-        </th>
-        <th>
-        Start Date
-        </th>
-        <th>
-        End Date
-        </th>
-        <th>
-        Company
-        </th>
-        <th>
-        City
-        </th>
-        <th>
-        County
-        </th>
-        <th>
-        Is Displayed on my Profile
-        </th>
-
-        </tr>
-        @foreach (var experience in Model)
-        {
-
-
-        <tr>
-        <td>
-        @experience.JobTitle
-        </td>
-        <td>
-        @experience.PositionType
-        </td>
-        <td>
-        @experience.StartDate
-        </td>
-        <td>
-        @experience.EndDate
-        </td>
-        <td>
-        @experience.Company
-        </td>
-        <td>
-        @experience.City
-        </td>
-        <td>
-        @experience.County
-        </td>
-        <td>
-        @experience.DisplayOnProfile
-        </td>
-        </tr>
-        }
-
-        </table>*@
     </div>
 </body>
 </html>

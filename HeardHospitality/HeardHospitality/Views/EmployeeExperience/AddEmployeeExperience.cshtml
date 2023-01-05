@@ -32,7 +32,7 @@
         @*<div class="spacer"></div>*@
         <div class="date-div" id="end-date-div">
             <label class="form-label date-label" for="EndDate">End Date</label>
-            <input class="date-input" type="date" value="@String.Format("{0:yyyy-MM-dd}", new DateTime(2020, 1, 1))" asp-for="EndDate" />
+            <input id="end-date-input" class="date-input" type="date" value="@String.Format("{0:yyyy-MM-dd}", new DateTime(2020, 1, 1))" asp-for="EndDate" />
         </div>
         <input placeholder="Company" id="Company" asp-for="Company" required />
         <br />
@@ -72,7 +72,6 @@
 
                     </div>
                     <div class="modal-footer">
-                        @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>*@
                         <button type="button" id="modal-submit-btn" onclick="SubmitForm();" class="btn btn-secondary">Confirm</button>
                     </div>
                 </div>
@@ -81,8 +80,6 @@
 
         <input type="hidden" asp-for="BusinessID">
 
-
-        @*<button type="submit" class="btn btn-secondary">Add</button>*@
     </form>
 
 
@@ -94,6 +91,7 @@
         $('#current-job').click(function () {
             if ($(this).is(':checked')) {
                 $('#end-date-div').addClass('hidden');
+                $('#end-date-input').val('1900-01-01');
             } else {
                 $('#end-date-div').removeClass('hidden');
             }
@@ -162,29 +160,8 @@
         var selectedId = $('.business-radio:checked').val();
         $('#BusinessID').val(selectedId);
 
-        //// Get the data from the modal and store it in the form
-        //var modalData = $('#modal-business-list').data('modal-data');
-        //$('#modal-data').val(modalData);
-
-        // Submit the form
         $('#emp-experience-form').submit();
     };
-
-
-                    //$('#emp-experience-form').submit(function (e) {
-                    //    e.preventDefault();
-                    //    var formData = $(this).serialize();
-                    //    $.ajax({
-                    //        type: "POST",
-                    //        url: '/ControllerName/ActionName',
-                    //        data: formData,
-                    //        success: function (data) {
-                    //            // Update main view with returned data
-                    //            $('#main-view-element').html(data);
-                    //        }
-                    //    });
-                    //});
-                //});
 
 
 </script>

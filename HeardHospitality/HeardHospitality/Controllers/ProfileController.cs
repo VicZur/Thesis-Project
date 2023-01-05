@@ -162,14 +162,77 @@ namespace HeardHospitality.Controllers
 
 
                 cmd.Parameters.AddWithValue("@LoginDetailsId", currentuser);
-                cmd.Parameters.AddWithValue("@FirstName", e.FirstName);
-                cmd.Parameters.AddWithValue("@LastName", e.LastName);
-                cmd.Parameters.AddWithValue("@City", e.City);
-                cmd.Parameters.AddWithValue("@County", e.County);
-                cmd.Parameters.AddWithValue("@Gender", e.Gender);
-                cmd.Parameters.AddWithValue("@Phone", e.Phone);
-                cmd.Parameters.AddWithValue("@EmpBio", e.EmpBio);
-                cmd.Parameters.AddWithValue("@DesiredJob", e.DesiredJob);
+                if (e.FirstName != null)
+                {
+                    cmd.Parameters.AddWithValue("@FirstName", e.FirstName);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@FirstName", DBNull.Value);
+                }
+
+                if (e.LastName != null)
+                {
+                    cmd.Parameters.AddWithValue("@LastName", e.LastName);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@LastName", DBNull.Value);
+                }
+
+                if (e.City != null)
+                {
+                    cmd.Parameters.AddWithValue("@City", e.City);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@City", DBNull.Value);
+                }
+
+                if (e.County != null)
+                {
+                    cmd.Parameters.AddWithValue("@County", e.County);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@County", DBNull.Value);
+                }
+
+                if (e.Gender != null)
+                {
+                    cmd.Parameters.AddWithValue("@Gender", e.Gender);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@Gender", DBNull.Value);
+                }
+
+                if (e.Phone != null)
+                {
+                    cmd.Parameters.AddWithValue("@Phone", e.Phone);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@Phone", DBNull.Value);
+                }
+
+                if (e.EmpBio != null)
+                {
+                    cmd.Parameters.AddWithValue("@EmpBio", e.EmpBio);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@EmpBio", DBNull.Value);
+                }
+
+                if (e.DesiredJob != null)
+                {
+                    cmd.Parameters.AddWithValue("@DesiredJob", e.DesiredJob);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@DesiredJob", DBNull.Value);
+                }
                 cmd.Parameters.AddWithValue("@IsSearching", e.IsSearching);
                 cmd.Parameters.AddWithValue("@IsVisible", e.IsVisible);
 
@@ -177,11 +240,11 @@ namespace HeardHospitality.Controllers
                 cmd.ExecuteNonQuery();
                 conn.Close();
 
-                return View(e);
+                return RedirectToAction("Index", "Home");
             }
             catch
             {
-                return View(e);
+                return RedirectToAction("UpdateProfile");
             }
         }
         //        // POST: UpdateEmployeeProfileController/Edit/5

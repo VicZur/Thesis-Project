@@ -27,17 +27,16 @@
     <div class="text-center">
 
 
-
         <form id="new-job-form" asp-controller="Job" asp-action="SubmitJob" method="post">
 
             <h1 class="form-title display-4">Add a New Job Ad</h1>
 
             <label class="form-label" for="Title">Job Title</label>
-            <input placeholder="Title" asp-for="Title" />
+            <input placeholder="Title" asp-for="Title" required />
             <br />
 
             <label class="form-label" for="PositionType">Position Type</label>
-            <select asp-for="PositionType" name="PositionType">
+            <select asp-for="PositionType" name="PositionType" required>
                 <option value="" selected disabled>Select a Position Type</option>
                 <option value="Full Time">Full Time</option>
                 <option value="Part Time">Part Time</option>
@@ -46,19 +45,19 @@
             <br />
 
             <label class="form-label" for="Salary">Salary</label>
-            <input placeholder="Salary" asp-for="Salary" />
+            <input placeholder="Salary" asp-for="Salary" required />
             <br />
 
             <label class="form-label" for="JobDescription">Job Description</label>
-            <input placeholder="Job Description" asp-for="JobDescription" />
+            <textarea type="text" placeholder="Job Description" asp-for="JobDescription" id="job-description" required></textarea>
             <br />
 
             <label class="form-label" for="MinExperience">Minimum Experience Required</label>
-            <input placeholder="Minimum Experience" asp-for="MinExperience" />
+            <input placeholder="Minimum Experience" asp-for="MinExperience" required />
             <br />
 
             <label class="form-label" for="Category">Job Category</label>
-            <select asp-for="Category" name="Category">
+            <select asp-for="Category" name="Category" required>
                 <option value="" selected disabled>Select a Category</option>
                 <option value="Front of House">Front of House</option>
                 <option value="Back of House">Back of House</option>
@@ -69,7 +68,7 @@
 
 
             <label class="form-label" for="Company">Company Name</label>
-            <input placeholder="Company" asp-for="Company" />
+            <input placeholder="Company" asp-for="Company" required />
             <br />
 
             <div class="form-div">Are there any additional Perks for Employees that you would like to highlight? 
@@ -78,22 +77,6 @@
             <div id="new-perk">
 
             </div>
-
-
-            @*           <div id="perks-container">
-
-            @for (int i = 0; i < Model.Perks.Count; i++)
-            {
-            <div>
-            <br />
-            <input placeholder="Perk" name="Perks[@i].PerkName" type="text" id="Perks.PerkName" asp-for="Perks[@i].PerkName" />
-            <br />
-            <input placeholder="Description" name="Perks[@i].Details" type="text" id="Perks.Details" asp-for="Perks[@i].Details" />
-            <br />
-            </div>
-
-
-            }*@
 
             @for (int i = 0; i < Model.Perks.Count; i++)
             {
@@ -110,11 +93,9 @@
 
 
             <button class="btn btn-secondary" type="button" onclick="AddPerk();">Add A Perk</button>
-            @*    </div>*@
 
             <br />
 
-            <br />
             <br />
             <input type="hidden" asp-for="BusinessID" value="@Model.BusinessID" />
             <input type="hidden" asp-for="City" value="@Model.City" />
@@ -140,43 +121,6 @@
         // Append the new fields to the form
         $('#new-perk').append(nameField);
         $('#new-perk').append(detailsField);
-
-
-        //var container = document.getElementById("perks-container");
-
-        //// Create a new div element to hold the new perks input fields
-        //var perksDiv = document.createElement("div");
-
-        //// Create new input elements for the "Perks" fields
-        //var perkNameInput = document.createElement("input");
-        //perkNameInput.type = "text";
-        //perkNameInput.placeholder = "Perk Name";
-        ////perkNameInput.name = "Perks[0].PerkName";
-        ////perkNameInput.id = "Perks[0].PerkName";
-        //perkNameInput.name = "Perks[" + i + "].PerkName";
-        //perkNameInput.id = "Perks[" + i + "].PerkName";
-        ////perkNameInput.asp-for = "Perks[" + i + "].PerkName";
-
-
-        //var perkDetailsInput = document.createElement("input");
-        //perkDetailsInput.type = "text";
-        //perkDetailsInput.placeholder = "Details";
-        //perkDetailsInput.name = "Perks[" + i + "].Details";
-        //perkDetailsInput.id = "Perks[" + i + "].Details";
-        //perkDetailsInput.asp -for = "Perks[" + i + "].Details";
-        //    //perkDetailsInput.name = "Perks[0].Details";
-        //    //perkDetailsInput.id = "Perks[0].Details";
-
-        //    // Add the new input elements to the div element
-        //    perksDiv.appendChild(perkNameInput);
-        //    perksDiv.appendChild(perkDetailsInput);
-
-        //// Add the new div element to the container
-        //container.appendChild(perksDiv);
-
-        //i = i + 1;
-
-        //return i;
 
     };
 

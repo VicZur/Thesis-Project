@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Report Job Posting";
+}
+
+@model ReportedJobDetail
+
+@Html.Hidden("ReportedJobDetailID")
+@Html.Hidden("JobInfoID")
+@Html.Hidden("EmployeeID")
+
+
+
+
+<form asp-controller="Job" asp-action="SubmitReporting" method="post">
+
+
+    <input type="checkbox" asp-for="AdDetailsIncorrect" />
+    <label asp-for="AdDetailsIncorrect">The Ad Details are incorrect</label>
+    <br />
+    <input type="checkbox" asp-for="PerksListedIncorrect" />
+    <label asp-for="PerksListedIncorrect">The Perks that are listed are incorrect</label>
+
+    <br />
+    <input type="checkbox" asp-for="SalaryIncorrect" />
+    <label asp-for="SalaryIncorrect">Salary details are missing or incorrect</label>
+
+    <br />
+    <input type="checkbox" asp-for="IllegalExpectations" />
+    <label asp-for="IllegalExpectations">This listing sugggest illegal expectations</label>
+
+    <br />
+    <input placeholder="Comments" asp-for="Comments" required/>
+    <br />
+    <br />
+    <br />
+    <input type="hidden" asp-for="JobInfoID" value="@Model.JobInfoID" />
+    <input type="hidden" asp-for="EmployeeID" value="@Model.EmployeeID" />
+    <input type="hidden" asp-for="ReportedJobDetailID" value="@Model.ReportedJobDetailID" />
+@*    <button type="submit">Submit</button>*@
+</form>

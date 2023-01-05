@@ -108,21 +108,35 @@ namespace HeardHospitality.Controllers
 
                 cmd.Parameters.AddWithValue("@BusinessId", currentbusinessId);
                 cmd.Parameters.AddWithValue("@AddressLine1", bi.AddressLine1);
-                cmd.Parameters.AddWithValue("@AddressLine2", bi.AddressLine2);
+                if (bi.AddressLine2 != null)
+                {
+                    cmd.Parameters.AddWithValue("@AddressLine2", bi.AddressLine2);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@AddressLine2", DBNull.Value);
+                }
                 cmd.Parameters.AddWithValue("@City", bi.City);
                 cmd.Parameters.AddWithValue("@County", bi.County);
-                cmd.Parameters.AddWithValue("@EirCode", bi.AddressLine1);
+                if (bi.EirCode != null)
+                {
+                    cmd.Parameters.AddWithValue("@EirCode", bi.EirCode);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@EirCode", DBNull.Value);
+                }
                 cmd.Parameters.AddWithValue("@Country", bi.Country);
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
                 conn.Close();
 
-                return View(bi);
+                return RedirectToAction("Index", "Home");
             }
             catch
             {
-                return View(bi);
+                return RedirectToAction("UpdateBusinessProfile");
             }
         }
 

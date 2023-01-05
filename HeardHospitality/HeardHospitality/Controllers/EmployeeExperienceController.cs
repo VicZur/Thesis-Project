@@ -70,6 +70,7 @@ namespace HeardHospitality.Controllers
                         IsVerified = Convert.ToBoolean(rdr["IsVerified"]),
                         DisplayOnProfile = Convert.ToBoolean(rdr["DisplayOnProfile"]),
                         EmployeeID = Convert.ToInt32(rdr["EmployeeID"]),
+                        BusinessID = Convert.ToInt32(rdr["BusinessID"]),
                     });
                 }
             }
@@ -85,12 +86,6 @@ namespace HeardHospitality.Controllers
         public IActionResult AddEmployeeExperience(EmployeeExperience ee)
         {
             return View(ee);
-        }
-
-        public IActionResult ShowpopUp()
-        {
-            //specify the name or path of the partial view
-            return PartialView("_BusinessInfoPartial");
         }
 
 
